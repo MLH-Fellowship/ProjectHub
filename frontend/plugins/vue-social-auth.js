@@ -11,7 +11,13 @@ Vue.use(VueSocialauth, {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID,
       redirectUri: 'http://localhost:3000/api/auth/callback',
-      scope: ['read:user', 'read:org'],
+      scope: [
+        'user',
+        'admin:org',
+        'repo',
+        'admin:repo_hook',
+        'admin:enterprise',
+      ],
     },
   },
 });

@@ -10,9 +10,9 @@ export default {
   methods: {
     async authenticate() {
       const { code } = await this.$auth.authenticate('github');
-      const { token } = this.$axios.$post('/api/auth/github', { code });
+      // const { token } = this.$axios.$post('/api/auth/github', { code });
       // { token: jwt => store in local storage, email => display it in the client }
-      console.log(token);
+      console.log(code);
     },
   },
 };

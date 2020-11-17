@@ -1,21 +1,24 @@
 import psycopg2
-import sys
+import os
+
 
 class Connection(object):
 
-    def __init__(self, fromLocal=True):
-        if fromLocal:
-            self.host = ""
-            self.database = ""
-            self.username = ""
-            self.password = ""
-        else:
-            self.host = sys.argv[1]
-            self.database = sys.argv[2]
-            self.username = sys.argv[3]
-            self.password = sys.argv[4]
+    # environment variables pulled from .env file
+    def __init__(self):
+        self.host = os.getenv("POSTGRES_HOST")
+        self.host = os.getenv("POSTGRES_HOST")
+        self.database = os.getenv("POSTGRES_DATABASE")
+        self.port = os.getenv("POSTGRES_PORT")
+        self.username = os.getenv("POSTGRES_USER")
+        self.password = os.getenv("POSTGRES_PASSWORD")
 
+    # Creates a connection with the PostgreSQL server
     def create_connection(self):
+        """
+        :return: server connection
+        """
+
         conn = None
 
         try:
@@ -23,22 +26,42 @@ class Connection(object):
                                     host=self.host,
                                     user=self.username,
                                     password=self.password,
-                                    port=25060)
+                                    port=self.port)
         except (Exception, psycopg2.DatabaseError) as error:
             print(error)
 
         return conn
 
+    # Generates a table creation statement
     @staticmethod
-    def generate_table_creation(table_name, column_names):
+    def generate_table_creation(table_name: str, column_names: list):
+        """
+        :param table_name:
+        :param column_names:
+        :return: SQL statement
+        """
+
         items = ", ".join(column_names)
         items = "({})".format(items)
         statement = "CREATE TABLE IF NOT EXISTS {}{}".format(table_name, items)
 
         return statement
 
+    # Generates a insert into table statement. Includes some error checking
     @staticmethod
-    def generate_insert_statement(table_name, column_names, values):
+    def generate_insert_statement(table_name: str, column_names: list, values: list):
+        """
+        :param table_name: str
+        :param column_names: list
+        :param values: list
+        :return: SQL statement
+        """
+
+        if len(column_names) == 0:
+            raise IndexError("You can't insert an empty statement!")
+        if len(column_names) != len(values):
+            raise ValueError("Number of columns and number of values does not match.")
+
         items = ", ".join(values)
         items = "({})".format(items)
 
@@ -49,7 +72,22 @@ class Connection(object):
 
         return statement
 
-    def execute_statement(self, statement, table_name, column_names, values=None):
+    # Executes a statement,
+    def execute_statement(self, statement: str, table_name: str, column_names: list, values=None):
+        """
+        :param statement: str
+        :param table_name: str
+        :param column_names: list
+        :param values: optional list
+        :return: Null
+        """
+
+        if len(column_names) == 0:
+            raise ValueError("Must include column names")
+
+        if values is not None and len(column_names) != len(values):
+            raise ValueError("Number of columns and number of values must match")
+
         conn = self.create_connection()
 
         if statement == "table":
@@ -57,18 +95,16 @@ class Connection(object):
 
         elif statement == "insert":
             if values is None:
-                raise ValueError("You must have values")
-            elif len(values) != len(column_names):
-                raise ValueError("Number of value must equal number of columns")
-            else:
-                st = self.generate_insert_statement(table_name, column_names, values)
-        else:
-            raise ValueError("Statement type must be valid")
+                raise ValueError("Values must be provided to be inserted into database")
 
+            st = self.generate_insert_statement(table_name, column_names, values)
+
+        else:
+            raise ValueError("Invalid statement type, must be \"table\" or \"insert\"")
+
+        # Accesses the server, executes a command, and commits it
         cur = conn.cursor()
         cur.execute(st)
         conn.commit()
 
         return
-
-
