@@ -27,6 +27,7 @@ export default {
   plugins: [
     '@/plugins/element-ui',
     '@/plugins/persiste-state',
+    '@/plugins/github',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',
