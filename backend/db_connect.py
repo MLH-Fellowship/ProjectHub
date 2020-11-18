@@ -1,5 +1,4 @@
 import psycopg2
-import os
 from settings import *
 
 
