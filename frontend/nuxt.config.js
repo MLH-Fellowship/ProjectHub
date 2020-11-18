@@ -26,6 +26,7 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '@/plugins/element-ui',
+    '@/plugins/persiste-state',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',
@@ -47,6 +48,7 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    'cookie-universal-nuxt',
   ],
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
