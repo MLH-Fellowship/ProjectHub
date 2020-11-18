@@ -71,5 +71,5 @@ class GH(object):
         all other teams
         """
         pods = [i.name for i in team_list if "pod" in i.name.lower()]
-        teams = [i.name for i in team_list if "pod" not in i.name.lower()]
-        return {"pods": pods, "teams": teams}
+        # teams = [i.name for i in team_list if "pod" not in i.name.lower()]
+        return {"pods": pods}

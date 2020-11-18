@@ -1,9 +1,9 @@
-from fastapi import FastAPI, Response, status
+from fastapi import FastAPI
+from starlette import status
 from pydantic import BaseModel
-from backend.handle_tokens import decode_jwt, encode_jwt
-from backend.github_auth import request_access_token
+from handle_tokens import decode_jwt, encode_jwt
+from github_auth import request_access_token
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
-
 
 app = FastAPI()
 
@@ -25,7 +25,7 @@ def return_jwt(code):
     else:
         print(PRIV_KEY_PATH)
         encoded = encode_jwt(at, PRIV_KEY_PATH)
-        return encoded
+        return {"token": encoded}
 
 
 @app.post("/teams")
