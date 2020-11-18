@@ -1,5 +1,6 @@
 /postgres/database
-
+*.pem
+*.pub
 .DS_Store
 
 # Byte-compiled / optimized / DLL files
