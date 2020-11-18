@@ -2,13 +2,13 @@ import requests
 from github import Github
 import re
 from datetime import datetime, timedelta, timezone
-import os
+from settings import GITHUB_CLIENT_ID, GITHUB_SECRET
 
 
 def request_access_token(code):
 
-    client_id = os.getenv("GITHUB_CLIENT_ID")
-    client_secret = os.getenv("GITHUB_SECRET")
+    client_id = GITHUB_CLIENT_ID
+    client_secret = GITHUB_SECRET
 
     url = "https://github.com/login/oauth/access_token"
 
@@ -20,8 +20,10 @@ def request_access_token(code):
     content = req.content.decode("utf-8")
     token = re.findall(r"access_token=(.*)&scope", content)
 
-    return token[0]
-
+    try:
+        return token[0]
+    except IndexError:
+        return "Invalid Request"
 
 class GH(object):
 

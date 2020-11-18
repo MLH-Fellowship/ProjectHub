@@ -1,17 +1,17 @@
 import psycopg2
 import os
+from settings import *
 
 
 class Connection(object):
 
     # environment variables pulled from .env file
     def __init__(self):
-        self.host = os.getenv("POSTGRES_HOST")
-        self.host = os.getenv("POSTGRES_HOST")
-        self.database = os.getenv("POSTGRES_DATABASE")
-        self.port = os.getenv("POSTGRES_PORT")
-        self.username = os.getenv("POSTGRES_USER")
-        self.password = os.getenv("POSTGRES_PASSWORD")
+        self.host = POSTGRES_HOST
+        self.database = POSTGRES_DATABASE
+        self.port = POSTGRES_PORT
+        self.username = POSTGRES_USER
+        self.password = POSTGRES_PASSWORD
 
     # Creates a connection with the PostgreSQL server
     def create_connection(self):
