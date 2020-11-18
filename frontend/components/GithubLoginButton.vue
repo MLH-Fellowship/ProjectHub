@@ -6,7 +6,7 @@
 
 <script>
 export default {
-  name: 'LoginBox',
+  name: 'GithubLoginButton',
   methods: {
     async authenticate() {
       const { code } = await this.$auth.authenticate('github');

@@ -4,17 +4,17 @@
       <div slot="header" class="clearfix">
         <span>Login</span>
       </div>
-      <LoginBox />
+      <GithubLoginButton />
     </el-card>
   </div>
 </template>
 
 <script>
-import LoginBox from '@/components/LoginBox';
+import GithubLoginButton from '@/components/GithubLoginButton';
 
 export default {
   components: {
-    LoginBox,
+    GithubLoginButton,
   },
 };
 </script>
