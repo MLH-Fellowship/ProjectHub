@@ -1,55 +1,50 @@
 <template>
   <div>
+    <el-menu
+      :default-active="activeRoute"
+      mode="horizontal"
+      @select="handleSelect"
+    >
+      <el-menu-item index="/">
+        <img src="/logo.png" alt="Logo" style="max-height: 61px" />
+      </el-menu-item>
+      <el-menu-item index="#search">
+        <el-input v-model="search" placeholder="Search"></el-input>
+      </el-menu-item>
+      <el-menu-item index="/projects">Projects</el-menu-item>
+      <el-submenu index="4" style="float: right">
+        <template slot="title">
+          <!-- load profile image from state -->
+          <el-avatar
+            size="large"
+            src="https://avatars0.githubusercontent.com/u/10343470?v=4"
+          />
+        </template>
+        <el-menu-item index="#" disabled>Noah Cardoza</el-menu-item>
+        <el-menu-item index="/NoahCardoza">Profile</el-menu-item>
+        <el-menu-item index="/settings">Settings</el-menu-item>
+      </el-submenu>
+    </el-menu>
     <Nuxt />
   </div>
 </template>
 
-<style>
-html {
-  font-family: 'Source Sans Pro', -apple-system, BlinkMacSystemFont, 'Segoe UI',
-    Roboto, 'Helvetica Neue', Arial, sans-serif;
-  font-size: 16px;
-  word-spacing: 1px;
-  -ms-text-size-adjust: 100%;
-  -webkit-text-size-adjust: 100%;
-  -moz-osx-font-smoothing: grayscale;
-  -webkit-font-smoothing: antialiased;
-  box-sizing: border-box;
-}
+<script>
+export default {
+  data() {
+    return {
+      search: '',
+      activeRoute: '1',
+    };
+  },
+  methods: {
+    handleSelect(key) {
+      if (key !== '#') {
+        this.$router.push(key);
+      }
+    },
+  },
+};
+</script>
 
-*,
-*::before,
-*::after {
-  box-sizing: border-box;
-  margin: 0;
-}
-
-.button--green {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #3b8070;
-  color: #3b8070;
-  text-decoration: none;
-  padding: 10px 30px;
-}
-
-.button--green:hover {
-  color: #fff;
-  background-color: #3b8070;
-}
-
-.button--grey {
-  display: inline-block;
-  border-radius: 4px;
-  border: 1px solid #35495e;
-  color: #35495e;
-  text-decoration: none;
-  padding: 10px 30px;
-  margin-left: 15px;
-}
-
-.button--grey:hover {
-  color: #fff;
-  background-color: #35495e;
-}
-</style>
+<style></style>
