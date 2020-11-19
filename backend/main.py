@@ -2,7 +2,7 @@ from fastapi import FastAPI
 from starlette import status
 from utils import jwe
 from github_auth import request_access_token, GitHub
-from db_connect import Insert, Update, Query
+import utils.database as db
 from apiparse import parse_project_query, parse_user_query
 from models import Token, Project, User
 
@@ -33,17 +33,17 @@ def teams(jwt: Token):
 
 @app.post("/projects")
 def insert_project(json: Project):
-    update = Update(json=json)
+    update = db.Update(json=json)
     if update.project_exists():
         update.update_project()
     else:
-        Insert().insert_project(json=json)
+        db.Insert().insert_project(json=json)
 
 
 @app.get("/projects/{project}")
 def query_project(project):
     # query specific project id
-    q = Query().query_projects(project=project)
+    q = db.Query().query_projects(project=project)
     parsed = parse_project_query(q)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
@@ -53,16 +53,16 @@ def query_project(project):
 
 @app.post("/user/{user}")
 def insert_user(json: User):
-    update = Update(json=json)
+    update = db.Update(json=json)
     if update.user_exists():
         update.update_user()
     else:
-        Insert().insert_user(json)
+        db.Insert().insert_user(json)
 
 
 @app.get("/user/{username}")
 def query_user(username):
-    query = Query().query_users(username)
+    query = db.Query().query_users(username)
     parsed = parse_user_query(query)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
