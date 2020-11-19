@@ -1,25 +1,42 @@
 <template>
   <div class="container">
-    <div>
-      <Logo />
-      <Card />
-      <h1 class="title">project-hub</h1>
-      <div class="links">
-        <a
-          href="https://nuxtjs.org/"
-          target="_blank"
-          rel="noopener noreferrer"
-          class="button--green"
-        >
-          GitHub
-        </a>
-      </div>
-    </div>
+    <el-row class="items-center mw8">
+      <el-col :span="16">
+        <div>
+          <div class="tl">
+            <p class="f1">Welcome to</p>
+            <p class="b mv3" style="font-size: 5em">Project Hub</p>
+            <p class="mt5">
+              Introducing a new way to find and share your projects
+            </p>
+            <el-row class="mt4">
+              <el-button round type="primary">Explore Projects</el-button>
+              <LoginBox />
+            </el-row>
+          </div>
+        </div>
+      </el-col>
+      <el-col :span="8">
+        <div>
+          <el-image
+            class="relative"
+            style="top: 50px; left: -300px; width: 700px"
+            src="/humans1.png"
+            :fit="fit"
+          ></el-image>
+        </div>
+      </el-col>
+    </el-row>
   </div>
 </template>
 
 <script>
-export default {};
+export default {
+  name: 'LandingPage',
+  data() {
+    return {};
+  },
+};
 </script>
 
 <style>

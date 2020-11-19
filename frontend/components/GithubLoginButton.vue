@@ -1,7 +1,5 @@
 <template>
-  <div>
-    <el-button @click="authenticate">Login With GitHub</el-button>
-  </div>
+  <el-button round @click="authenticate">Login With GitHub</el-button>
 </template>
 
 <script>
