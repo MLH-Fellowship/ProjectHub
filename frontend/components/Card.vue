@@ -31,18 +31,12 @@
       </div>
 
       <div>
-        <v-chip-group
-          v-model="selection"
-          active-class="deep-purple accent-4 white--text"
-          column
-        >
-          <v-chip style="background: #8991dc; color: white">Javascript</v-chip>
-          <v-chip style="background: #238aea; color: white">Discord</v-chip>
-          <v-chip style="background: #6fd3de; color: white">Google</v-chip>
-          <v-chip style="background: #238aea; color: white">Python</v-chip>
-          <v-chip style="background: #6fd3de; color: white">Calendly</v-chip>
-          <v-chip style="background: #8991dc; color: white">Pod 1.0.1</v-chip>
-        </v-chip-group>
+        <el-tag color="#8991dc" style="color: #fff">Javascript</el-tag>
+        <el-tag color="#238aea" style="color: #fff">Discord</el-tag>
+        <el-tag color="#6fd3de" style="color: #fff">Google</el-tag>
+        <el-tag color="#238aea" style="color: #fff">Python</el-tag>
+        <el-tag color="#6fd3de" style="color: #fff">Calendly</el-tag>
+        <el-tag color="#8991dc" style="color: #fff">Pod 1.0.1</el-tag>
       </div>
       <div>
         <el-avatar
