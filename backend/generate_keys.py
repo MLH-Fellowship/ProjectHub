@@ -33,14 +33,12 @@ def read_public_key(pk):
 
 
 def save_key(private_fn, public_fn):
-
+    print(public_fn, private_fn)
     if ".pub" not in public_fn or ".pem" not in private_fn:
         raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
 
-    pk = gen_key_pair()
-    private = pk[0]
-    public = pk[1]
-
+    (private, public) = gen_key_pair()
+    
     pem = read_private_key(private)
     pub = read_public_key(public)
 
@@ -75,3 +73,7 @@ def load_private_key(private_fn):
 
     return private_key
 
+
+if __name__ == '__main__':
+    import sys
+    save_key(*sys.argv[1:])
