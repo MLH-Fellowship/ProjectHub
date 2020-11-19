@@ -1,11 +1,7 @@
 <template>
   <div class="project-card tl">
     <div class="help-wanted-tag">HELP WANTED</div>
-    <el-card
-      v-loading="loading"
-      style="max-width: 395px"
-      :body-style="{ padding: '0px' }"
-    >
+    <el-card v-loading="loading" :body-style="{ padding: '0px' }">
       <img
         height="250"
         src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
@@ -93,6 +89,11 @@ export default {
 </script>
 
 <style>
+.project-card {
+  max-width: 400px;
+  min-width: 300px;
+}
+
 .help-wanted-tag {
   padding: 0.5rem;
   border-radius: 10px 10px 0 0;
