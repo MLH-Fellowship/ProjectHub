@@ -1,8 +1,7 @@
 from fastapi import FastAPI
 from starlette import status
-from handle_tokens import decode_jwt, encode_jwt
+from utils import jwe
 from github_auth import request_access_token, GH
-from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 from db_connect import Insert, Update, Query
 from apiparse import parse_project_query, parse_user_query
 from models import Token, Project, User
@@ -19,7 +18,7 @@ def return_jwt(code):
     if at == "Invalid Request":
         return status.HTTP_403_FORBIDDEN
     else:
-        encoded = encode_jwt(at, PRIV_KEY_PATH)
+        encoded = jwe.encode(at)
         return {"token": encoded, "meta": meta}
 
 
@@ -27,7 +26,7 @@ def return_jwt(code):
 def teams(jwt: Token):
     # Decode and verify the jwt
     try:
-        decoded = decode_jwt(jwt.encoded_jwt, PUB_KEY_PATH)
+        decoded = jwe.decode(jwt.encoded_jwt)
         return decoded
     except ValueError:
         return status.HTTP_403_FORBIDDEN
