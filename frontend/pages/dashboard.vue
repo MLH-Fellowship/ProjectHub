@@ -36,7 +36,7 @@
         </el-select>
       </div>
       <div class="grid w-100 pa3">
-        <Card
+        <ProjectCard
           v-for="(something, index) in 6"
           :key="index"
           :index="index"
@@ -48,7 +48,11 @@
 </template>
 
 <script>
+import ProjectCard from '@/components/ProjectCard';
+
 export default {
+  name: 'Dashboard',
+  componentd: { ProjectCard },
   data() {
     return {
       options: {

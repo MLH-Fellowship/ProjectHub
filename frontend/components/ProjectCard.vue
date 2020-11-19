@@ -63,6 +63,7 @@ IconifyIcon.addIcon('bookmark', Bookmark);
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
+  name: 'ProjectCard',
   components: {
     IconifyIcon,
   },
