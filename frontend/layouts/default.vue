@@ -68,7 +68,7 @@ export default {
           if (this.$route.query.redirect) {
             return;
           }
-          return this.$router.push(`/login?redirect=${this.$route.path}`);
+          return this.$router.push(`/?login=1&redirect=${this.$route.path}`);
         }
         this.$router.push(key);
       }
