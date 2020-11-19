@@ -32,7 +32,7 @@
         <el-menu-item index="logout" @click="logout">Logout</el-menu-item>
       </el-submenu>
       <el-menu-item v-if="user.token" index="#add-project" style="float: right">
-        <el-button type="primary" @click.native="showNewProjectModel = true">
+        <el-button type="primary" @click.native="showNewProjectDialog = true">
           + Add Project
         </el-button>
       </el-menu-item>
@@ -41,22 +41,22 @@
       </el-menu-item>
     </el-menu>
     <Nuxt />
-    <NewProjectModel v-model="showNewProjectModel" />
+    <NewProjectDialog v-model="showNewProjectDialog" />
   </div>
 </template>
 
 <script>
-import NewProjectModel from '@/components/NewProjectModel';
+import NewProjectDialog from '@/components/NewProjectDialog';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   components: {
-    NewProjectModel,
+    NewProjectDialog,
   },
   data() {
     return {
       activeRoute: '#',
-      showNewProjectModel: false,
+      showNewProjectDialog: false,
     };
   },
   computed: mapState(['user']),
