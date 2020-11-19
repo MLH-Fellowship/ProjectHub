@@ -15,49 +15,49 @@
 import pick from 'ramda/src/pick';
 
 export default {
-  async asyncData({ params, $axios }) {
-    const query = (...params) => {
-      return $axios.$get(`https://api.github.com/${params.join('/')}`);
-    };
-
+  async asyncData({ params, $axios, $github }) {
     // API request to fill out page
     const details = {
       success: true,
       pods: ['1.0.1', '1.2.2'],
-      projects: ['CaptchaHarvester'],
+      projects: ['NoahCardoza/CaptchaHarvester'],
     };
 
     const [user, projects] = await Promise.all([
-      query('users', params.username).then(
-        pick([
-          'login',
-          'avatar_url',
-          'name',
-          'location',
-          'email',
-          'public_repos',
-          'public_gists',
-          'followers',
-        ])
-      ),
+      $github
+        .get('users', params.username)
+        .then(
+          pick([
+            'login',
+            'avatar_url',
+            'name',
+            'location',
+            'email',
+            'public_repos',
+            'public_gists',
+            'followers',
+          ])
+        ),
       Promise.all(
         details.projects.map((repository) =>
-          query('repos', params.username, repository).then(
-            pick([
-              'name',
-              'full_name',
-              'private',
-              'description',
-              'fork',
-              'html_url',
-              'stargazers',
-              'watchers',
-              'language',
-              'open_issues',
-              'license',
-              'forks',
-            ])
-          )
+          $github
+            .get('repos', repository)
+            .then(
+              pick([
+                'name',
+                'full_name',
+                'private',
+                'description',
+                'fork',
+                'html_url',
+                'stargazers',
+                'watchers',
+                'language',
+                'open_issues',
+                'license',
+                'forks',
+              ])
+            )
         )
       ),
     ]);
