@@ -20,6 +20,8 @@
     }
   },
   "dependencies": {
+    "@iconify/icons-mdi": "^1.0.152",
+    "@iconify/vue": "^1.0.6",
     "@nuxtjs/axios": "^5.12.2",
     "@nuxtjs/proxy": "^2.0.1",
     "@nuxtjs/pwa": "^3.0.2",
