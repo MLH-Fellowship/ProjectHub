@@ -1,12 +1,15 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette import status
 from utils import jwe
-from github_auth import request_access_token, GitHub
+from github_auth import GitHub
 import utils.database as db
 from apiparse import parse_project_query, parse_user_query
 from models import Token, Project, User
+from utils.jwe import HTTPBearerJWEScheme
 
 app = FastAPI()
+
+http_bearer_scheme = HTTPBearerJWEScheme()
 
 
 @app.get("/auth/{code}")
@@ -50,8 +53,8 @@ def query_project(project):
         return parsed
 
 
-@app.post("/user/{user}")
-def insert_user(json: User):
+@app.post("/user")
+def insert_user(user: User, token: str = Depends(http_bearer_scheme)):
     if db.exists.user(json):
         db.update.user(json)
     else:
