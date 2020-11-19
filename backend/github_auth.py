@@ -27,10 +27,8 @@ def request_access_token(code):
 
 class GH(object):
 
-    def __init__(self, username, code, at=None):
-        self.username = username
+    def __init__(self, code=None, at=None):
         self.dt = None
-        self.code = code
 
         if at is None:
             self.access_token = request_access_token(code)
@@ -73,3 +71,17 @@ class GH(object):
         pods = [i.name for i in team_list if "pod" in i.name.lower()]
         # teams = [i.name for i in team_list if "pod" not in i.name.lower()]
         return {"pods": pods}
+
+    def meta(self):
+        auth = Github(self.access_token)
+        user = auth.get_user()
+        login = user.login
+        name = user.name
+        avatar = user.avatar_url
+        return {"login": login, "name": name, "avatar": avatar}
+
+
+if __name__ == "__main__":
+    x = GH(at="e9cd2d9a9665eda0b58c21083c31a963e1ff0747")
+    print(x.meta())
+
