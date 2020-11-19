@@ -36,12 +36,12 @@
 
                 <el-form-item class="tl" label="My Interests">
                   <el-select
-                    v-model="form.userInterests"
+                    v-model="form.interests"
                     multiple
                     placeholder="Select"
                   >
                     <el-option
-                      v-for="interest in form.interests"
+                      v-for="interest in options.interests"
                       :key="interest.value"
                       :label="interest.label"
                       :value="interest.value"
@@ -51,12 +51,12 @@
 
                 <el-form-item class="tl" label="My Skills">
                   <el-select
-                    v-model="form.userSkills"
+                    v-model="form.skills"
                     multiple
                     placeholder="Select"
                   >
                     <el-option
-                      v-for="skill in form.skills"
+                      v-for="skill in options.skills"
                       :key="skill.value"
                       :label="skill.label"
                       :value="skill.value"
@@ -111,17 +111,7 @@ export default {
     return {
       step: 0,
       visible: true,
-      form: {
-        pods: [
-          { label: '1.0.1', value: 1 },
-          { label: '1.0.2', value: 2 },
-          { label: '1.0.3', value: 3 },
-        ],
-        timezones: [
-          { label: 'EST (Eastern Standard Time)', value: 1 },
-          { label: 'GMT (Greenwich Mean Time)', value: 2 },
-          { label: 'PST (Pacific Standard Time)', value: 3 },
-        ],
+      options: {
         interests: [
           { label: 'Android', value: 1 },
           { label: 'ML/AI', value: 2 },
@@ -132,8 +122,10 @@ export default {
           { label: 'Back-end', value: 2 },
           { label: 'Python', value: 3 },
         ],
-        userSkills: [],
-        userInterests: [],
+      },
+      form: {
+        skills: [],
+        interests: [],
         bio: '',
       },
     };
@@ -149,6 +141,8 @@ export default {
 
     submit() {
       console.log(this.form);
+      this.visible = false;
+      this.$emit('complete');
     },
   },
 };
