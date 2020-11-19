@@ -55,10 +55,11 @@ def query_project(project):
 
 @app.post("/user")
 def insert_user(user: User, token: str = Depends(http_bearer_scheme)):
-    if db.exists.user(json):
-        db.update.user(json)
+    # TODO: look up user by github_id in token not info passed in json
+    if db.exists.user(user):
+        db.update.user(user)
     else:
-        db.insert.user(json)
+        db.insert.user(user)
 
 
 @app.get("/user/{username}")
