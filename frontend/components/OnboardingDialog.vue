@@ -9,7 +9,7 @@
                 <el-image
                   class="absolute"
                   style="top: 0; left: 0; width: 400px"
-                  src="/blob1.png"
+                  :src="require('~/assets/images/blob1.png')"
                 ></el-image>
                 <el-avatar
                   class="absolute ma4"

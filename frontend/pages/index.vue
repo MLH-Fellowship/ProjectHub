@@ -18,7 +18,7 @@
         <el-image
           class="relative"
           style="top: 50px; left: -300px; width: 700px"
-          src="/humans1.png"
+          :src="require('~/assets/images/humans1.png')"
         ></el-image>
       </el-col>
     </el-row>

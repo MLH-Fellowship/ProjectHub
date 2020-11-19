@@ -23,7 +23,6 @@
       <el-menu-item index="/team">Team</el-menu-item>
       <el-submenu v-if="!user.anonymous" index="#" style="float: right">
         <template slot="title">
-          <!-- load profile image from state -->
           <el-avatar size="large" :src="user.meta.avatar" />
         </template>
         <el-menu-item :index="`/${user.meta.login}`">
