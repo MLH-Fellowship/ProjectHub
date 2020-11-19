@@ -12,7 +12,7 @@ CREATE TABLE IF NOT EXISTS users(
   username text primary key,
   fullname text,
   pods text,
-  timezone text,
+  timezone_offset smallint,
   bio text,
   skills text,
   interests text
