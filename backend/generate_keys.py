@@ -74,4 +74,3 @@ def load_private_key(private_fn):
     private_key = load_pem_private_key(pemlines, None, default_backend())
 
     return private_key
-

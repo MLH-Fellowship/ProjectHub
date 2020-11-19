@@ -1,11 +1,16 @@
 import jwt
 from generate_keys import load_public_key, load_private_key
+from github_auth import GH
 
 
-def encode_jwt(data, private_key_path):
+def encode_jwt(at, private_key_path):
     private_key = load_private_key(private_key_path)
-    payload = {"access_token": data}
+    auth = GH(at=at)
+    id = auth.id()
+
+    payload = {"access_token": at, "id": id}
     encoded = jwt.encode(payload=payload, key=private_key, algorithm="RS256")
+
     return encoded
 
 

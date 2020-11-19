@@ -4,7 +4,7 @@ from pydantic import BaseModel
 from handle_tokens import decode_jwt, encode_jwt
 from github_auth import request_access_token, GH
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
-from db_connect import Insert
+from db_connect import Insert, Update
 
 app = FastAPI()
 
@@ -21,6 +21,7 @@ class Project(BaseModel):
     images: str
     tags: list
     authors: list
+    id: str
 
 
 class User(BaseModel):
@@ -57,7 +58,10 @@ def teams(jwt: Token):
 
 @app.post("/projects")
 def insert_project(json: Project):
-    Insert().insert_project(json=json)
+    if Update().project_exists(json=json):
+        Update().update_project(json=json)
+    else:
+        Insert().insert_project(json=json)
 
 
 @app.get("/projects")
@@ -74,5 +78,9 @@ def query_project(project):
 
 @app.post("/user/{user}")
 def insert_user(json: User):
-    Insert().insert_user(json)
+    if Update().user_exists(json=json):
+        Update().update_user(json=json)
+    else:
+        Insert().insert_user(json)
+
 
