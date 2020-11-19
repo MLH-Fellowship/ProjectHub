@@ -1,4 +1,4 @@
-export default function ({ $axios, redirect, store }) {
+export default function ({ $axios, redirect, store, route }) {
   $axios.onRequest((config) => {
     const { token } = store.state.user;
     if (!token) {
@@ -16,8 +16,8 @@ export default function ({ $axios, redirect, store }) {
   $axios.onError((error) => {
     const code = parseInt(error.response && error.response.status);
     if (code === 403) {
-      // TODO: redirect & show message
-      redirect('/login');
+      // TODO: show message when auth=expired on login page
+      redirect(`/?login=1&auth=expired&redirect=${route.path}`);
     }
   });
 }
