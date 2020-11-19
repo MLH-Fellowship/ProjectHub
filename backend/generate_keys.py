@@ -54,7 +54,6 @@ def save_key(private_fn, public_fn):
 def load_public_key(public_fn):
 
     if ".pub" not in str(public_fn):
-        print("Public:",public_fn)
         raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
 
     with open(public_fn, 'rb') as pub_in:
