@@ -1,7 +1,7 @@
 from fastapi import FastAPI
 from starlette import status
 from utils import jwe
-from github_auth import request_access_token, GH
+from github_auth import request_access_token, GitHub
 from db_connect import Insert, Update, Query
 from apiparse import parse_project_query, parse_user_query
 from models import Token, Project, User
@@ -11,14 +11,13 @@ app = FastAPI()
 
 @app.get("/auth/{code}")
 def return_jwt(code):
-    at = request_access_token(code)
-    auth = GH(at=at)
+    auth = GitHub.from_code(code)
     meta = auth.meta()
 
-    if at == "Invalid Request":
+    if auth.access_token == "Invalid Request":
         return status.HTTP_403_FORBIDDEN
     else:
-        encoded = jwe.encode(at)
+        encoded = jwe.encode(auth.access_token)
         return {"token": encoded, "meta": meta}
 
 

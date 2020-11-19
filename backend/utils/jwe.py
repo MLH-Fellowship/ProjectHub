@@ -1,12 +1,12 @@
 import jwt
 from . import rsa
-from github_auth import GH
+from github_auth import GitHub
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 
 
 def encode(at, private_key_path=PRIV_KEY_PATH):
     private_key = rsa.load_private_key(private_key_path)
-    auth = GH(at=at)
+    auth = GitHub(at=at)
     gh_user_id = auth.id()
 
     payload = {"access_token": at, "id": gh_user_id}
