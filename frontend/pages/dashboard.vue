@@ -1,24 +1,22 @@
 <template>
-  <v-container class="grey lighten-5">
-    <h1>Filter By:</h1>
-    <!-- <DropdownMenu :name="pod" :options="pods" />
+  <div class="container" style="align-items: none">
+    <div>
+      <div><h1>Filter By:</h1></div>
+      <!-- <DropdownMenu :name="pod" :options="pods" />
     <DropdownMenu :name="language" :options="languages" /> -->
-    <br />
-    <br />
-    <hr />
-    <br />
-    <v-row no-gutters>
-      <v-col
-        v-for="(something, index) in 6"
-        :key="index"
-        cols="8"
-        sm="6"
-        md="4"
-      >
-        <Card :index="index" style="margin-bottom: 75px; padding-right: 25px" />
-      </v-col>
-    </v-row>
-  </v-container>
+      <el-row class="w-100 pa3">
+        <el-col
+          v-for="(something, index) in 6"
+          :key="index"
+          :lg="8"
+          :sm="6"
+          :md="4"
+        >
+          <Card :index="index" style="margin-bottom: 3rem" />
+        </el-col>
+      </el-row>
+    </div>
+  </div>
 </template>
 
 <script>
