@@ -4,7 +4,8 @@ from pydantic import BaseModel
 from handle_tokens import decode_jwt, encode_jwt
 from github_auth import request_access_token, GH
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
-from db_connect import Insert, Update
+from db_connect import Insert, Update, Query
+from apiparse import parse_project_query
 
 app = FastAPI()
 
@@ -64,16 +65,15 @@ def insert_project(json: Project):
         Insert().insert_project(json=json)
 
 
-@app.get("/projects")
-def query_projects(pod: str = "", tags: str = ""):
-    # query based on filters given
-    pass
-
-
 @app.get("/projects/{project}")
 def query_project(project):
     # query specific project id
-    pass
+    q = Query().query_projects(project=project)
+    parsed = parse_project_query(q)
+    if parsed is None:
+        return status.HTTP_404_NOT_FOUND
+    else:
+        return parsed
 
 
 @app.post("/user/{user}")

@@ -212,3 +212,27 @@ class Update(object):
         conn.commit()
 
         return
+
+
+class Query(object):
+
+    def __init__(self):
+        self.conn = Connection().create_connection()
+
+    def query_projects(self, project):
+        st = "SELECT id FROM projects WHERE name=%s" % (project,)
+
+        cur = self.conn.cursor()
+
+        cur.execute(st)
+
+        return cur.fetchone()
+
+    def query_users(self, username):
+        st = "SELECT * FROM users WHERE username=%s" % (username,)
+
+        cur = self.conn.cursor()
+
+        cur.execute(st)
+
+        return cur.fetchone()
