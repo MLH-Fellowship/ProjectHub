@@ -42,7 +42,7 @@
             xmlns="http://www.w3.org/2000/svg"
           >
             <path
-              id="save-path"
+              ref="savePath"
               d="M5.41007 13.6728L0.5 16.8634V3.01443C0.5 2.48186 0.695715 1.97833 1.0331 1.61294C1.36924 1.24889 1.81622 1.05273 2.273 1.05273H9.09202C9.5488 1.05273 9.99578 1.24889 10.3319 1.61294C10.6693 1.97833 10.865 2.48186 10.865 3.01443V16.8634L5.95495 13.6728L5.68251 13.4957L5.41007 13.6728Z"
               fill="white"
               stroke="black"
@@ -177,16 +177,18 @@
 
 <script>
 export default {
+  props: {
+    index: { type: Number, required: true },
+  },
   data: () => ({
-    loading: false,
     selection: 1,
+    selected: false,
   }),
   methods: {
     learn_more() {},
     save() {
-      console.log('click');
-      const saveButton = document.getElementById('save-path');
-      if (saveButton.getAttribute('fill') === 'white') {
+      const saveButton = this.$refs.savePath;
+      if (this.selected) {
         saveButton.setAttribute(
           'd',
           'M0 3.01443C0 2.36154 0.239476 1.7354 0.665747 1.27375C1.09202 0.81209 1.67017 0.552734 2.273 0.552734H9.09202C9.69485 0.552734 10.273 0.81209 10.6993 1.27375C11.1255 1.7354 11.365 2.36154 11.365 3.01443V17.7846L5.68251 14.092L0 17.7846V3.01443Z'
@@ -200,6 +202,7 @@ export default {
         saveButton.setAttribute('fill', 'white');
         saveButton.setAttribute('stroke', 'black');
       }
+      this.selected = !this.selected;
     },
   },
 };

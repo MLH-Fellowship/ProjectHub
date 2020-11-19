@@ -1,8 +1,8 @@
 <template>
   <v-container class="grey lighten-5">
     <h1>Filter By:</h1>
-    <DropdownMenu :name="pod" :options="pods" />
-    <DropdownMenu :name="language" :options="languages" />
+    <!-- <DropdownMenu :name="pod" :options="pods" />
+    <DropdownMenu :name="language" :options="languages" /> -->
     <br />
     <br />
     <hr />
@@ -15,7 +15,7 @@
         sm="6"
         md="4"
       >
-        <Card :key="index" style="margin-bottom: 75px; padding-right: 25px" />
+        <Card :index="index" style="margin-bottom: 75px; padding-right: 25px" />
       </v-col>
     </v-row>
   </v-container>
