@@ -33,17 +33,16 @@ def teams(jwt: Token):
 
 @app.post("/projects")
 def insert_project(json: Project):
-    update = db.Update(json=json)
-    if update.project_exists():
-        update.update_project()
+    if db.update.project_exists(json):
+        db.update.update_project(json)
     else:
-        db.Insert().insert_project(json=json)
+        db.insert.insert_project(json)
 
 
 @app.get("/projects/{project}")
 def query_project(project):
     # query specific project id
-    q = db.Query().query_projects(project=project)
+    q = db.query.query_projects(project)
     parsed = parse_project_query(q)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
@@ -53,16 +52,15 @@ def query_project(project):
 
 @app.post("/user/{user}")
 def insert_user(json: User):
-    update = db.Update(json=json)
-    if update.user_exists():
-        update.update_user()
+    if db.update.user_exists(json):
+        db.update.update_user(json)
     else:
-        db.Insert().insert_user(json)
+        db.insert.insert_user(json)
 
 
 @app.get("/user/{username}")
 def query_user(username):
-    query = db.Query().query_users(username)
+    query = db.query.query_users(username)
     parsed = parse_user_query(query)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
