@@ -1,7 +1,9 @@
-import jwt
-from . import rsa
+import json
+from jwcrypto import jwk, jwe
+from jwcrypto.common import json_decode, json_encode
 from github_auth import GitHub
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
+import base64
 
 
 from typing import Optional
@@ -39,20 +41,20 @@ class HTTPBearerJWEScheme(HTTPBase):
     async def __call__(
         self, request: Request
     ) -> Optional[HTTPAuthorizationCredentials]:
-        authorization: str = request.headers.get("Authorization")
+        authorization: str = request.headers.get('Authorization')
         scheme, credentials = get_authorization_scheme_param(authorization)
         if not (authorization and scheme and credentials):
             if self.auto_error:
                 raise HTTPException(
-                    status_code=HTTP_403_FORBIDDEN, detail="Not authenticated"
+                    status_code=HTTP_403_FORBIDDEN, detail='Not authenticated'
                 )
             else:
                 return None
-        if scheme.lower() != "bearer":
+        if scheme.lower() != 'bearer':
             if self.auto_error:
                 raise HTTPException(
                     status_code=HTTP_403_FORBIDDEN,
-                    detail="Invalid authentication credentials",
+                    detail='Invalid authentication credentials',
                 )
             else:
                 return None
@@ -62,7 +64,7 @@ class HTTPBearerJWEScheme(HTTPBase):
             if self.auto_error:
                 raise HTTPException(
                     status_code=HTTP_403_FORBIDDEN,
-                    detail="Authentication credentials expired",
+                    detail='Authentication credentials expired',
                 )
             else:
                 return None
@@ -74,24 +76,39 @@ class HTTPBearerJWEScheme(HTTPBase):
             github_at=context['access_token']
         )
 
+    
+with open(PRIV_KEY_PATH, 'rb') as priv, open(PUB_KEY_PATH, 'rb') as pub:
+    public_key = jwk.JWK.from_pem(pub.read())
+    private_key = jwk.JWK.from_pem(priv.read())
+
+protected_header = {
+    'alg': 'RSA-OAEP-256',
+    'enc': 'A256CBC-HS512',
+    'typ': 'JWE',
+    'kid': public_key.thumbprint(),
+}
 
 
-def encode(at, private_key_path=PRIV_KEY_PATH):
-    private_key = rsa.load_private_key(private_key_path)
+def encode(at):    
     auth = GitHub(at=at)
     gh_user_id = auth.id()
+    payload = json_encode({'access_token': at, 'id': gh_user_id})
 
-    payload = {"access_token": at, "id": gh_user_id}
-    encoded = jwt.encode(payload=payload, key=private_key, algorithm="RS256")
+    token = jwe.JWE(payload.encode('utf-8'),
+                       recipient=public_key,
+                       protected=protected_header)
+    encrypted = token.serialize()
 
-    return encoded
+    return base64.encodebytes(encrypted.encode('utf-8')).decode('ascii')
 
 
-def decode(data, public_key_path=PUB_KEY_PATH):
-    public_key = rsa.load_public_key(public_key_path)
+def decode(encrypted):
     try:
-        decoded = jwt.decode(jwt=data, key=public_key, algorithms="RS256")
-    except Exception:
-        # We want to reject the token and require the user to sign in again
+        decoded = base64.decodebytes(encrypted.encode('utf-8'))
+        token = jwe.JWE()
+        token.deserialize(decoded, key=private_key)
+        return json_decode(token.payload)
+    except Exception as e:
+        print(e)
         return None
-    return decoded
+    
