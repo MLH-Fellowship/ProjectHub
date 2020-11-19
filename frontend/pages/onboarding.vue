@@ -12,9 +12,7 @@ export default {
     OnboardingDialog,
   },
   data() {
-    return {
-      onboardingVisible: true,
-    };
+    return {};
   },
 };
 </script>

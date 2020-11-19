@@ -1,75 +1,5 @@
 <template>
   <div>
-    <!-- <el-dialog :visible.sync="dialog2Visible" width="800px">
-      <el-row>
-        <el-col :span="16">
-          <div class="grid-content">
-            <h2 align="left">Connect with other fellows</h2>
-            <el-form :model="form" :label-position="right" label-width="120px">
-              <el-form-item label="Fellowship Pod">
-                <el-select v-model="form.region" placeholder="Select your pod">
-                  <el-option
-                    v-for="pod in form.pods"
-                    :key="pod"
-                    :label="pod.label"
-                    :value="pod.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-
-              <el-form-item label="Timezone">
-                <el-select
-                  v-model="form.region"
-                  placeholder="Select your timezone"
-                >
-                  <el-option
-                    v-for="timezone in form.timezones"
-                    :key="timezone"
-                    :label="timezone.label"
-                    :value="timezone.value"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="How can other fellows reach you?">
-                <el-input
-                  type="textarea"
-                  v-model="form.contact"
-                  placeholer="Shoot me an email at johndoe@gmail.com or add me on Discord at @johndoe"
-                ></el-input>
-              </el-form-item>
-            </el-form>
-
-            <span slot="footer" class="dialog-footer">
-              <el-button
-                round
-                @click="(dialog1Visible = true), (dialog2Visible = false)"
-              >
-                Back
-              </el-button>
-              <el-button
-                round
-                type="primary"
-                @click="(dialog2Visible = false), (dialog2Visible = true)"
-              >
-                Next
-              </el-button>
-            </span>
-          </div>
-        </el-col>
-        <el-col :span="8">
-          <div class="grid-content">
-            <div style="position: relative; width: 500px; top: 0; left: -200px">
-              <el-image
-                src="https://imgur.com/LL4vydK.png"
-                :size="400"
-                :fit="fit"
-              ></el-image>
-            </div>
-          </div>
-        </el-col>
-      </el-row>
-    </el-dialog> -->
-
     <el-dialog class="pa4" width="700px;" :visible.sync="dialog1Visible">
       <el-row>
         <el-col :span="10">
@@ -178,28 +108,19 @@
       <el-row>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image
-              src="https://i.imgur.com/MTj6wdB.png"
-              :fit="fit"
-            ></el-image>
+            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>1. Explore</h3>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image
-              src="https://i.imgur.com/MTj6wdB.png"
-              :fit="fit"
-            ></el-image>
+            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>2. Connect</h3>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image
-              src="https://i.imgur.com/MTj6wdB.png"
-              :fit="fit"
-            ></el-image>
+            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>3. Collaborate</h3>
           </div>
         </el-col>
