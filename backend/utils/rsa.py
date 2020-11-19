@@ -12,67 +12,53 @@ def gen_key_pair():
 
 
 def read_private_key(pk):
-
-    pem = pk.private_bytes(
+    return pk.private_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PrivateFormat.TraditionalOpenSSL,
         encryption_algorithm=serialization.NoEncryption()
     )
 
-    return pem
-
 
 def read_public_key(pk):
-
-    public_key = pk.public_bytes(
+    return pk.public_bytes(
         encoding=serialization.Encoding.PEM,
         format=serialization.PublicFormat.SubjectPublicKeyInfo
     )
 
-    return public_key
 
-
-def create_keys(private_fn, public_fn):
-    if ".pub" not in public_fn or ".pem" not in private_fn:
-        raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
-
+def create_and_save_key_pair(pair_name: str):
     (private, public) = gen_key_pair()
     
     pem = read_private_key(private)
     pub = read_public_key(public)
 
-    with open(private_fn, 'wb') as pem_out:
-        pem_out.write(pem)
+    with open(f'{pair_name}.pem', 'wb') as f:
+        f.write(pem)
 
-    with open(public_fn, 'wb') as pub_out:
-        pub_out.write(pub)
-
-
-def load_public_key(public_fn):
-
-    if ".pub" not in str(public_fn):
-        raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
-
-    with open(public_fn, 'rb') as pub_in:
-        publines = pub_in.read()
-    public_key = load_pem_public_key(publines, None)
-
-    return public_key
+    with open(f'{pair_name}.pub', 'wb') as f:
+        f.write(pub)
 
 
-def load_private_key(private_fn):
+def load_public_key(filename: str):
+    if not filename.endswith(".pub"):
+        raise ValueError("Error: npublic key must end with .pub")
 
-    if ".pem" not in str(private_fn):
-        raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
+    with open(filename, 'rb') as f:
+        return load_pem_public_key(f.read(), None)
 
-    with open(private_fn, 'rb') as pem_in:
-        pemlines = pem_in.read()
 
-    private_key = load_pem_private_key(pemlines, None, default_backend())
+def load_private_key(filename: str):
+    if not filename.endswith(".pem"):
+        raise ValueError("Error: private key must end with .pem")
 
-    return private_key
+    with open(filename, 'rb') as f:
+        return load_pem_private_key(f.read(), None, default_backend())
 
 
 if __name__ == '__main__':
     import sys
-    create_keys(*sys.argv[1:])
+
+    if len(sys.argv) != 2:
+        print('Useage: python rsa.py <key-name>')
+        exit(1)
+    create_and_write_key_pair(sys.argv[1])
