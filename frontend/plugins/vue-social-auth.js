@@ -10,7 +10,7 @@ Vue.use(VueSocialauth, {
   providers: {
     github: {
       clientId: process.env.GITHUB_CLIENT_ID,
-      redirectUri: 'http://localhost:3000/api/auth/callback',
+      redirectUri: 'http://localhost:3000/callback/github',
       scope: [
         'user',
         'admin:org',

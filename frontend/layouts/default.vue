@@ -8,11 +8,20 @@
       <el-menu-item index="/">
         <img src="/logo.png" alt="Logo" style="max-height: 61px" />
       </el-menu-item>
-      <el-menu-item index="#search">
-        <el-input v-model="search" placeholder="Search"></el-input>
+      <el-menu-item index="/explore">Explore</el-menu-item>
+      <el-menu-item index="/about">About</el-menu-item>
+      <el-menu-item index="#github">
+        <a
+          href="https://github.com/MLH-Fellowship/ProjectHub"
+          rel="noopener noreferrer"
+          target="_blank"
+          style="text-decoration: none"
+        >
+          Github
+        </a>
       </el-menu-item>
-      <el-menu-item index="/projects">Projects</el-menu-item>
-      <el-submenu index="4" style="float: right">
+      <el-menu-item index="/team">Team</el-menu-item>
+      <el-submenu index="#" style="float: right">
         <template slot="title">
           <!-- load profile image from state -->
           <el-avatar
@@ -22,26 +31,35 @@
         </template>
         <el-menu-item index="#" disabled>Noah Cardoza</el-menu-item>
         <el-menu-item index="/NoahCardoza">Profile</el-menu-item>
-        <el-menu-item index="/settings">Settings</el-menu-item>
+        <el-menu-item index="/settings">Logout</el-menu-item>
       </el-submenu>
+      <el-menu-item index="#add-project" style="float: right">
+        <el-button type="primary" @click.native="showNewProjectModel = true">
+          + Add Project
+        </el-button>
+      </el-menu-item>
     </el-menu>
     <Nuxt />
+    <NewProjectModel v-model="showNewProjectModel" />
   </div>
 </template>
 
 <script>
+import NewProjectModel from '@/components/NewProjectModel';
+
 export default {
+  components: {
+    NewProjectModel,
+  },
   data() {
     return {
-      search: '',
-      activeRoute: '1',
+      activeRoute: '#',
+      showNewProjectModel: false,
     };
   },
   methods: {
     handleSelect(key) {
-      if (key !== '#') {
-        this.$router.push(key);
-      }
+      this.$router.push(key);
     },
   },
 };
