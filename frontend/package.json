@@ -8,7 +8,7 @@
     "start": "dotenv -e ../.env nuxt start",
     "generate": "dotenv -e ../.env nuxt generate",
     "lint:js": "eslint --ext .js,.vue --ignore-path .gitignore .",
-    "lint": "npm run lint:js --fix",
+    "lint": "npm run lint:js",
     "test": "jest"
   },
   "lint-staged": {
