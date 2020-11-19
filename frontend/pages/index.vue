@@ -22,7 +22,6 @@
             class="relative"
             style="top: 50px; left: -300px; width: 700px"
             src="/humans1.png"
-            :fit="fit"
           ></el-image>
         </div>
       </el-col>

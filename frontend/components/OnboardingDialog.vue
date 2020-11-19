@@ -9,7 +9,6 @@
                 class="absolute"
                 style="top: 0; left: 0; width: 400px"
                 src="/blob1.png"
-                :fit="fit"
               ></el-image>
               <el-avatar
                 class="absolute ma4"
@@ -108,19 +107,16 @@
       <el-row>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>1. Explore</h3>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>2. Connect</h3>
           </div>
         </el-col>
         <el-col :span="8">
           <div class="grid-content">
-            <el-image src="/blob1.png" :fit="fit"></el-image>
             <h3>3. Collaborate</h3>
           </div>
         </el-col>
