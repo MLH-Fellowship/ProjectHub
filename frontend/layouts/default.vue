@@ -21,7 +21,7 @@
         </a>
       </el-menu-item>
       <el-menu-item index="/team">Team</el-menu-item>
-      <el-submenu v-if="user.token" index="#" style="float: right">
+      <el-submenu v-if="!user.anonymous" index="#" style="float: right">
         <template slot="title">
           <!-- load profile image from state -->
           <el-avatar size="large" :src="user.meta.avatar" />
@@ -31,12 +31,16 @@
         </el-menu-item>
         <el-menu-item index="logout" @click="logout">Logout</el-menu-item>
       </el-submenu>
-      <el-menu-item v-if="user.token" index="#add-project" style="float: right">
+      <el-menu-item
+        v-if="!user.anonymous"
+        index="#add-project"
+        style="float: right"
+      >
         <el-button type="primary" @click.native="showNewProjectDialog = true">
           + Add Project
         </el-button>
       </el-menu-item>
-      <el-menu-item v-if="!user.token" index="/login" style="float: right">
+      <el-menu-item v-if="user.anonymous" index="/login" style="float: right">
         Login
       </el-menu-item>
     </el-menu>

@@ -6,7 +6,7 @@ const metaFactory = () => ({
 
 export const state = () => ({
   meta: metaFactory(),
-  isLoggedIn: false,
+  anonymous: true,
   token: null,
 });
 
@@ -14,8 +14,8 @@ export const mutations = {
   SET_TOKEN(state, token) {
     state.token = token;
   },
-  SET_IS_LOGGED_IN(state, isLoggedIn) {
-    state.isLoggedIn = isLoggedIn;
+  SET_ANONYMOUS(state, anonymous) {
+    state.anonymous = anonymous;
   },
   SET_META(state, meta) {
     state.meta = meta;
@@ -32,12 +32,12 @@ export const actions = {
 
     return {
       onBoarding: true,
-      finish: () => commit('SET_IS_LOGGED_IN', true),
+      finish: () => commit('SET_ANONYMOUS', false),
     };
   },
   logout({ commit }) {
     commit('SET_TOKEN', null);
     commit('SET_META', metaFactory());
-    commit('SET_IS_LOGGED_IN', false);
+    commit('SET_ANONYMOUS', true);
   },
 };

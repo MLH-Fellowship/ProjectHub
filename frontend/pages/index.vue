@@ -10,7 +10,7 @@
           </p>
           <div class="mt4">
             <el-button round type="primary">Explore Projects</el-button>
-            <GithubLoginButton v-if="!user.token" />
+            <GithubLoginButton v-if="user.anonymous" />
           </div>
         </div>
       </el-col>
