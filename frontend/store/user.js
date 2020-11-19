@@ -1,9 +1,11 @@
+const metaFactory = () => ({
+  login: '',
+  name: '',
+  avatar: '',
+});
+
 export const state = () => ({
-  meta: {
-    login: '',
-    name: '',
-    avatar: '',
-  },
+  meta: metaFactory(),
   token: null,
 });
 
@@ -20,7 +22,11 @@ export const actions = {
   async login({ commit }, code) {
     const { token, meta } = await this.$axios.$get(`/api/auth/${code}`);
 
-    commit('user/SET_TOKEN', token);
-    commit('user/SET_META', meta);
+    commit('SET_TOKEN', token);
+    commit('SET_META', meta);
+  },
+  logout({ commit }) {
+    commit('SET_TOKEN', null);
+    commit('SET_META', metaFactory());
   },
 };
