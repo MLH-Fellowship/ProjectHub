@@ -45,76 +45,9 @@
         </v-chip-group>
       </div>
       <div>
-        <svg
-          width="25"
-          height="25"
-          viewBox="0 0 25 25"
-          fill="none"
-          xmlns="http://www.w3.org/2000/svg"
-          xmlns:xlink="http://www.w3.org/1999/xlink"
-        >
-          <g filter="url(#filter0_d)">
-            <ellipse
-              cx="12.5"
-              cy="8.40767"
-              rx="8.5"
-              ry="8.27632"
-              fill="url(#pattern0)"
-            />
-          </g>
-          <defs>
-            <filter
-              id="filter0_d"
-              x="0.178571"
-              y="0.131348"
-              width="24.6429"
-              height="24.1955"
-              filterUnits="userSpaceOnUse"
-              color-interpolation-filters="sRGB"
-            >
-              <feFlood flood-opacity="0" result="BackgroundImageFix" />
-              <feColorMatrix
-                in="SourceAlpha"
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
-              />
-              <feOffset dy="3.82143" />
-              <feGaussianBlur stdDeviation="1.91071" />
-              <feColorMatrix
-                type="matrix"
-                values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"
-              />
-              <feBlend
-                mode="normal"
-                in2="BackgroundImageFix"
-                result="effect1_dropShadow"
-              />
-              <feBlend
-                mode="normal"
-                in="SourceGraphic"
-                in2="effect1_dropShadow"
-                result="shape"
-              />
-            </filter>
-            <pattern
-              id="pattern0"
-              patternContentUnits="objectBoundingBox"
-              width="1"
-              height="1"
-            >
-              <use
-                xlink:href="#image0"
-                transform="translate(0 -0.0136844) scale(0.000333444)"
-              />
-            </pattern>
-            <image
-              id="image0"
-              width="2999"
-              height="3000"
-              xlink:href="https://media-exp1.licdn.com/dms/image/C4E03AQH69LzLRoU5zw/profile-displayphoto-shrink_800_800/0?e=1611187200&v=beta&t=TOSrV5pgMqHsCS83OlQTEq6UX0-1BqweYZVd6e6WH0E"
-            />
-          </defs>
-        </svg>
+        <el-avatar
+          src="https://media-exp1.licdn.com/dms/image/C4E03AQH69LzLRoU5zw/profile-displayphoto-shrink_800_800/0?e=1611187200&v=beta&t=TOSrV5pgMqHsCS83OlQTEq6UX0-1BqweYZVd6e6WH0E"
+        />
 
         Created 5 days ago by&nbsp;
         <b><a href="">@noahcardoza</a></b>
