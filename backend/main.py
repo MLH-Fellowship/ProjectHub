@@ -5,7 +5,7 @@ from handle_tokens import decode_jwt, encode_jwt
 from github_auth import request_access_token, GH
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 from db_connect import Insert, Update, Query
-from apiparse import parse_project_query
+from apiparse import parse_project_query, parse_user_query
 
 app = FastAPI()
 
@@ -20,8 +20,8 @@ class Project(BaseModel):
     source_link: str
     demo_link: str
     images: str
-    tags: list
-    authors: list
+    tags: list[str]
+    authors: list[str]
     id: str
 
 
@@ -30,8 +30,8 @@ class User(BaseModel):
     name: str
     timezone: int
     bio: str
-    skills: list
-    interests: list
+    skills: list[str]
+    interests: list[str]
 
 
 @app.get("/auth/{code}")
@@ -59,8 +59,9 @@ def teams(jwt: Token):
 
 @app.post("/projects")
 def insert_project(json: Project):
-    if Update().project_exists(json=json):
-        Update().update_project(json=json)
+    update = Update(json=json)
+    if update.project_exists():
+        update.update_project()
     else:
         Insert().insert_project(json=json)
 
@@ -78,7 +79,18 @@ def query_project(project):
 
 @app.post("/user/{user}")
 def insert_user(json: User):
-    if Update().user_exists(json=json):
-        Update().update_user(json=json)
+    update = Update(json=json)
+    if update.user_exists():
+        update.update_user()
     else:
         Insert().insert_user(json)
+
+
+@app.get("/user/{username}")
+def query_user(username):
+    query = Query().query_users(username)
+    parsed = parse_user_query(query)
+    if parsed is None:
+        return status.HTTP_404_NOT_FOUND
+    else:
+        return parsed

@@ -151,11 +151,12 @@ class Insert(object):
 
 class Update(object):
 
-    def __init__(self):
+    def __init__(self, json):
         self.connection = Connection()
+        self.json = json
 
-    def project_exists(self, json):
-        id = json.id
+    def project_exists(self):
+        id = self.json.id
         st = "SELECT id FROM projects WHERE id=%s" % (id,)
         conn = self.connection.create_connection()
         cur = conn.cursor()
@@ -163,15 +164,14 @@ class Update(object):
         cur.execute(st)
         return cur.fetchone() is not None
 
-    def update_project(self, json):
-        name = json.name
-        description = json.description
-        source_link = json.source_link
-        demo_link = json.demo_link
-        images = json.images
-        tags = json.tags
-        authors = json.authors
-        id = json.id
+    def update_project(self):
+        name = self.json.name
+        description = self.json.description
+        source_link = self.json.source_link
+        demo_link = self.json.demo_link
+        tags = ','.join(self.json.tags)
+        authors = ','.join(self.json.authors)
+        id = self.json.id
 
         st = "UPDATE projects SET name=%s, description=%s, source_link=%s, demo_link=%s, images=%s, tags=%s, authors=%s WHERE id=%s" % (name, description, source_link, demo_link, images, tags, authors, id,)
 
@@ -183,8 +183,8 @@ class Update(object):
 
         return
 
-    def user_exists(self, json):
-        username = json.username
+    def user_exists(self):
+        username = self.json.username
 
         st = "SELECT username FROM users WHERE username=%s" % (username,)
 
@@ -195,13 +195,13 @@ class Update(object):
 
         return cur.fetchone() is not None
 
-    def update_user(self, json):
-        username = json.username
-        fullname = json.name
-        timezone = json.timezone
-        bio = json.bio
-        skills = json.skills
-        interests = json.interests
+    def update_user(self):
+        username = self.json.username
+        fullname = self.json.name
+        timezone = self.json.timezone
+        bio = self.json.bio
+        skills = ','.join(self.json.skills)
+        interests = ','.join(self.json.interests)
 
         st = "UPDATE users SET fullname=%s, timezone=%s, bio=%s, skills=%s, interests=%s WHERE username=%s" % (fullname, timezone, bio, skills, interests, username, )
 
