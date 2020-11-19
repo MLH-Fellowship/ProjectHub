@@ -21,22 +21,23 @@
         </a>
       </el-menu-item>
       <el-menu-item index="/team">Team</el-menu-item>
-      <el-submenu index="#" style="float: right">
+      <el-submenu v-if="user.token" index="#" style="float: right">
         <template slot="title">
           <!-- load profile image from state -->
-          <el-avatar
-            size="large"
-            src="https://avatars0.githubusercontent.com/u/10343470?v=4"
-          />
+          <el-avatar size="large" :src="user.meta.avatar" />
         </template>
-        <el-menu-item index="#" disabled>Noah Cardoza</el-menu-item>
-        <el-menu-item index="/NoahCardoza">Profile</el-menu-item>
-        <el-menu-item index="/settings">Logout</el-menu-item>
+        <el-menu-item :index="`/${user.meta.login}`">
+          {{ user.meta.name }}
+        </el-menu-item>
+        <el-menu-item index="logout" @click="logout">Logout</el-menu-item>
       </el-submenu>
-      <el-menu-item index="#add-project" style="float: right">
+      <el-menu-item v-if="user.token" index="#add-project" style="float: right">
         <el-button type="primary" @click.native="showNewProjectModel = true">
           + Add Project
         </el-button>
+      </el-menu-item>
+      <el-menu-item v-if="!user.token" index="/login" style="float: right">
+        Login
       </el-menu-item>
     </el-menu>
     <Nuxt />
@@ -46,6 +47,7 @@
 
 <script>
 import NewProjectModel from '@/components/NewProjectModel';
+import { mapState, mapActions } from 'vuex';
 
 export default {
   components: {
@@ -57,9 +59,19 @@ export default {
       showNewProjectModel: false,
     };
   },
+  computed: mapState(['user']),
   methods: {
+    ...mapActions('user', ['logout']),
     handleSelect(key) {
-      this.$router.push(key);
+      if (key.startsWith('/') || key.startsWith('#')) {
+        if (key === '/login') {
+          if (this.$route.query.redirect) {
+            return;
+          }
+          return this.$router.push(`/login?redirect=${this.$route.path}`);
+        }
+        this.$router.push(key);
+      }
     },
   },
 };
