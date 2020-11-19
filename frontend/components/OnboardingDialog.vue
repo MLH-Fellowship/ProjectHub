@@ -173,19 +173,10 @@ export default {
           { label: 'Back-end', value: 2 },
           { label: 'Python', value: 3 },
         ],
-        contact: '',
         userSkills: [],
         userInterests: [],
         bio: '',
-        region: '',
-        date1: '',
-        date2: '',
-        delivery: false,
-        type: [],
-        resource: '',
-        desc: '',
       },
-      formLabelWidth: '50%',
     };
   },
   methods: {
@@ -209,26 +200,6 @@ export default {
 </script>
 
 <style>
-h1,
-h2,
-h4,
-h5,
-h6 {
-  text-align: left;
-}
-
-h3 {
-  text-align: center;
-}
-
-.mt-2 {
-  margin-top: ;
-}
-
-.el-input {
-  align-self: flex-start;
-}
-
 .dialog-footer {
   text-align: end;
 }
