@@ -18,6 +18,7 @@ export default {
 
   env: {
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
+    APP_HOSTNAME: process.env.APP_HOSTNAME,
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
