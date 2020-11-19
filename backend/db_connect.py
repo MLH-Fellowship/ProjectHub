@@ -1,5 +1,5 @@
 import psycopg2
-from settings import *
+from settings import POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD
 
 
 class Connection(object):
