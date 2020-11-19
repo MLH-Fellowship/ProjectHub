@@ -71,13 +71,9 @@ def load_private_key(private_fn):
 
     private_key = load_pem_private_key(pemlines, None, default_backend())
 
-<<<<<<< HEAD
-    return private_key
-=======
     return private_key
 
 
 if __name__ == '__main__':
     import sys
     save_key(*sys.argv[1:])
->>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203

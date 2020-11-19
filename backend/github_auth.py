@@ -29,11 +29,8 @@ class GH(object):
 
     def __init__(self, code=None, at=None):
         self.dt = None
-<<<<<<< HEAD
         self.code = code
-=======
 
->>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203
         if at is None:
             self.access_token = request_access_token(code)
         else:
@@ -84,15 +81,7 @@ class GH(object):
         avatar = user.avatar_url
         return {"login": login, "name": name, "avatar": avatar}
 
-<<<<<<< HEAD
     def id(self):
         auth = Github(self.access_token)
         user = auth.get_user()
         return user.id
-=======
-
-if __name__ == "__main__":
-    x = GH(at="e9cd2d9a9665eda0b58c21083c31a963e1ff0747")
-    print(x.meta())
->>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203
-
