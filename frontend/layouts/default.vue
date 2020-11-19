@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-default">
     <el-menu
       :default-active="activeRoute"
       mode="horizontal"
@@ -21,9 +21,8 @@
         </a>
       </el-menu-item>
       <el-menu-item index="/team">Team</el-menu-item>
-      <el-submenu v-if="user.token" index="#" style="float: right">
+      <el-submenu v-if="!user.anonymous" index="#" style="float: right">
         <template slot="title">
-          <!-- load profile image from state -->
           <el-avatar size="large" :src="user.meta.avatar" />
         </template>
         <el-menu-item :index="`/${user.meta.login}`">
@@ -31,32 +30,36 @@
         </el-menu-item>
         <el-menu-item index="logout" @click="logout">Logout</el-menu-item>
       </el-submenu>
-      <el-menu-item v-if="user.token" index="#add-project" style="float: right">
-        <el-button type="primary" @click.native="showNewProjectModel = true">
+      <el-menu-item
+        v-if="!user.anonymous"
+        index="#add-project"
+        style="float: right"
+      >
+        <el-button type="primary" @click.native="showNewProjectDialog = true">
           + Add Project
         </el-button>
       </el-menu-item>
-      <el-menu-item v-if="!user.token" index="/login" style="float: right">
+      <el-menu-item v-if="user.anonymous" index="/login" style="float: right">
         Login
       </el-menu-item>
     </el-menu>
     <Nuxt />
-    <NewProjectModel v-model="showNewProjectModel" />
+    <NewProjectDialog v-model="showNewProjectDialog" />
   </div>
 </template>
 
 <script>
-import NewProjectModel from '@/components/NewProjectModel';
+import NewProjectDialog from '@/components/NewProjectDialog';
 import { mapState, mapActions } from 'vuex';
 
 export default {
   components: {
-    NewProjectModel,
+    NewProjectDialog,
   },
   data() {
     return {
       activeRoute: '#',
-      showNewProjectModel: false,
+      showNewProjectDialog: false,
     };
   },
   computed: mapState(['user']),
@@ -68,7 +71,7 @@ export default {
           if (this.$route.query.redirect) {
             return;
           }
-          return this.$router.push(`/login?redirect=${this.$route.path}`);
+          return this.$router.push(`/?login=1&redirect=${this.$route.path}`);
         }
         this.$router.push(key);
       }
@@ -77,4 +80,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.layout-default >>> .container {
+  margin: 0 auto;
+  min-height: calc(100vh - 61px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>

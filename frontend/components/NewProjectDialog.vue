@@ -87,7 +87,7 @@ const initForm = () => ({
 });
 
 export default {
-  name: 'NewProjectModel',
+  name: 'NewProjectDialog',
   components: {},
   props: {
     value: {
