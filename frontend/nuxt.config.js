@@ -28,6 +28,7 @@ export default {
     '@/plugins/element-ui',
     '@/plugins/persiste-state',
     '@/plugins/github',
+    '@/plugins/axios',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',
