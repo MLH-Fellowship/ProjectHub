@@ -1,11 +1,26 @@
 export const state = () => ({
-  login: 'NoahCardoza',
-  name: 'Noah Cardoza',
-  avatar: 'https://avatars0.githubusercontent.com/u/10343470?v=4',
+  meta: {
+    login: '',
+    name: '',
+    avatar: '',
+  },
+  token: null,
 });
 
 export const mutations = {
-  SET_NAME(state, name) {
-    state.name = name;
+  SET_TOKEN(state, token) {
+    state.token = token;
+  },
+  SET_META(state, meta) {
+    state.meta = meta;
+  },
+};
+
+export const actions = {
+  async login({ commit }, code) {
+    const { token, meta } = await this.$axios.$get(`/api/auth/${code}`);
+
+    commit('user/SET_TOKEN', token);
+    commit('user/SET_META', meta);
   },
 };
