@@ -1,15 +1,7 @@
 from . import connection
 
-def project_exists(json):
-    id = json.id
-    st = "SELECT id FROM projects WHERE id=%s" % (id,)
-    conn = connection.create()
-    cur = conn.cursor()
 
-    cur.execute(st)
-    return cur.fetchone() is not None
-
-def update_project(json):
+def project(json):
     name = json.name
     description = json.description
     source_link = json.source_link
@@ -26,19 +18,8 @@ def update_project(json):
     cur.execute(st)
     conn.commit()
 
-def user_exists(json):
-    username = json.username
 
-    st = "SELECT username FROM users WHERE username=%s" % (username,)
-
-    conn = connection.create()
-    cur = conn.cursor()
-
-    cur.execute(st)
-
-    return cur.fetchone() is not None
-
-def update_user(json):
+def user(json):
     username = json.username
     fullname = json.name
     timezone = json.timezone

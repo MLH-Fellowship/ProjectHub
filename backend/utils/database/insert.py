@@ -5,7 +5,7 @@ user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezon
 project_table = "projects"
 user_table = "users"
 
-def insert_project(json):
+def project(json):
     name = json.name
     description = json.description
     link = json.source_link
@@ -22,7 +22,7 @@ def insert_project(json):
                                         table_name=project_table
                                         )
 
-def insert_user(json):
+def user(json):
     username = json.username
     fullname = json.fullname
     pods = json.pods

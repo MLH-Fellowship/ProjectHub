@@ -1,6 +1,6 @@
 from . import connection
 
-def query_projects(project):
+def projects(project):
     st = "SELECT id FROM projects WHERE name=%s" % (project,)
 
     conn = connection.create()
@@ -10,7 +10,7 @@ def query_projects(project):
 
     return cur.fetchone()
 
-def query_users(username):
+def users(username):
     st = "SELECT * FROM users WHERE username=%s" % (username,)
 
     conn = connection.create()
