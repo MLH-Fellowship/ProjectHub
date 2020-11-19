@@ -1,17 +1,16 @@
 import psycopg2
-import os
+from settings import *
 
 
 class Connection(object):
 
     # environment variables pulled from .env file
     def __init__(self):
-        self.host = os.getenv("POSTGRES_HOST")
-        self.host = os.getenv("POSTGRES_HOST")
-        self.database = os.getenv("POSTGRES_DATABASE")
-        self.port = os.getenv("POSTGRES_PORT")
-        self.username = os.getenv("POSTGRES_USER")
-        self.password = os.getenv("POSTGRES_PASSWORD")
+        self.host = POSTGRES_HOST
+        self.database = POSTGRES_DATABASE
+        self.port = POSTGRES_PORT
+        self.username = POSTGRES_USER
+        self.password = POSTGRES_PASSWORD
 
     # Creates a connection with the PostgreSQL server
     def create_connection(self):
@@ -43,7 +42,7 @@ class Connection(object):
 
         items = ", ".join(column_names)
         items = "({})".format(items)
-        statement = "CREATE TABLE IF NOT EXISTS {}{}".format(table_name, items)
+        statement = "CREATE TABLE IF NOT EXISTS %s%s" % (table_name, items,)
 
         return statement
 
@@ -68,12 +67,12 @@ class Connection(object):
         columns = ", ".join(column_names)
         columns = "({})".format(columns)
 
-        statement = "INSERT INTO {}{} VALUES {}".format(table_name, columns, items)
+        statement = "INSERT INTO %s%s VALUES %s" % (table_name, columns, items,)
 
         return statement
 
     # Executes a statement,
-    def execute_statement(self, statement: str, table_name: str, column_names: list, values=None):
+    def execute_statement(self, table_name: str, column_names: list, values=None):
         """
         :param statement: str
         :param table_name: str
@@ -90,21 +89,186 @@ class Connection(object):
 
         conn = self.create_connection()
 
-        if statement == "table":
-            st = self.generate_table_creation(table_name, column_names)
+<<<<<<< HEAD
+        if values is None:
+            raise ValueError("Values must be provided to be inserted into database")
 
-        elif statement == "insert":
-            if values is None:
-                raise ValueError("Values must be provided to be inserted into database")
-
-            st = self.generate_insert_statement(table_name, column_names, values)
-
-        else:
-            raise ValueError("Invalid statement type, must be \"table\" or \"insert\"")
+        st = self.generate_insert_statement(table_name, column_names, values)
 
         # Accesses the server, executes a command, and commits it
         cur = conn.cursor()
         cur.execute(st)
         conn.commit()
+=======
+        if statement == "table":
+            st = self.generate_table_creation(table_name, column_names)
+            print(st)
+
+        elif statement == "insert":
+            if values is None:
+                raise ValueError("Values must be provided to be inserted into database")
+            st = self.generate_insert_statement(table_name, column_names, values)
+>>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203
+
+        return
+
+
+class Insert(object):
+
+    def __init__(self):
+        self.connection = Connection()
+        self.project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
+        self.user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]
+        self.project_table = "projects"
+        self.user_table = "users"
+
+    def insert_project(self, json):
+        name = json.name
+        description = json.description
+        link = json.source_link
+        demo_link = json.demo_link
+        image_url = json.images
+        tags = ",".join(json.tags)
+        authors = ",".join(json.authors)
+
+        columns = ["name", "description", "link", "demo_link", "image_url", "tags", "authors"]
+        values = [name, description, link, demo_link, image_url, tags, authors]
+
+        self.connection.execute_statement(column_names=columns,
+                                          values=values,
+                                          table_name=self.project_table
+                                          )
+
+        return
+
+    def insert_user(self, json):
+        username = json.username
+        fullname = json.fullname
+        pods = json.pods
+        timezone = json.timezone
+        bio = json.bio
+        skills = json.skills
+        interests = json.interests
+
+        columns = ["username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
+        values = [username, fullname, pods, timezone, bio, skills, interests]
+
+        self.connection.execute_statement(column_names=columns,
+                                          values=values,
+                                          table_name=self.user_table
+                                          )
+
+        return
+
+
+class Update(object):
+
+    def __init__(self):
+        self.connection = Connection()
+
+    def project_exists(self, json):
+        id = json.id
+        st = "SELECT id FROM projects WHERE id=%s" % (id,)
+        conn = self.connection.create_connection()
+        cur = conn.cursor()
+
+        cur.execute(st)
+        return cur.fetchone() is not None
+
+    def update_project(self, json):
+        name = json.name
+        description = json.description
+        source_link = json.source_link
+        demo_link = json.demo_link
+        images = json.images
+        tags = json.tags
+        authors = json.authors
+        id = json.id
+
+        st = "UPDATE projects SET name=%s, description=%s, source_link=%s, demo_link=%s, images=%s, tags=%s, authors=%s WHERE id=%s" % (name, description, source_link, demo_link, images, tags, authors, id,)
+
+        conn = self.connection.create_connection()
+        cur = conn.cursor()
+
+        cur.execute(st)
+        conn.commit()
+
+        return
+
+    def user_exists(self, json):
+        username = json.username
+
+        st = "SELECT username FROM users WHERE username=%s" % (username,)
+
+        conn = self.connection.create_connection()
+        cur = conn.cursor()
+
+        cur.execute(st)
+
+        return cur.fetchone() is not None
+
+    def update_user(self, json):
+        username = json.username
+        fullname = json.name
+        timezone = json.timezone
+        bio = json.bio
+        skills = json.skills
+        interests = json.interests
+
+        st = "UPDATE users SET username=%s, fullname=%s, timezone=%s, bio=%s, skills=%s, interests=%s" % (username, fullname, timezone, bio, skills, interests,)
+
+        conn = self.connection.create_connection()
+        cur = conn.cursor()
+
+        cur.execute(st)
+        conn.commit()
+
+        return
+
+
+class Insert(object):
+
+    def __init__(self):
+        self.connection = Connection()
+        self.project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
+        self.user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]
+        self.project_table = "projects"
+        self.user_table = "users"
+
+    def insert_project(self, json):
+        name = json.name
+        description = json.description
+        link = json.source_link
+        demo_link = json.demo_link
+        image_url = json.images
+        tags = ",".join(json.tags)
+        authors = ",".join(json.authors)
+
+        columns = ["name", "description", "link", "demo_link", "image_url", "tags", "authors"]
+        values = [name, description, link, demo_link, image_url, tags, authors]
+
+        self.connection.execute_statement(statement="insert",
+                                          column_names=columns,
+                                          values=values,
+                                          table_name=self.project_table)
+
+        return
+
+    def insert_user(self, json):
+        username = json.username
+        fullname = json.fullname
+        pods = json.pods
+        timezone = json.timezone
+        bio = json.bio
+        skills = json.skills
+        interests = json.interests
+
+        columns = ["username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
+        values = [username, fullname, pods, timezone, bio, skills, interests]
+
+        self.connection.execute_statement(statement="insert",
+                                          column_names=columns,
+                                          values=values,
+                                          table_name=self.user_table)
 
         return

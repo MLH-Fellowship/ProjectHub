@@ -6,13 +6,12 @@
 
 <script>
 export default {
-  name: 'LoginBox',
+  name: 'GithubLoginButton',
   methods: {
     async authenticate() {
       const { code } = await this.$auth.authenticate('github');
-      // const { token } = this.$axios.$post('/api/auth/github', { code });
-      // { token: jwt => store in local storage, email => display it in the client }
-      console.log(code);
+      await this.$store.dispatch('user/login', code);
+      this.$router.push('/');
     },
   },
 };

@@ -2,13 +2,13 @@ import requests
 from github import Github
 import re
 from datetime import datetime, timedelta, timezone
-import os
+from settings import GITHUB_CLIENT_ID, GITHUB_SECRET
 
 
 def request_access_token(code):
 
-    client_id = os.getenv("GITHUB_CLIENT_ID")
-    client_secret = os.getenv("GITHUB_SECRET")
+    client_id = GITHUB_CLIENT_ID
+    client_secret = GITHUB_SECRET
 
     url = "https://github.com/login/oauth/access_token"
 
@@ -20,16 +20,20 @@ def request_access_token(code):
     content = req.content.decode("utf-8")
     token = re.findall(r"access_token=(.*)&scope", content)
 
-    return token[0]
-
+    try:
+        return token[0]
+    except IndexError:
+        return "Invalid Request"
 
 class GH(object):
 
-    def __init__(self, username, code, at=None):
-        self.username = username
+    def __init__(self, code=None, at=None):
         self.dt = None
+<<<<<<< HEAD
         self.code = code
+=======
 
+>>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203
         if at is None:
             self.access_token = request_access_token(code)
         else:
@@ -51,7 +55,7 @@ class GH(object):
     def get_orgs(self):
 
         auth = Github(self.access_token)
-        user = auth.get_user(self.username)
+        user = auth.get_user()
         return [i.name for i in user.get_orgs()]
 
     def get_teams(self):
@@ -69,5 +73,26 @@ class GH(object):
         all other teams
         """
         pods = [i.name for i in team_list if "pod" in i.name.lower()]
-        teams = [i.name for i in team_list if "pod" not in i.name.lower()]
-        return {"pods": pods, "teams": teams}
+        # teams = [i.name for i in team_list if "pod" not in i.name.lower()]
+        return {"pods": pods}
+
+    def meta(self):
+        auth = Github(self.access_token)
+        user = auth.get_user()
+        login = user.login
+        name = user.name
+        avatar = user.avatar_url
+        return {"login": login, "name": name, "avatar": avatar}
+
+<<<<<<< HEAD
+    def id(self):
+        auth = Github(self.access_token)
+        user = auth.get_user()
+        return user.id
+=======
+
+if __name__ == "__main__":
+    x = GH(at="e9cd2d9a9665eda0b58c21083c31a963e1ff0747")
+    print(x.meta())
+>>>>>>> c4fe398d2c4e0c62bf075fdf4d49d72b792b4203
+

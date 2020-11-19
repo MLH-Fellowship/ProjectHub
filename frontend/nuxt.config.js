@@ -26,6 +26,9 @@ export default {
   // Plugins to run before rendering page (https://go.nuxtjs.dev/config-plugins)
   plugins: [
     '@/plugins/element-ui',
+    '@/plugins/persiste-state',
+    '@/plugins/github',
+    '@/plugins/axios',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',
@@ -47,7 +50,19 @@ export default {
     '@nuxtjs/axios',
     // https://go.nuxtjs.dev/pwa
     '@nuxtjs/pwa',
+    'cookie-universal-nuxt',
+    // https://github.com/nuxt-community/proxy-module
+    '@nuxtjs/proxy',
   ],
+
+  proxy: {
+    '/api': {
+      target: `http://${process.env.BACKEND_HOST || 'localhost'}:8000`,
+      pathRewrite: {
+        '^/api': '',
+      },
+    },
+  },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
   axios: {},
