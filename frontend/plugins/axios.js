@@ -1,10 +1,15 @@
 export default function ({ $axios, redirect, store }) {
   $axios.onRequest((config) => {
-    if (new URL(config.url).hostname === process.env.APP_HOSTNAME) {
-      const { token } = store.state.user;
-      if (token) {
-        config.headers.common.Authorization = `Bearer ${token}`;
-      }
+    const { token } = store.state.user;
+    if (!token) {
+      return;
+    }
+
+    // If you are good at binary math plz halp!
+    if (!/^https?:\/\//.test(config.url)) {
+      config.headers.common.Authorization = `Bearer ${token}`;
+    } else if (new URL(config.url).hostname === process.env.APP_HOSTNAME) {
+      config.headers.common.Authorization = `Bearer ${token}`;
     }
   });
 
