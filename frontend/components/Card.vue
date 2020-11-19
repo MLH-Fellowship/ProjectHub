@@ -11,56 +11,62 @@
         src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
         alt="Project Banner"
       />
-      <div class="row mx-0 align-center" style="margin-left: 0" @click="save">
-        <div>Event-bot</div>
-        <span style="padding-top: 22px">
-          <iconify-icon icon="bookmark-outline" height="24" />
-        </span>
-      </div>
+      <div class="ph3 pb3">
+        <div
+          class="flex flex-row items-center justify-between f3 lh-copy"
+          @click="save"
+        >
+          <div>Event-bot</div>
+          <iconify-icon icon="bookmark-outline" />
+        </div>
 
-      <div>
-        Discord Bot to make announcements about upcoming sessions for the
-        Fellows using Google Calendar.
-      </div>
+        <div class="mv3">
+          Discord Bot to make announcements about upcoming sessions for the
+          Fellows using Google Calendar.
+        </div>
 
-      <div>
-        <span style="padding-top: 5px; margin-right: 10px">
-          <iconify-icon icon="tag-multiple" height="24" />
-        </span>
-        Tags
-      </div>
+        <div class="flex flex-row items-center f3 lh-copy">
+          <iconify-icon inline icon="tag-multiple" height="24" class="mr2" />
+          Tags
+        </div>
 
-      <div>
-        <el-tag color="#8991dc" style="color: #fff">Javascript</el-tag>
-        <el-tag color="#238aea" style="color: #fff">Discord</el-tag>
-        <el-tag color="#6fd3de" style="color: #fff">Google</el-tag>
-        <el-tag color="#238aea" style="color: #fff">Python</el-tag>
-        <el-tag color="#6fd3de" style="color: #fff">Calendly</el-tag>
-        <el-tag color="#8991dc" style="color: #fff">Pod 1.0.1</el-tag>
-      </div>
-      <div>
-        <el-avatar
-          src="https://media-exp1.licdn.com/dms/image/C4E03AQH69LzLRoU5zw/profile-displayphoto-shrink_800_800/0?e=1611187200&v=beta&t=TOSrV5pgMqHsCS83OlQTEq6UX0-1BqweYZVd6e6WH0E"
-        />
+        <div class="mt3 mb2">
+          <el-tag color="#8991dc" class="project-tag mb1">Javascript</el-tag>
+          <el-tag color="#238aea" class="project-tag mb1">Discord</el-tag>
+          <el-tag color="#6fd3de" class="project-tag mb1">Google</el-tag>
+          <el-tag color="#238aea" class="project-tag mb1">Python</el-tag>
+          <el-tag color="#6fd3de" class="project-tag mb1">Calendly</el-tag>
+          <el-tag color="#8991dc" class="project-tag mb1">Pod 1.0.1</el-tag>
+        </div>
+        <div class="flex flex-row items-center">
+          <el-avatar
+            size="small"
+            src="https://avatars2.githubusercontent.com/u/38268331?s=460&u=121b7bd7d9dc5697e4728b21c34358cf416edf37&v=4"
+          />
+          <div class="ml2">
+            Created 5 days ago by
+            <el-button type="text" @click="$router.push('/NoahCardoza')">
+              @NoahCardoza
+            </el-button>
+          </div>
+        </div>
 
-        Created 5 days ago by&nbsp;
-        <b><a href="">@noahcardoza</a></b>
-      </div>
-
-      <div>
-        <v-btn text color="teal accent-4" @click="learn_more">Learn More</v-btn>
+        <div>
+          <el-button type="text" @click="learn_more">Learn More</el-button>
+        </div>
       </div>
     </el-card>
   </div>
 </template>
 
 <script>
-// npm install --save-dev @iconify/react @iconify-icons/mdi
 import IconifyIcon from '@iconify/vue';
 import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
+import Bookmark from '@iconify/icons-mdi/bookmark';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 
 IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
+IconifyIcon.addIcon('bookmark', Bookmark);
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
@@ -71,6 +77,7 @@ export default {
     index: { type: Number, required: true },
   },
   data: () => ({
+    loading: false,
     selection: 1,
     selected: false,
   }),
@@ -99,18 +106,17 @@ export default {
 </script>
 
 <style>
-.v-card--reveal {
-  bottom: 0;
-  opacity: 1 !important;
-  position: absolute;
-  width: 100%;
-}
-
 .help-wanted-tag {
   padding: 0.5rem;
   border-radius: 10px 10px 0 0;
   background: #ffbe55;
   width: max-content;
   color: #fff;
+}
+
+.project-tag {
+  color: #fff;
+  border: none;
+  border-radius: 1rem;
 }
 </style>
