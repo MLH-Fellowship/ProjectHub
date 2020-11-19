@@ -30,6 +30,11 @@ class GitHub(object):
     @classmethod
     def from_code(cls, code: str):
         return cls(at=request_access_token(code))
+    
+    @classmethod
+    def from_jwe(cls, jwe: str):
+        #TODO: decode and grab access token from jwe
+        pass
 
     def __init__(self, at=None):
         self.dt = None
