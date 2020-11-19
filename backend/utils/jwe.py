@@ -7,9 +7,9 @@ from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 def encode(at, private_key_path=PRIV_KEY_PATH):
     private_key = load_private_key(private_key_path)
     auth = GH(at=at)
-    id = auth.id()
+    gh_user_id = auth.id()
 
-    payload = {"access_token": at, "id": id}
+    payload = {"access_token": at, "id": gh_user_id}
     encoded = jwt.encode(payload=payload, key=private_key, algorithm="RS256")
 
     return encoded
