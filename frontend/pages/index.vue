@@ -2,6 +2,7 @@
   <div class="container">
     <div>
       <Logo />
+      <Card />
       <h1 class="title">project-hub</h1>
       <div class="links">
         <a
