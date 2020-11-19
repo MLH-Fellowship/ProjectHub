@@ -1,11 +1,11 @@
 import jwt
-from generate_keys import load_public_key, load_private_key
+from . import rsa
 from github_auth import GH
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 
 
 def encode(at, private_key_path=PRIV_KEY_PATH):
-    private_key = load_private_key(private_key_path)
+    private_key = rsa.load_private_key(private_key_path)
     auth = GH(at=at)
     gh_user_id = auth.id()
 
@@ -16,7 +16,7 @@ def encode(at, private_key_path=PRIV_KEY_PATH):
 
 
 def decode(data, public_key_path=PUB_KEY_PATH):
-    public_key = load_public_key(public_key_path)
+    public_key = rsa.load_public_key(public_key_path)
     try:
         decoded = jwt.decode(jwt=data, key=public_key, algorithms="RS256")
         return decoded
