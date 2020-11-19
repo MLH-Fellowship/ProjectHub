@@ -1,7 +1,7 @@
 from cryptography.hazmat.backends import default_backend
 from cryptography.hazmat.primitives.asymmetric import rsa
 from cryptography.hazmat.primitives import serialization
-from cryptography.hazmat.primitives.serialization import load_pem_private_key, load_pem_public_key
+from cryptography.hazmat.primitives.serialization import load_pem_public_key, load_pem_private_key
 
 
 def gen_key_pair():
@@ -53,7 +53,7 @@ def save_key(private_fn, public_fn):
 
 def load_public_key(public_fn):
 
-    if ".pub" not in public_fn:
+    if ".pub" not in str(public_fn):
         raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
 
     with open(public_fn, 'rb') as pub_in:
@@ -61,4 +61,17 @@ def load_public_key(public_fn):
     public_key = load_pem_public_key(publines, None)
 
     return public_key
+
+
+def load_private_key(private_fn):
+
+    if ".pem" not in str(private_fn):
+        raise ValueError("Incorrect file formats:\npublic key must be saved as .pub\nprivate key must be saved as .pem")
+
+    with open(private_fn, 'rb') as pem_in:
+        pemlines = pem_in.read()
+
+    private_key = load_pem_private_key(pemlines, None, default_backend())
+
+    return private_key
 
