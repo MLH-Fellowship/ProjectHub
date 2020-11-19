@@ -43,11 +43,8 @@ class GH(object):
         """
         if self.dt is None:
             self.dt = datetime.now(tz=timezone.utc)
-        else:
-            if self.dt + timedelta(hours=12) > datetime.now(tz=timezone.utc):
-                self.access_token = request_access_token(self.code)
-            else:
-                pass
+        elif self.dt + timedelta(hours=12) > datetime.now(tz=timezone.utc):
+            self.access_token = request_access_token(self.code)
 
     def get_orgs(self):
 
