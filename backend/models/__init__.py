@@ -1,3 +1,3 @@
-from . import Project
-from . import Token
-from . import User
+from .Project import Project
+from .Token import Token
+from .User import User
