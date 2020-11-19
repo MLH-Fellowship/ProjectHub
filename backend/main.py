@@ -1,37 +1,13 @@
 from fastapi import FastAPI
 from starlette import status
-from pydantic import BaseModel
 from handle_tokens import decode_jwt, encode_jwt
 from github_auth import request_access_token, GH
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 from db_connect import Insert, Update, Query
 from apiparse import parse_project_query, parse_user_query
+from models import Token, Project, User
 
 app = FastAPI()
-
-
-class Token(BaseModel):
-    encoded_jwt: str
-
-
-class Project(BaseModel):
-    name: str
-    description: str
-    source_link: str
-    demo_link: str
-    images: str
-    tags: list[str]
-    authors: list[str]
-    id: str
-
-
-class User(BaseModel):
-    username: str
-    name: str
-    timezone: int
-    bio: str
-    skills: list[str]
-    interests: list[str]
 
 
 @app.get("/auth/{code}")
