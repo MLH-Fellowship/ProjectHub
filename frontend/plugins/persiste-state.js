@@ -6,7 +6,6 @@ if (process.server) {
 }
 
 export default ({ app: { $cookies }, store }) => {
-  console.log($cookies.getAll());
   createPersistedState({
     key: 'state',
     paths: ['user'],
