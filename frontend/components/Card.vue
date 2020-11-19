@@ -1,5 +1,5 @@
 <template>
-  <div id="project-card">
+  <div class="project-card tl">
     <svg
       width="101"
       height="35"
@@ -18,21 +18,18 @@
         fill="white"
       ></path>
     </svg>
-    <v-card :loading="loading" class="mx-auto my-12" max-width="395" outlined>
-      <template slot="progress">
-        <v-progress-linear
-          color="deep-purple"
-          height="10"
-          indeterminate
-        ></v-progress-linear>
-      </template>
-
-      <v-img
+    <el-card
+      v-loading="loading"
+      style="max-width: 395px"
+      :body-style="{ padding: '0px' }"
+    >
+      <img
         height="250"
         src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
-      ></v-img>
+        alt="Project Banner"
+      />
       <div class="row mx-0 align-center" style="margin-left: 0" @click="save">
-        <div class="v-card__title">Event-bot</div>
+        <div>Event-bot</div>
         <span style="padding-top: 22px">
           <svg
             width="12"
@@ -51,16 +48,12 @@
         </span>
       </div>
 
-      <v-card-text>
-        <div>
-          Discord Bot to make announcements about upcoming sessions for the
-          Fellows using Google Calendar.
-        </div>
-      </v-card-text>
+      <div>
+        Discord Bot to make announcements about upcoming sessions for the
+        Fellows using Google Calendar.
+      </div>
 
-      <v-divider class="mx-4" />
-
-      <v-card-title>
+      <div>
         <span style="padding-top: 5px; margin-right: 10px">
           <svg
             width="17"
@@ -76,9 +69,9 @@
           </svg>
         </span>
         Tags
-      </v-card-title>
+      </div>
 
-      <v-card-text>
+      <div>
         <v-chip-group
           v-model="selection"
           active-class="deep-purple accent-4 white--text"
@@ -91,8 +84,8 @@
           <v-chip style="background: #6fd3de; color: white">Calendly</v-chip>
           <v-chip style="background: #8991dc; color: white">Pod 1.0.1</v-chip>
         </v-chip-group>
-      </v-card-text>
-      <v-card-actions>
+      </div>
+      <div>
         <svg
           width="25"
           height="25"
@@ -166,12 +159,12 @@
 
         Created 5 days ago by&nbsp;
         <b><a href="">@noahcardoza</a></b>
-      </v-card-actions>
+      </div>
 
-      <v-card-actions>
+      <div>
         <v-btn text color="teal accent-4" @click="learn_more">Learn More</v-btn>
-      </v-card-actions>
-    </v-card>
+      </div>
+    </el-card>
   </div>
 </template>
 
