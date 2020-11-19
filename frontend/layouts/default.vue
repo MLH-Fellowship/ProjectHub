@@ -1,5 +1,5 @@
 <template>
-  <div>
+  <div class="layout-default">
     <el-menu
       :default-active="activeRoute"
       mode="horizontal"
@@ -77,4 +77,13 @@ export default {
 };
 </script>
 
-<style></style>
+<style scoped>
+.layout-default >>> .container {
+  margin: 0 auto;
+  min-height: calc(100vh - 61px);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+}
+</style>
