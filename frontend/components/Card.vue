@@ -31,20 +31,7 @@
       <div class="row mx-0 align-center" style="margin-left: 0" @click="save">
         <div>Event-bot</div>
         <span style="padding-top: 22px">
-          <svg
-            width="12"
-            height="18"
-            viewBox="0 0 12 18"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              ref="savePath"
-              d="M5.41007 13.6728L0.5 16.8634V3.01443C0.5 2.48186 0.695715 1.97833 1.0331 1.61294C1.36924 1.24889 1.81622 1.05273 2.273 1.05273H9.09202C9.5488 1.05273 9.99578 1.24889 10.3319 1.61294C10.6693 1.97833 10.865 2.48186 10.865 3.01443V16.8634L5.95495 13.6728L5.68251 13.4957L5.41007 13.6728Z"
-              fill="white"
-              stroke="black"
-            />
-          </svg>
+          <iconify-icon icon="bookmark-outline" height="24" />
         </span>
       </div>
 
@@ -55,18 +42,7 @@
 
       <div>
         <span style="padding-top: 5px; margin-right: 10px">
-          <svg
-            width="17"
-            height="15"
-            viewBox="0 0 17 15"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M0 5.48533V1.52827C0.0492858 0.906949 0.510907 0.48127 1.09749 0.473633H5.21536C5.76161 0.482427 6.27045 0.672335 6.71649 0.931222L13.1699 7.74277C13.559 8.22293 13.579 8.82047 13.1699 9.22452L8.39899 13.7917C7.91692 14.1914 7.24129 14.2276 6.85707 13.7917L0.780045 7.28954C0.352863 6.7815 0.0063325 6.11278 0 5.48533ZM2.08162 3.91645C2.53736 4.32023 3.19147 4.28287 3.58274 3.91645C4.00102 3.48221 3.96609 2.8471 3.58274 2.47395C3.13025 2.07814 2.4713 2.10955 2.08162 2.47395C1.66797 2.9382 1.68351 3.51819 2.08162 3.91645ZM7.17454 0.491058H8.75275C9.41439 0.530265 10.1974 0.780821 10.6212 1.24064L16.6983 7.7602C17.1089 8.21585 17.0922 8.87028 16.6983 9.25935L11.9455 13.8266C11.2868 14.1853 10.6831 14.1603 10.2765 13.7045L14.9386 9.22447C15.3584 8.77813 15.3136 8.13438 14.9386 7.74274L9.50042 1.89559C8.8567 1.12353 7.47085 0.525908 7.17454 0.491058Z"
-              fill="#747474"
-            ></path>
-          </svg>
+          <iconify-icon icon="tag-multiple" height="24" />
         </span>
         Tags
       </div>
@@ -169,7 +145,18 @@
 </template>
 
 <script>
+// npm install --save-dev @iconify/react @iconify-icons/mdi
+import IconifyIcon from '@iconify/vue';
+import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
+import TagMultiple from '@iconify/icons-mdi/tag-multiple';
+
+IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
+IconifyIcon.addIcon('tag-multiple', TagMultiple);
+
 export default {
+  components: {
+    IconifyIcon,
+  },
   props: {
     index: { type: Number, required: true },
   },
