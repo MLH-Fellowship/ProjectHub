@@ -5,6 +5,7 @@ user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezon
 project_table = "projects"
 user_table = "users"
 
+
 def project(json):
     name = json.name
     description = json.description
@@ -12,17 +13,18 @@ def project(json):
     demo_link = json.demo_link
     image_url = json.images
     tags = ",".join(json.tags)
-    authors = ",".join(json.authors)
 
-    columns = ["name", "description", "link", "demo_link", "image_url", "tags", "authors"]
-    values = [name, description, link, demo_link, image_url, tags, authors]
+    columns = ["name", "description", "link", "demo_link", "image_url", "tags"]
+    values = [name, description, link, demo_link, image_url, tags]
 
     connection.execute_statement(column_names=columns,
-                                        values=values,
-                                        table_name=project_table
-                                        )
+                                 values=values,
+                                 table_name=project_table
+                                 )
+
 
 def user(json):
+
     username = json.username
     fullname = json.fullname
     pods = json.pods
@@ -35,6 +37,6 @@ def user(json):
     values = [username, fullname, pods, timezone, bio, skills, interests]
 
     connection.execute_statement(column_names=columns,
-                                        values=values,
-                                        table_name=user_table
-                                        )
+                                 values=values,
+                                 table_name=user_table
+                                 )
