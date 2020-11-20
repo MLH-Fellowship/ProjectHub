@@ -3,8 +3,8 @@
     <p class="f4 b mb3">Project Overview</p>
 
     <div class="flex flex-row f5 mt3">
-      <iconify-icon icon="code" class="mr2" />
-      {{ details.languages | joinWithComma }}
+      <iconify-icon icon="code-tags" class="mr2" />
+      {{ project.languages | joinWithComma }}
     </div>
 
     <!-- <div class="flex flex-row f5 mt3">
@@ -14,7 +14,7 @@
 
     <div class="flex flex-row f5 mt3">
       <iconify-icon icon="github" class="mr2" />
-      <el-link :href="details.source">View Github</el-link>
+      <el-link :href="project.source">View Github</el-link>
     </div>
 
     <div class="flex flex-row f5 mt3">
@@ -22,29 +22,22 @@
       Tags
     </div>
 
-    <div v-for="tag in details.tags" :key="tag" class="mt3 mb2"></div>
-
-    <div class="mt3 mb2">
-      <el-tag
-        v-for="tag in details.tags"
-        :key="tag"
-        :color="tag | hexHash"
-        class="project-tag mb1"
-      >
-        {{ tag }}
-      </el-tag>
-    </div>
+    <ProjectTags class="mt3 mb2" :tags="project.tags" />
   </div>
 </template>
 
 <script>
 import IconifyIcon from '@iconify/vue';
+import CodeTags from '@iconify/icons-mdi/code-tags';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 import Clock from '@iconify/icons-mdi/clock-time-four-outline';
 import Group from '@iconify/icons-mdi/account-group';
 import Github from '@iconify/icons-mdi/github';
 
-IconifyIcon.addIcon('tags', TagMultiple);
+import ProjectTags from '@/components/ProjectTags';
+
+IconifyIcon.addIcon('tag-multiple', TagMultiple);
+IconifyIcon.addIcon('code-tags', CodeTags);
 IconifyIcon.addIcon('clock', Clock);
 IconifyIcon.addIcon('group', Group);
 IconifyIcon.addIcon('github', Github);
@@ -53,38 +46,10 @@ export default {
   name: 'ProjectOverview',
   components: {
     IconifyIcon,
+    ProjectTags,
   },
-  props: {},
-  data() {
-    return {
-      details: {
-        title: 'Project Title',
-        source: 'https://github.com/MLH-Fellowship/ProjectHub',
-        tags: ['Python', 'Pod 1.0.1', 'Discord'],
-        languages: ['Python', 'Javascript'],
-      },
-    };
+  props: {
+    project: { type: Object, required: true },
   },
-  computed: {},
-  mounted() {},
-  beforeDestroy() {},
-  methods: {},
 };
 </script>
-
-<style lang="css" scoped>
-.el-tag {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-.input-new-tag {
-  width: 90px;
-}
-
-.project-tag {
-  color: #fff;
-  border: none;
-  border-radius: 1rem;
-}
-</style>
