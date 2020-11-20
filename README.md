@@ -5,9 +5,6 @@
   <a href="https://github.com/MLH-Fellowship/ProjectHub/pulls">
     <img src="https://img.shields.io/badge/PRs-welcome-green.svg" alt="PRs Welcome" />
   </a>
-  <a href="https://github.com/MLH-Fellowship/ProjectHub/stargazers">
-    <img src="https://img.shields.io/npm/dw/ProjectHub" alt="Download" />
-  </a>
 </p>
 
 # Usage
