@@ -18,9 +18,8 @@
 
       <div v-loading="loading" class="pa4 tc">
         <div>
-          <el-row type="flex" align="center">
-            <!-- left column -->
-            <el-col :span="8">
+          <el-row type="flex" align="center" class="flex-wrap">
+            <el-col :sm="24" :md="9">
               <ProjectOverviewCard />
               <div class="tl mt4">
                 <p class="b f4 mb3">Contact the creator</p>
@@ -40,9 +39,7 @@
                 </div>
               </div>
             </el-col>
-
-            <!-- right column -->
-            <el-col :span="16" class="pa4 pr0 tl">
+            <el-col :sm="24" :md="15" class="pa4 pr0 tl">
               <el-row>
                 <div class="flex flex-row f1 items-center b">
                   {{ details.title }}
