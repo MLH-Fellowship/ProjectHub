@@ -1,5 +1,5 @@
 <template>
-  <iconify-icon :icon="bookmarkIcon" @click="bookmark" />
+  <iconify-icon :icon="bookmarkIcon" @click.stop="bookmark" />
 </template>
 
 <script>
