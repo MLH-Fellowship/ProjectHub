@@ -1,6 +1,6 @@
 <template>
   <div class="container overflow-hidden pa3" style="justify-content: none">
-    <el-row class="items-center w-100">
+    <el-row class="items-center w-100" style="max-width: 1200px">
       <el-col :offset="2" :xs="22" :sm="14" :md="10">
         <div class="tl z-1">
           <p class="f1">Welcome to</p>
