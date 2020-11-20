@@ -2,7 +2,7 @@
   <div class="container overflow-hidden pa3" style="justify-content: none">
     <el-row class="items-center w-100">
       <el-col :offset="2" :xs="22" :sm="14" :md="10">
-        <div class="tl relative z-1">
+        <div class="tl z-1">
           <p class="f1">Welcome to</p>
           <p class="b mv3" style="font-size: 5em">Project Hub</p>
           <p class="mt5">
