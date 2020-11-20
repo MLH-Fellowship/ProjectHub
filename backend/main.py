@@ -99,8 +99,8 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 @app.get("/user/{login}")
 def query_user(login):
     user = db.query.users(login)
-    user.projects = []
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
+        user.projects = db.query.user_projects(user.id)
         return user
