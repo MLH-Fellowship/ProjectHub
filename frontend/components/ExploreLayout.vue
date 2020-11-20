@@ -1,48 +1,46 @@
 <template>
-  <div class="container pt4" style="align-items: none">
-    <div class="tc relative">
-      <div class="flex flex-row flex-wrap justify-center items-center mb5">
-        <div class="f4 lh-copy">Filter By:</div>
-        <el-select
-          v-model="pods"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          placeholder="Pods"
-          class="mh3"
-        >
-          <el-option
-            v-for="item in options.pods"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
-        </el-select>
-        <el-select
-          v-model="languages"
-          multiple
-          filterable
-          allow-create
-          default-first-option
-          placeholder="Lanuages"
-        >
-          <el-option
-            v-for="item in options.languages"
-            :key="item"
-            :label="item"
-            :value="item"
-          ></el-option>
-        </el-select>
-      </div>
-      <div class="grid w-100 pa3">
-        <ProjectCard
-          v-for="(something, index) in 6"
-          :key="index"
-          :index="index"
-          class="ma3"
-        />
-      </div>
+  <div>
+    <div class="flex flex-row flex-wrap justify-center">
+      <div class="f3 lh-copy">Filters:</div>
+      <el-select
+        v-model="pods"
+        multiple
+        filterable
+        allow-create
+        default-first-option
+        placeholder="Pods"
+        class="mh3"
+      >
+        <el-option
+          v-for="item in options.pods"
+          :key="item"
+          :label="item"
+          :value="item"
+        ></el-option>
+      </el-select>
+      <el-select
+        v-model="languages"
+        multiple
+        filterable
+        allow-create
+        default-first-option
+        placeholder="Lanuages"
+      >
+        <el-option
+          v-for="item in options.languages"
+          :key="item"
+          :label="item"
+          :value="item"
+        ></el-option>
+      </el-select>
+    </div>
+    <div class="grid w-100 pa3">
+      <ProjectCard
+        v-for="project in projects"
+        :key="project.id"
+        class="ma3"
+        :project="project"
+      />
     </div>
   </div>
 </template>
@@ -53,6 +51,12 @@ import ProjectCard from '@/components/ProjectCard';
 export default {
   name: 'Dashboard',
   componentd: { ProjectCard },
+  props: {
+    projects: {
+      type: Array,
+      required: true,
+    },
+  },
   data() {
     return {
       options: {

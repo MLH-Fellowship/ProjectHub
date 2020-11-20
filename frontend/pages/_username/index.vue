@@ -1,6 +1,5 @@
 <template>
   <div>
-    <br />
     <div style="margin-left: 200px">
       <el-row>
         <el-col :span="6">
@@ -75,9 +74,8 @@
         </el-col>
       </el-row>
     </div>
-
     <hr />
-    <ExploreLayout />
+    <ExploreLayout :projects="user.projects" />
   </div>
 </template>
 
@@ -101,51 +99,67 @@ export default {
     //   projects: ['NoahCardoza/CaptchaHarvester'],
     // };
 
-    const [ghUser, projects] = await Promise.all([
-      $github
-        .get('users', params.username)
-        .then(
-          pick([
-            'login',
-            'html_url',
-            'avatar_url',
-            'name',
-            'location',
-            'bio',
-            'email',
-            'public_repos',
-            'public_gists',
-            'followers',
-          ])
-        ),
-      Promise.all(
-        user.projects.map((repository) =>
-          $github
-            .get('repos', repository)
-            .then(
-              pick([
-                'name',
-                'full_name',
-                'private',
-                'description',
-                'fork',
-                'html_url',
-                'stargazers',
-                'watchers',
-                'language',
-                'open_issues',
-                'license',
-                'forks',
-              ])
-            )
-        )
-      ),
-    ]);
+    // const [ghUser, projects] = await Promise.all([
+    //   $github
+    //     .get('users', params.username)
+    //     .then(
+    //       pick([
+    //         'login',
+    //         'html_url',
+    //         'avatar_url',
+    //         'name',
+    //         'location',
+    //         'bio',
+    //         'email',
+    //         'public_repos',
+    //         'public_gists',
+    //         'followers',
+    //       ])
+    //     ),
+    //   Promise.all(
+    //     user.projects.map((repository) =>
+    //       $github
+    //         .get('repos', repository)
+    //         .then(
+    //           pick([
+    //             'name',
+    //             'full_name',
+    //             'private',
+    //             'description',
+    //             'fork',
+    //             'html_url',
+    //             'stargazers',
+    //             'watchers',
+    //             'language',
+    //             'open_issues',
+    //             'license',
+    //             'forks',
+    //           ])
+    //         )
+    //     )
+    //   ),
+    // ]);
+
+    const ghUser = await $github
+      .get('users', params.username)
+      .then(
+        pick([
+          'login',
+          'html_url',
+          'avatar_url',
+          'name',
+          'location',
+          'bio',
+          'email',
+          'public_repos',
+          'public_gists',
+          'followers',
+        ])
+      );
 
     return {
       user,
       ghUser,
-      projects,
     };
   },
   data() {
