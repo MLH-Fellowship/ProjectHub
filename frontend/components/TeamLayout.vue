@@ -91,9 +91,9 @@
                 <el-col :span="16">
                   <p class="f4 b">Calvin Nguyen</p>
                   <p class="f5 mt3">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Hi, I'm a senior Software Engineering student based in San
+                    Jose, CA. I love Cloud, Fintech, Stock, and back-end dev in
+                    Javascript.
                   </p>
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
