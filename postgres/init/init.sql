@@ -6,7 +6,8 @@ CREATE TABLE IF NOT EXISTS projects(
   description text,
   source text,
   demo text,
-  tags text
+  tags text,
+  languages text
   -- imported smallint -- if the project came from github
 );
 

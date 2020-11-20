@@ -1,4 +1,4 @@
-from typing import Optional
+from typing import Optional, List
 from pydantic import BaseModel
 
 
@@ -10,4 +10,5 @@ class Project(BaseModel):
     description: str
     source: str
     demo: str
-    tags: list[str]
+    tags: List[str]
+    languages: List[str]

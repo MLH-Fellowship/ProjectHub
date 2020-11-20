@@ -10,9 +10,10 @@ user_table = "users"
 
 def project(project: Project):
     tags = ",".join(project.tags)
+    languages = ','.join(project.languages)
 
-    columns = ["owner", "slug", "name", "description", "source", "demo", "tags"]
-    values = [project.owner, project.slug, project.name, project.description, project.source, project.demo, tags]
+    columns = ["owner", "slug", "name", "description", "source", "demo", "tags", "languages"]
+    values = [project.owner, project.slug, project.name, project.description, project.source, project.demo, tags, languages]
 
     connection.insert(
         column_names=columns,
