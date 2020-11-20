@@ -38,8 +38,22 @@
                   placeholer="Write a short bio..."
                 ></el-input>
               </el-form-item>
-
-              <el-form-item class="tl" label="My Interests">
+              <el-form-item class="tl" label="Pod(s)">
+                <el-select
+                  v-model="form.pods"
+                  multiple
+                  placeholder="Select"
+                  class="w-100"
+                >
+                  <el-option
+                    v-for="pod in options.pods"
+                    :key="pod"
+                    :label="pod"
+                    :value="pod"
+                  ></el-option>
+                </el-select>
+              </el-form-item>
+              <el-form-item class="tl" label="Interests">
                 <el-select
                   v-model="form.interests"
                   multiple
@@ -54,7 +68,7 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item class="tl" label="My Skills">
+              <el-form-item class="tl" label="Skills">
                 <el-select
                   v-model="form.skills"
                   multiple
@@ -147,13 +161,31 @@ export default {
       loading: false,
       step: 0,
       options: {
+        pods: [
+          'Pod 1.0.0',
+          'Pod 1.0.1',
+          'Pod 1.0.2',
+          'Pod 1.0.3',
+          'Pod 1.0.5',
+          'Pod 1.0.6',
+          'Pod 1.1.0',
+          'Pod 1.1.1',
+          'Pod 1.1.2',
+          'Pod 1.1.3',
+          'Pod 1.1.5',
+          'Pod 1.1.6',
+          'Pod 1.2.0',
+          'Pod 1.2.1',
+          'Pod 1.2.2',
+        ],
         interests: ['Android', 'ML/AI', 'Healthcare'],
         skills: ['Front-end', 'Back-end', 'Python'],
       },
       form: {
+        bio: '',
+        pods: [],
         skills: [],
         interests: [],
-        bio: '',
       },
     };
   },
