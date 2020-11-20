@@ -2,7 +2,7 @@ import requests
 from github import Github as _Github
 import re
 from datetime import datetime, timedelta, timezone
-from settings import GITHUB_CLIENT_ID, GITHUB_SECRET
+from app.settings import GITHUB_CLIENT_ID, GITHUB_SECRET
 
 
 def request_access_token(code):

@@ -1,5 +1,5 @@
 import psycopg2
-from settings import POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD
+from app.settings import POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD
 
 
 # Creates a connection with the PostgreSQL server

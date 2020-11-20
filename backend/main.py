@@ -1,11 +1,11 @@
 from fastapi import FastAPI, Depends
 from starlette import status
-from utils import jwe
-from utils.github import GitHub
-import utils.database as db
-from apiparse import parse_project_query, parse_user_query
-from models import Project, User
-from utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
+from app.utils import jwe
+from app.utils.github import GitHub
+import app.utils.database as db
+from app.apiparse import parse_project_query, parse_user_query
+from app.models import Project, User
+from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
 http_bearer_scheme = HTTPBearerJWEScheme()
@@ -98,9 +98,8 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 
 @app.get("/user/{login}")
 def query_user(login):
-    query = db.query.users(login)
-    parsed = parse_user_query(query)
-    if parsed is None:
+    user = db.query.users(login)
+    if not user:
         return status.HTTP_404_NOT_FOUND
     else:
-        return parsed
+        return user
