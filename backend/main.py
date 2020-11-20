@@ -74,7 +74,6 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
-        user.pods = gh.get_pods()
         
         db.insert.user(user)
 
@@ -97,6 +96,7 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 @app.get("/user/{login}")
 def query_user(login):
     user = db.query.users(login)
+    user.projects = []
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
