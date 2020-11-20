@@ -1,7 +1,11 @@
 <template>
   <div class="project-card tl">
     <div class="help-wanted-tag">HELP WANTED</div>
-    <el-card v-loading="loading" :body-style="{ padding: '0px' }">
+    <el-card
+      v-loading="loading"
+      :body-style="{ padding: '0px' }"
+      @click.native="openProject"
+    >
       <img
         height="250"
         src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
@@ -10,7 +14,7 @@
       <div class="ph3 pb3">
         <div class="flex flex-row items-center justify-between f3 lh-copy">
           <div>Event-bot</div>
-          <iconify-icon :icon="bookmarkIcon" @click="bookmark" />
+          <BookmarkButton />
         </div>
 
         <div class="mv3">
@@ -18,7 +22,7 @@
           Fellows using Google Calendar.
         </div>
 
-        <div class="flex flex-row items-center f3 lh-copy">
+        <div class="flex flex-row items-center f4 lh-copy">
           <iconify-icon inline icon="tag-multiple" height="24" class="mr2" />
           Tags
         </div>
@@ -45,45 +49,41 @@
         </div>
 
         <div>
-          <el-button type="text" @click="learn_more">Learn More</el-button>
+          <el-button type="text" @click="learnMore">Learn More</el-button>
         </div>
       </div>
     </el-card>
+    <ProjectDetailDialog v-model="detailsVisible" />
   </div>
 </template>
 
 <script>
+import ProjectDetailDialog from '@/components/ProjectDetailDialog';
+import BookmarkButton from '@/components/button/Bookmark';
 import IconifyIcon from '@iconify/vue';
-import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
-import Bookmark from '@iconify/icons-mdi/bookmark';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 
-IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
-IconifyIcon.addIcon('bookmark', Bookmark);
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
   name: 'ProjectCard',
   components: {
     IconifyIcon,
+    ProjectDetailDialog,
+    BookmarkButton,
   },
   props: {
     index: { type: Number, required: true },
   },
   data: () => ({
     loading: false,
-    bookmarked: false,
+    detailsVisible: false,
   }),
-  computed: {
-    bookmarkIcon() {
-      return this.bookmarked ? 'bookmark' : 'bookmark-outline';
-    },
-  },
+  computed: {},
   methods: {
-    learn_more() {},
-    bookmark() {
-      this.bookmarked = !this.bookmarked;
-      // send request to backend
+    learnMore() {},
+    openProject() {
+      this.detailsVisible = true;
     },
   },
 };

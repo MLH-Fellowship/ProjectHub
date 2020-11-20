@@ -1,6 +1,26 @@
 version: '3.1'
 
 services:
+  frontend:
+    restart: always
+    build:
+      context: frontend
+      args:
+        GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+        APP_HOSTNAME: ${APP_HOSTNAME}
+    ports:
+      - 3000:3000
+    environment:
+      BACKEND_HOST: backend
+  backend:
+    restart: always
+    build:
+      context: backend
+    ports:
+      - 8000:8000
+    environment:
+      POSTGRES_HOST: db
+    env_file: .env
   db:
     image: postgres
     restart: always

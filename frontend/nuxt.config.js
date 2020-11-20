@@ -30,6 +30,7 @@ export default {
     '@/plugins/persiste-state',
     '@/plugins/github',
     '@/plugins/axios',
+    '@/plugins/globalFilters',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',
@@ -70,6 +71,7 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    analyze: process.env.NUXT_ANALYZE === '1',
     transpile: [/^element-ui/],
   },
 };
