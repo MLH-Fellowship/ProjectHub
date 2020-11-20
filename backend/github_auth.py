@@ -53,20 +53,11 @@ class GitHub(object):
         return [i.name for i in user.get_orgs()]
 
     def get_pods(self):
-        # Creates an authenticated user object
-        org = self.auth.get_user()
-
-        # Gets the teams the authenticated user is in, in the form of a paginated list
-        team_list = org.get_teams()
-
         """
         returns all the teams the user is in, with get_teams[0] being the pods the user is in, and get_teams[1] being
         all other teams
         """
-
-        pods = [i.name for i in team_list if "pod" in i.name.lower()]
-
-        return { "pods": pods }
+        return [pod.name for pod in self.user.get_teams() if "pod" in pod.name.lower()]
 
     def get_meta_dict(self):
         return {
