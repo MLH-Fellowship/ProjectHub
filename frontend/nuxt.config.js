@@ -30,7 +30,7 @@ export default {
     '@/plugins/persiste-state',
     '@/plugins/github',
     '@/plugins/axios',
-    '@/plugins/globalFilters',
+    '@/plugins/filters',
     {
       src: '@/plugins/vue-social-auth',
       mode: 'client',

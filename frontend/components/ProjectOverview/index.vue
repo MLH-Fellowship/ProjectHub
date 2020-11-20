@@ -4,7 +4,7 @@
 
     <div class="flex flex-row f5 mt3">
       <iconify-icon icon="code" class="mr2" />
-      {{ details.languages.join(', ') }}
+      {{ details.languages | joinWithComma }}
     </div>
 
     <!-- <div class="flex flex-row f5 mt3">

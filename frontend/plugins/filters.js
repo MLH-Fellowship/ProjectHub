@@ -9,3 +9,7 @@ Vue.filter('hexHash', function (str) {
   const code = (hash & 0x00FFFFFF).toString(16);
   return '#' + '00000'.substring(0, 6 - code.length) + code;
 });
+
+Vue.filter('joinWithComma', function (list) {
+  return list.join(', ');
+});
