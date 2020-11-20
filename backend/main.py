@@ -1,9 +1,11 @@
 from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
+from slugify import slugify
+
 from app.utils import jwe
 from app.utils.github import GitHub
 import app.utils.database as db
-from app.apiparse import parse_project_query, parse_user_query
+from app.apiparse import parse_project_query
 from app.models import Project, User
 from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
@@ -29,7 +31,10 @@ def login_via_gitub(code):
 @app.post("/project")
 def new_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     project.owner = token.github_id
+    project.slug = slugify(project.name)
     db.insert.project(project)
+    # TODO: set project.id / not needed for ui
+    return project
 
 
 @app.put("/project")

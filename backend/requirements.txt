@@ -24,3 +24,5 @@ starlette==0.13.6
 urllib3==1.26.2
 uvicorn==0.12.2
 wrapt==1.12.1
+python-slugify==4.0.1
+text-unidecode==1.3
