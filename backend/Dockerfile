@@ -7,7 +7,9 @@ RUN printf "I am running on ${BUILDPLATFORM:-linux/amd64}, building for ${TARGET
 
 COPY . ./
 
-RUN pip install -r requirements.txt
+ENV PUB_KEY_PATH=server.pub PRIV_KEY_PATH=server.pem
+
+RUN pip install -r requirements.txt && python utils/rsa.py server
 
 EXPOSE 8000
 CMD ["uvicorn", "main:app", "--host", "0.0.0.0"]
