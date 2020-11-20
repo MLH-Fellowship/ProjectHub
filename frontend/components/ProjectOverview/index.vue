@@ -14,7 +14,7 @@
 
     <div class="flex flex-row f5 mt3">
       <iconify-icon icon="github" class="mr2" />
-      <a href="details.source">View Github repo</a>
+      <el-link :href="details.source">View Github</el-link>
     </div>
 
     <div class="flex flex-row f5 mt3">
