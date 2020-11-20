@@ -35,6 +35,7 @@
                   v-model="form.interests"
                   multiple
                   placeholder="Select"
+                  class="w-100"
                 >
                   <el-option
                     v-for="interest in options.interests"
@@ -46,7 +47,12 @@
               </el-form-item>
 
               <el-form-item class="tl" label="Skills">
-                <el-select v-model="form.skills" multiple placeholder="Select">
+                <el-select
+                  v-model="form.skills"
+                  multiple
+                  placeholder="Select"
+                  class="w-100"
+                >
                   <el-option
                     v-for="skill in options.skills"
                     :key="skill.value"
