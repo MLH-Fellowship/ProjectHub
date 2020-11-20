@@ -1,7 +1,11 @@
 <template>
-  <div class="project-card tl" @click="openProject">
+  <div class="project-card tl">
     <div class="help-wanted-tag">HELP WANTED</div>
-    <el-card v-loading="loading" :body-style="{ padding: '0px' }">
+    <el-card
+      v-loading="loading"
+      :body-style="{ padding: '0px' }"
+      @click.native="openProject"
+    >
       <img
         height="250"
         src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
@@ -49,7 +53,7 @@
         </div>
       </div>
     </el-card>
-    <ProjectDetailDialog :visible="detailsVisible" />
+    <ProjectDetailDialog v-model="detailsVisible" />
   </div>
 </template>
 
@@ -76,7 +80,7 @@ export default {
   data: () => ({
     loading: false,
     bookmarked: false,
-    detailsVisible: true,
+    detailsVisible: false,
   }),
   computed: {
     bookmarkIcon() {
@@ -90,6 +94,7 @@ export default {
       // send request to backend
     },
     openProject() {
+      console.log('boop');
       this.detailsVisible = true;
       // send request to backend
     },

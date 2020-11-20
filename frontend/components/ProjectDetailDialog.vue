@@ -1,9 +1,10 @@
 <template>
   <el-dialog
     v-loading="loading"
-    width="1000px"
-    visible="true"
+    width="80%"
+    :visible="value"
     :body-style="{ padding: '0px' }"
+    @update:visible="$emit('input', $event)"
   >
     <div>
       <!-- idk how to make this go in the background -->
@@ -104,8 +105,8 @@
                       @click="bookmark"
                     />
                     <iconify-icon
+                      v-if="editable"
                       icon="pencil"
-                      :visible="editable"
                       class="ml2"
                       @click="editProject"
                     />
@@ -119,9 +120,8 @@
                     v-for="image in details.images"
                     :key="image.url"
                   >
-                    <el-image :src="image.url" class="relative"></el-image>
-                    <!-- the caption isn't showing up but maybe we don't need it? -->
-                    <!-- <h3 class="relative z-999 pa3">{{ image.caption }}</h3> -->
+                    <el-image :src="image.url"></el-image>
+                    <h3 class="pa3">{{ image.caption }}</h3>
                   </el-carousel-item>
                 </el-carousel>
               </el-row>
@@ -131,8 +131,8 @@
                 <p class="mt3">{{ details.description }}</p>
                 <p class="mt4 flex flex-row items-center">
                   <iconify-icon
+                    v-if="editable"
                     icon="clock"
-                    :visible="editable"
                     class="mr2"
                     @click="editProject"
                   />
@@ -194,6 +194,12 @@ export default {
   name: 'ProjectDetailDialog',
   components: {
     IconifyIcon,
+  },
+  props: {
+    value: {
+      required: true,
+      type: Boolean,
+    },
   },
   data() {
     return {
