@@ -61,4 +61,4 @@ if __name__ == '__main__':
     if len(sys.argv) != 2:
         print('Useage: python rsa.py <key-name>')
         exit(1)
-    create_and_write_key_pair(sys.argv[1])
+    create_and_save_key_pair(sys.argv[1])
