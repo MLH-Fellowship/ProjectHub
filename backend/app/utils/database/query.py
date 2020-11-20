@@ -1,15 +1,29 @@
+from typing import List
 from . import connection
-from app.models import User
+from app.models import User, Project
 
-def projects(project):
-    st = "SELECT * FROM projects WHERE name=%s"
-
+def user_projects(owner: int) -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st, (project,))
+    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags FROM projects WHERE owner=%s", (owner,))
 
-    return cur.fetchone()
+    projects = []
+
+    for ret in cur.fetchall():
+        (id, owner, slug, name, description, source, demo, tags) = ret
+        projects.append(Project(
+            id=id,
+            owner=owner,
+            slug=slug,
+            name=name,
+            description=description,
+            source=source,
+            demo=demo,
+            tags=tags.split(','))
+        )
+
+    return projects
 
 
 def users(login) -> User:
