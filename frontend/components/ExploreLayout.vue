@@ -1,8 +1,9 @@
 <template>
   <div class="container pt4" style="align-items: none">
-    <div>
-      <div class="flex flex-row flex-wrap justify-center">
-        <div class="f3 lh-copy">Filters:</div>
+    <div class="tc">
+      <div class="b f1">Explore Projects</div>
+      <div class="flex flex-row flex-wrap justify-center items-center mv4">
+        <div class="f4 lh-copy">Filter By:</div>
         <el-select
           v-model="pods"
           multiple

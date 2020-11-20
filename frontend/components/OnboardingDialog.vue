@@ -68,7 +68,7 @@
           </el-col>
         </el-row>
         <span slot="footer" class="dialog-footer">
-          <el-button round type="primary" @click="next">Next</el-button>
+          <el-button round type="success" @click="next">Next</el-button>
         </span>
       </template>
       <template v-else>

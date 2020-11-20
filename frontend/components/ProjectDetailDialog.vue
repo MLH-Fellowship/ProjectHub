@@ -19,7 +19,7 @@
                     size="small"
                     src="https://avatars2.githubusercontent.com/u/38268331?s=460&u=121b7bd7d9dc5697e4728b21c34358cf416edf37&v=4"
                   />
-                  <div class="ml3 f5">
+                  <div class="ml3 f4">
                     <el-button
                       type="text"
                       @click="$router.push('/JordanMerrick')"
@@ -59,7 +59,7 @@
               </el-row>
 
               <el-row>
-                <p class="f3 b">Project Description</p>
+                <p class="f3 b mt4">Project Description</p>
                 <p class="mt3">{{ details.description }}</p>
                 <p class="mt4 flex flex-row items-center">
                   <iconify-icon
