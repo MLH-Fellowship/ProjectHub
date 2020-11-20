@@ -25,7 +25,7 @@ export const mutations = {
 export const actions = {
   async login({ commit }, code) {
     // onBoarding
-    const { token, meta } = await this.$axios.$get(`/api/auth/${code}`);
+    const { token, meta } = await this.$axios.$get(`/api/login/github/${code}`);
 
     commit('SET_TOKEN', token);
     commit('SET_META', meta);

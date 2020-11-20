@@ -12,14 +12,14 @@ app = FastAPI()
 http_bearer_scheme = HTTPBearerJWEScheme()
 
 
-@app.get("/auth/{code}")
-def return_jwt(code):
+@app.get("/login/github/{code}")
+def login_via_gitub(code):
     auth = GitHub.from_code(code)
-    meta = auth.meta()
 
     if auth.access_token == "Invalid Request":
         return status.HTTP_403_FORBIDDEN
     else:
+        meta = auth.meta()
         encoded = jwe.encode(auth.access_token)
         return {"token": encoded, "meta": meta}
 
