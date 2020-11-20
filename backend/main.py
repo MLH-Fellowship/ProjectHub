@@ -1,4 +1,4 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
 from app.utils import jwe
 from app.utils.github import GitHub
@@ -39,7 +39,7 @@ def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bea
     if db.exists.project(json):
         db.update.project(json)
     else:
-       return status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
 
 
 @app.get("/project/{project_id}")
@@ -48,21 +48,21 @@ def get_project(project_id):
     q = db.query.projects(project_id)
     parsed = parse_project_query(q)
     if parsed is None:
-        return status.HTTP_404_NOT_FOUND
+        raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
     else:
         return parsed
 
 
-@app.get("/projects")
-def get_project(project_id):
-    # TODO: list all projects
-    # query specific project id
-    q = db.query.projects(project_id)
-    parsed = parse_project_query(q)
-    if parsed is None:
-        return status.HTTP_404_NOT_FOUND
-    else:
-        return parsed
+# @app.get("/projects")
+# def get_projects(project_id):
+#     # TODO: list all projects
+#     # query specific project id
+#     q = db.query.projects(project_id)
+#     parsed = parse_project_query(q)
+#     if parsed is None:
+#         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
+#     else:
+#         return parsed
 
 
 @app.post("/user")
@@ -77,7 +77,6 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.pods = gh.get_pods()
         
         db.insert.user(user)
-    return status.HTTP_200_OK
 
 
 @app.put("/user")
@@ -91,15 +90,14 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.name = gh.user.name
         
         db.insert.update(user)
-        return status.HTTP_200_OK
-    else:
-        return status.HTTP_400_BAD_REQUEST
+        return
+    raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
 
 
 @app.get("/user/{login}")
 def query_user(login):
     user = db.query.users(login)
     if not user:
-        return status.HTTP_404_NOT_FOUND
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
         return user
