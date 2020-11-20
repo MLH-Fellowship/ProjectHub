@@ -1,5 +1,6 @@
 from . import connection
 from models import User
+from github_auth import GitHub
 
 project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
 user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]
@@ -27,13 +28,15 @@ def project(json):
 def user(json: User):
 
     id = json.id
-    username = json.username
-    fullname = json.fullname
-    pods = json.pods
-    timezone = json.timezone
+    username = json.login
+    fullname = json.name
+    timezone = json.timezone_offset
     bio = json.bio
     skills = json.skills
     interests = json.interests
+
+    pods_dict = GitHub().get_pods()
+    pods = ','.join(pods_dict["pods"])
 
     columns = ["id", "username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
     values = [id, username, fullname, pods, timezone, bio, skills, interests]

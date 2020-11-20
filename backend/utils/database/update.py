@@ -7,10 +7,9 @@ def project(json):
     source_link = json.source_link
     demo_link = json.demo_link
     tags = ','.join(json.tags)
-    authors = ','.join(json.authors)
     id = json.id
 
-    st = "UPDATE projects SET name=%s, description=%s, source_link=%s, demo_link=%s, images=%s, tags=%s, authors=%s WHERE id=%s" % (name, description, source_link, demo_link, images, tags, authors, id,)
+    st = "UPDATE projects SET name=%s, description=%s, source=%s, demo=%s, tags=%s WHERE id=%s" % (name, description, source_link, demo_link, tags, id,)
 
     conn = connection.create()
     cur = conn.cursor()

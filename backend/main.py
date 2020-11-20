@@ -34,6 +34,7 @@ def new_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer
     else:
         db.insert.project(json)
 
+
 @app.put("/project")
 def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     if db.exists.project(json):
@@ -52,6 +53,7 @@ def get_project(project_id):
     else:
         return parsed
 
+
 @app.get("/projects")
 def get_project(project_id):
     # TODO: list all projects
@@ -62,7 +64,6 @@ def get_project(project_id):
         return status.HTTP_404_NOT_FOUND
     else:
         return parsed
-
 
 
 @app.post("/user")

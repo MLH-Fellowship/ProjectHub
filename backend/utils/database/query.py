@@ -2,7 +2,7 @@ from . import connection
 
 
 def projects(project):
-    st = "SELECT id FROM projects WHERE name=%s"
+    st = "SELECT * FROM projects WHERE name=%s"
 
     conn = connection.create()
     cur = conn.cursor()
@@ -12,12 +12,12 @@ def projects(project):
     return cur.fetchone()
 
 
-def users(username):
-    st = "SELECT * FROM users WHERE username=%s"
+def users(id):
+    st = "SELECT * FROM users WHERE id=%s"
 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st, (username,))
+    cur.execute(st, (id,))
 
     return cur.fetchone()

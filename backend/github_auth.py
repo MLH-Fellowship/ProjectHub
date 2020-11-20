@@ -52,7 +52,7 @@ class GitHub(object):
         user = self.auth.get_user()
         return [i.name for i in user.get_orgs()]
 
-    def get_teams(self):
+    def get_pods(self):
         # Creates an authenticated user object
         org = self.auth.get_user()
 
