@@ -1,6 +1,6 @@
 from . import connection
 
-def exists(json):
+def project(json):
     id = json.id
     st = "SELECT id FROM projects WHERE id=%s" % (id,)
     conn = connection.create()
@@ -9,7 +9,7 @@ def exists(json):
     cur.execute(st)
     return cur.fetchone() is not None
 
-def exists(json):
+def user(json):
     username = json.username
 
     st = "SELECT username FROM users WHERE username=%s" % (username,)
