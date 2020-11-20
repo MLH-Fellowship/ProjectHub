@@ -34,7 +34,12 @@
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
                     <span>
-                      <a href="https://github.com/NoahCardoza/">@NoahCardoza</a>
+                      <el-link
+                        type="primary"
+                        href="https://github.com/NoahCardoza/"
+                      >
+                        @NoahCardoza
+                      </el-link>
                       on Github
                     </span>
                   </div>
@@ -61,9 +66,12 @@
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
                     <span>
-                      <a href="https://github.com/jordanrmerrick">
+                      <el-link
+                        type="primary"
+                        href="https://github.com/jordanrmerrick"
+                      >
                         @jordanrmerrick
-                      </a>
+                      </el-link>
                       on Github
                     </span>
                   </div>
@@ -90,7 +98,12 @@
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
                     <span>
-                      <a href="https://github.com/calvinqc">@calvinqc</a>
+                      <el-link
+                        type="primary"
+                        href="https://github.com/calvinqc"
+                      >
+                        @calvinqc
+                      </el-link>
                       on Github
                     </span>
                   </div>
@@ -116,7 +129,12 @@
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
                     <span>
-                      <a href="https://github.com/gracewgao">@gracewgao</a>
+                      <el-link
+                        type="primary"
+                        href="https://github.com/gracewgao"
+                      >
+                        @gracewgao
+                      </el-link>
                       on Github
                     </span>
                   </div>
