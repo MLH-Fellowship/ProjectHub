@@ -8,7 +8,6 @@ from models import Project, User
 from utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
-
 http_bearer_scheme = HTTPBearerJWEScheme()
 
 
@@ -67,12 +66,33 @@ def get_project(project_id):
 
 
 @app.post("/user")
-def insert_user(token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    print(db.exists.user(token.github_id))
-    # if db.exists.user(token.github_id):
-    #     db.update.user(user)
-    # else:
-    #     db.insert.user(user)
+def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if not db.exists.user(token.github_id):
+        gh = GitHub(token.github_at)
+
+        # set defaults needed to create a useer
+        user.id = gh.user.id
+        user.login = gh.user.login
+        user.name = gh.user.name
+        
+        db.insert.user(user)
+    return status.HTTP_200_OK
+
+
+@app.put("/user")
+def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.user(token.github_id):
+        gh = GitHub(token.github_at)
+
+        # set defaults needed to create a useer
+        user.id = gh.user.id
+        user.login = gh.user.login
+        user.name = gh.user.name
+        
+        db.insert.update(user)
+        return status.HTTP_200_OK
+    else:
+        return status.HTTP_400_BAD_REQUEST
 
 
 @app.get("/user/{login}")
