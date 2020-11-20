@@ -1,10 +1,11 @@
+from typing import List, Optional
 from pydantic import BaseModel
 
 
 class User(BaseModel):
-    username: str   # TODO: remove and take from cookies or api
-    name: str       # TODO: remove and take from cookies or api
+    login: Optional[str]
+    name: Optional[str]
     timezone_offset: int
     bio: str
-    skills: list
-    interests: list
+    skills: List[str]
+    interests: List[str]
