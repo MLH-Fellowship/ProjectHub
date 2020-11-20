@@ -6,12 +6,12 @@ def user_projects(owner: int) -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags FROM projects WHERE owner=%s", (owner,))
+    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages FROM projects WHERE owner=%s", (owner,))
 
     projects = []
 
     for ret in cur.fetchall():
-        (id, owner, slug, name, description, source, demo, tags) = ret
+        (id, owner, slug, name, description, source, demo, tags, languages) = ret
         projects.append(Project(
             id=id,
             owner=owner,
@@ -20,8 +20,9 @@ def user_projects(owner: int) -> List[Project]:
             description=description,
             source=source,
             demo=demo,
-            tags=tags.split(','))
-        )
+            tags=tags.split(','),
+            languages=languages.split(',')
+        ))
 
     return projects
 
