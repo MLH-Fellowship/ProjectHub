@@ -20,7 +20,7 @@
                   <el-avatar
                     class="mr4"
                     icon="el-icon-user-solid"
-                    src=""
+                    :src="require('~/assets/images/noah.png')"
                     :size="90"
                   ></el-avatar>
                 </el-col>
@@ -47,7 +47,7 @@
                   <el-avatar
                     class="mr4"
                     icon="el-icon-user-solid"
-                    src=""
+                    :src="require('~/assets/images/jordan.jpg')"
                     :size="90"
                   ></el-avatar>
                 </el-col>
@@ -76,7 +76,7 @@
                   <el-avatar
                     class="mr4"
                     icon="el-icon-user-solid"
-                    src=""
+                    :src="require('~/assets/images/calvin.jpg')"
                     :size="90"
                   ></el-avatar>
                 </el-col>
@@ -103,16 +103,15 @@
                   <el-avatar
                     class="mr4"
                     icon="el-icon-user-solid"
-                    src=""
+                    :src="require('~/assets/images/grace.jpg')"
                     :size="90"
                   ></el-avatar>
                 </el-col>
                 <el-col :span="16">
                   <p class="f4 b">Grace Gao</p>
                   <p class="f5 mt3">
-                    Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed
-                    do eiusmod tempor incididunt ut labore et dolore magna
-                    aliqua.
+                    Hi! I'm from Ottawa, Canada and I'm currently a first-year
+                    Software Engineering student at the University of Waterloo.
                   </p>
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
