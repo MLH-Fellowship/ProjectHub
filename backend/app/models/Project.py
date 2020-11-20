@@ -1,12 +1,12 @@
+from typing import Optional
 from pydantic import BaseModel
 
 
 class Project(BaseModel):
+    id: Optional[int]
+    owner: Optional[int]
     name: str
     description: str
-    source_link: str
-    demo_link: str
-    images: str
+    source: str
+    demo: str
     tags: list[str]
-    authors: list[str]
-    id: str

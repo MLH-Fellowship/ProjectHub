@@ -27,11 +27,9 @@ def login_via_gitub(code):
 
 
 @app.post("/project")
-def new_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    if db.exists.project(json):
-        db.update.project(json)
-    else:
-        db.insert.project(json)
+def new_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    project.owner = token.github_id
+    db.insert.project(project)
 
 
 @app.put("/project")

@@ -1,5 +1,6 @@
 CREATE TABLE IF NOT EXISTS projects(
   id serial primary key,
+  owner integer,
   name text,
   description text,
   source text,

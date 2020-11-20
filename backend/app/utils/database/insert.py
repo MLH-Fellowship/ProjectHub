@@ -1,5 +1,6 @@
 from . import connection
 from app.models import User
+from app.models import Project
 
 project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
 user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]
@@ -7,16 +8,11 @@ project_table = "projects"
 user_table = "users"
 
 
-def project(json):
-    name = json.name
-    description = json.description
-    link = json.source_link
-    demo_link = json.demo_link
-    image_url = json.images
-    tags = ",".join(json.tags)
+def project(project: Project):
+    tags = ",".join(project.tags)
 
-    columns = ["name", "description", "link", "demo_link", "image_url", "tags"]
-    values = [name, description, link, demo_link, image_url, tags]
+    columns = ["owner", "name", "description", "source", "demo", "tags"]
+    values = [project.owner, project.name, project.description, project.source, project.demo, tags]
 
     connection.insert(
         column_names=columns,
