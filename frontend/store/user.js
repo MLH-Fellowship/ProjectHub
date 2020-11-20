@@ -25,13 +25,15 @@ export const mutations = {
 export const actions = {
   async login({ commit }, code) {
     // onBoarding
-    const { token, meta } = await this.$axios.$get(`/api/login/github/${code}`);
+    const { token, meta, onBoarding } = await this.$axios.$get(
+      `/api/login/github/${code}`
+    );
 
     commit('SET_TOKEN', token);
     commit('SET_META', meta);
 
     return {
-      onBoarding: true,
+      onBoarding,
       finish: () => commit('SET_ANONYMOUS', false),
     };
   },
