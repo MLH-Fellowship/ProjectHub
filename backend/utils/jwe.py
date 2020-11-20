@@ -73,7 +73,7 @@ class HTTPBearerJWEScheme(HTTPBase):
             scheme=scheme,
             credentials=credentials,
             github_id=context['id'],
-            github_at=context['access_token']
+            github_at=context['at']
         )
 
     
@@ -92,7 +92,7 @@ protected_header = {
 def encode(at):    
     auth = GitHub(at=at)
     gh_user_id = auth.id()
-    payload = json_encode({'access_token': at, 'id': gh_user_id})
+    payload = json_encode({'at': at, 'id': gh_user_id})
 
     token = jwe.JWE(payload.encode('utf-8'),
                        recipient=public_key,
