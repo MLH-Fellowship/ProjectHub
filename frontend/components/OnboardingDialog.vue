@@ -72,34 +72,44 @@
         </span>
       </template>
       <template v-else>
-        <h1 style="font-size: 2em; text-align: center">You're all set!</h1>
-        <el-row>
+        <h1 class="black" style="font-size: 2em; text-align: center">
+          You're all set!
+        </h1>
+        <el-row class="flex flex-row items-center tc">
           <el-col :span="8">
             <div class="grid-content">
               <el-image
-                class="pa2 w-100"
+                class="pa4 w-100"
                 :src="require('~/assets/images/explore.png')"
               ></el-image>
-              <h3>1. Explore</h3>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-image
-                class="pa2 w-100"
+                class="pa4 w-100"
                 :src="require('~/assets/images/create.png')"
               ></el-image>
-              <h3>2. Create</h3>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
               <el-image
-                class="pa2 w-100"
+                class="pa4 w-100"
                 :src="require('~/assets/images/collaborate.png')"
               ></el-image>
-              <h3>3. Collaborate</h3>
             </div>
+          </el-col>
+        </el-row>
+        <el-row class="flex flex-row items-center tc black">
+          <el-col>
+            <h3>1. Explore</h3>
+          </el-col>
+          <el-col>
+            <h3>2. Create</h3>
+          </el-col>
+          <el-col>
+            <h3>3. Collaborate</h3>
           </el-col>
         </el-row>
 
