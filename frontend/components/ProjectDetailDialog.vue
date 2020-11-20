@@ -7,15 +7,6 @@
     @update:visible="$emit('input', $event)"
   >
     <div>
-      <!-- idk how to make this go in the background -->
-      <!-- <el-image
-        class="relative"
-        style="height: 300px; top: 0; left: 0; right: 0"
-        src="https://socialify.git.ci/calvinqc/trivin/image?forks=1&issues=1&language=1&owner=1&pulls=1&stargazers=1&theme=Light"
-        alt="Project Banner"
-        :fit="cover"
-      ></el-image> -->
-
       <div v-loading="loading" class="pa4 tc">
         <div>
           <el-row type="flex" align="center" class="flex-wrap">
@@ -44,11 +35,7 @@
                 <div class="flex flex-row f1 items-center b">
                   {{ details.title }}
                   <span class="f2">
-                    <iconify-icon
-                      :icon="bookmarkIcon"
-                      class="ml4"
-                      @click="bookmark"
-                    />
+                    <BookmarkButton class="ml4" />
                     <iconify-icon
                       v-if="editable"
                       icon="pencil"
@@ -94,9 +81,8 @@
 
 <script>
 import ProjectOverviewCard from '@/components/ProjectOverview/Card';
+import BookmarkButton from '@/components/button/Bookmark';
 import IconifyIcon from '@iconify/vue';
-import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
-import Bookmark from '@iconify/icons-mdi/bookmark';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 import Edit from '@iconify/icons-mdi/lead-pencil';
 import Clock from '@iconify/icons-mdi/clock-time-four-outline';
@@ -104,8 +90,6 @@ import Code from '@iconify/icons-mdi/code-tags';
 import Group from '@iconify/icons-mdi/account-group';
 import Github from '@iconify/icons-mdi/github';
 
-IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
-IconifyIcon.addIcon('bookmark', Bookmark);
 IconifyIcon.addIcon('tags', TagMultiple);
 IconifyIcon.addIcon('pencil', Edit);
 IconifyIcon.addIcon('clock', Clock);
@@ -141,6 +125,7 @@ export default {
   components: {
     IconifyIcon,
     ProjectOverviewCard,
+    BookmarkButton,
   },
   props: {
     value: {
@@ -156,21 +141,10 @@ export default {
       editable: true,
     };
   },
-  computed: {
-    title() {
-      return 'Project Title';
-    },
-    bookmarkIcon() {
-      return this.bookmarked ? 'bookmark' : 'bookmark-outline';
-    },
-  },
+  computed: {},
   mounted() {},
   beforeDestroy() {},
   methods: {
-    bookmark() {
-      this.bookmarked = !this.bookmarked;
-      // send request to backend
-    },
     editProject() {
       // send request to backend
     },

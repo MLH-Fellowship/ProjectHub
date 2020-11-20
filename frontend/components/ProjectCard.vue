@@ -14,7 +14,7 @@
       <div class="ph3 pb3">
         <div class="flex flex-row items-center justify-between f3 lh-copy">
           <div>Event-bot</div>
-          <iconify-icon :icon="bookmarkIcon" @click="bookmark" />
+          <BookmarkButton />
         </div>
 
         <div class="mv3">
@@ -49,7 +49,7 @@
         </div>
 
         <div>
-          <el-button type="text" @click="learn_more">Learn More</el-button>
+          <el-button type="text" @click="learnMore">Learn More</el-button>
         </div>
       </div>
     </el-card>
@@ -59,13 +59,10 @@
 
 <script>
 import ProjectDetailDialog from '@/components/ProjectDetailDialog';
+import BookmarkButton from '@/components/button/Bookmark';
 import IconifyIcon from '@iconify/vue';
-import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
-import Bookmark from '@iconify/icons-mdi/bookmark';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 
-IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
-IconifyIcon.addIcon('bookmark', Bookmark);
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
@@ -73,30 +70,20 @@ export default {
   components: {
     IconifyIcon,
     ProjectDetailDialog,
+    BookmarkButton,
   },
   props: {
     index: { type: Number, required: true },
   },
   data: () => ({
     loading: false,
-    bookmarked: false,
     detailsVisible: false,
   }),
-  computed: {
-    bookmarkIcon() {
-      return this.bookmarked ? 'bookmark' : 'bookmark-outline';
-    },
-  },
+  computed: {},
   methods: {
-    learn_more() {},
-    bookmark() {
-      this.bookmarked = !this.bookmarked;
-      // send request to backend
-    },
+    learnMore() {},
     openProject() {
-      console.log('boop');
       this.detailsVisible = true;
-      // send request to backend
     },
   },
 };
