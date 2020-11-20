@@ -1,6 +1,5 @@
 from . import connection
 from models import User
-from github_auth import GitHub
 
 project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
 user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]

@@ -1,7 +1,7 @@
 import json
 from jwcrypto import jwk, jwe
 from jwcrypto.common import json_decode, json_encode
-from github_auth import GitHub
+from utils.github import GitHub
 from settings import PRIV_KEY_PATH, PUB_KEY_PATH
 import base64
 

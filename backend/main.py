@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends
 from starlette import status
 from utils import jwe
-from github_auth import GitHub
+from utils.github import GitHub
 import utils.database as db
 from apiparse import parse_project_query, parse_user_query
 from models import Project, User
