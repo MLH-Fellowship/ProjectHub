@@ -32,7 +32,7 @@
             </el-col>
             <el-col :sm="24" :md="15" class="pa4 pr0 tl">
               <el-row>
-                <div class="flex flex-row f1 items-center b">
+                <div class="flex flex-row f1 items-center b black">
                   {{ details.title }}
                   <span class="f2">
                     <BookmarkButton class="ml4" />

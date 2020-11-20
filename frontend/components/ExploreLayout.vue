@@ -1,9 +1,7 @@
 <template>
   <div class="container pt4" style="align-items: none">
-    <div class="background-img" />
     <div class="tc relative">
-      <div class="b f1 mt5">Explore Projects</div>
-      <div class="flex flex-row flex-wrap justify-center items-center mt4 mb5">
+      <div class="flex flex-row flex-wrap justify-center items-center mb5">
         <div class="f4 lh-copy">Filter By:</div>
         <el-select
           v-model="pods"
