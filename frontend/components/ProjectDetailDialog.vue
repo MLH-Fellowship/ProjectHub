@@ -1,8 +1,8 @@
 <template>
   <el-dialog
+    v-loading="loading"
     width="1000px"
     visible="true"
-    v-loading="loading"
     :body-style="{ padding: '0px' }"
   >
     <div>
@@ -100,8 +100,8 @@
                   <span class="f2">
                     <iconify-icon
                       :icon="bookmarkIcon"
-                      @click="bookmark"
                       class="ml4"
+                      @click="bookmark"
                     />
                     <iconify-icon
                       icon="pencil"
@@ -117,7 +117,7 @@
                 <el-carousel trigger="click" arrow="always">
                   <el-carousel-item
                     v-for="image in details.images"
-                    :key="image"
+                    :key="image.url"
                   >
                     <el-image :src="image.url" class="relative"></el-image>
                     <!-- the caption isn't showing up but maybe we don't need it? -->
@@ -133,8 +133,8 @@
                   <iconify-icon
                     icon="clock"
                     :visible="editable"
-                    @click="editProject"
                     class="mr2"
+                    @click="editProject"
                   />
                   Last updated {{ details.time }}
                 </p>
