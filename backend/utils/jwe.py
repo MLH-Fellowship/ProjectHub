@@ -97,7 +97,7 @@ def encode(uid, at):
                        protected=protected_header)
     encrypted = token.serialize()
 
-    return base64.encodebytes(encrypted.encode('utf-8')).decode('ascii')
+    return ''.join(base64.encodebytes(encrypted.encode('utf-8')).decode().split())
 
 
 def decode(encrypted):
