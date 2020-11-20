@@ -7,10 +7,10 @@
       {{ details.languages.join(', ') }}
     </div>
 
-    <div class="flex flex-row f5 mt3">
+    <!-- <div class="flex flex-row f5 mt3">
       <iconify-icon icon="group" class="mr2" />
       Jordan, Noah, Calvin
-    </div>
+    </div> -->
 
     <div class="flex flex-row f5 mt3">
       <iconify-icon icon="github" class="mr2" />
