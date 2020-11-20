@@ -50,7 +50,6 @@ def insert(table_name: str, column_names: list, values: list):
         raise ValueError("Must include column names")
 
     statement = f"INSERT INTO {table_name}({', '.join(column_names)}) VALUES({', '.join('%s' for _ in range(len(values)))})"
-    print(statement)
 
     conn = create()
 
