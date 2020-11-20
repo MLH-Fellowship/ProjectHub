@@ -20,18 +20,19 @@ def project(json):
 
 
 def user(json):
-    username = json.username
-    fullname = json.name
-    timezone = json.timezone
+    id = json.id
+    login = json.login
+    name = json.name
+    pods = json.pods
+    timezone_offset = json.timezone_offset
     bio = json.bio
     skills = ','.join(json.skills)
     interests = ','.join(json.interests)
 
-    st = "UPDATE users SET fullname=%s, timezone=%s, bio=%s, skills=%s, interests=%s WHERE username=%s" % (fullname, timezone, bio, skills, interests, username, )
+    st = "UPDATE users SET login=%s, name=%s, pods=%s, timezone_offset=%s, bio=%s, skills=%s, interests=%s WHERE id=%s"
 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st)
+    cur.execute(st, (login, name, pods, timezone_offset, bio, skills, interests, id,))
     conn.commit()
-

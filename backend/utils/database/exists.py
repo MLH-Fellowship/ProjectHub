@@ -1,22 +1,24 @@
 from . import connection
 
+
 def project(json):
     id = json.id
-    st = "SELECT id FROM projects WHERE id=%s" % (id,)
+    st = "SELECT id FROM projects WHERE id=%s"
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st)
+    cur.execute(st, (id, ))
     return cur.fetchone() is not None
+
 
 def user(json):
     username = json.username
 
-    st = "SELECT username FROM users WHERE username=%s" % (username,)
+    st = "SELECT id FROM users WHERE id=%s"
 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st)
+    cur.execute(st, (username,))
 
     return cur.fetchone() is not None
