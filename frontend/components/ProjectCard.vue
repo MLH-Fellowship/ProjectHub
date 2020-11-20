@@ -1,5 +1,5 @@
 <template>
-  <div class="project-card tl">
+  <div class="project-card tl" @click="openProject">
     <div class="help-wanted-tag">HELP WANTED</div>
     <el-card v-loading="loading" :body-style="{ padding: '0px' }">
       <img
@@ -18,7 +18,7 @@
           Fellows using Google Calendar.
         </div>
 
-        <div class="flex flex-row items-center f3 lh-copy">
+        <div class="flex flex-row items-center f4 lh-copy">
           <iconify-icon inline icon="tag-multiple" height="24" class="mr2" />
           Tags
         </div>
@@ -49,10 +49,12 @@
         </div>
       </div>
     </el-card>
+    <ProjectDetailDialog :visible="detailsVisible" />
   </div>
 </template>
 
 <script>
+import ProjectDetailDialog from '@/components/ProjectDetailDialog';
 import IconifyIcon from '@iconify/vue';
 import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
 import Bookmark from '@iconify/icons-mdi/bookmark';
@@ -66,6 +68,7 @@ export default {
   name: 'ProjectCard',
   components: {
     IconifyIcon,
+    ProjectDetailDialog,
   },
   props: {
     index: { type: Number, required: true },
@@ -73,6 +76,7 @@ export default {
   data: () => ({
     loading: false,
     bookmarked: false,
+    detailsVisible: true,
   }),
   computed: {
     bookmarkIcon() {
@@ -83,6 +87,10 @@ export default {
     learn_more() {},
     bookmark() {
       this.bookmarked = !this.bookmarked;
+      // send request to backend
+    },
+    openProject() {
+      this.detailsVisible = true;
       // send request to backend
     },
   },
