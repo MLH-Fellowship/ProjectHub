@@ -15,6 +15,7 @@
                 class="absolute ma4"
                 style="top: 0; left: 0"
                 icon="el-icon-user-solid"
+                :src="user.avatar_url"
                 :size="200"
               ></el-avatar>
             </div>
@@ -22,15 +23,14 @@
         </el-col>
         <el-col class="z-999 relative" :span="14">
           <div class="grid-content">
-            <h2>Calvin Nguyen</h2>
+            <el-link type="primary" :href="user.html_url">
+              <h2>{{ user.name }}</h2>
+            </el-link>
 
             <el-form class="mv4" :model="form" label-width="100px">
-              <el-form-item class="tl" label="Github:">
-                https://github.com/calvinqc
-              </el-form-item>
-              <el-form-item class="tl" label="Pod #:">1.0.1</el-form-item>
+              <el-form-item class="tl" label="Pods">1.0.1</el-form-item>
 
-              <el-form-item class="tl" label="My Interests">
+              <el-form-item class="tl" label="Interests">
                 <el-select
                   v-model="form.interests"
                   multiple
@@ -45,7 +45,7 @@
                 </el-select>
               </el-form-item>
 
-              <el-form-item class="tl" label="My Skills">
+              <el-form-item class="tl" label="Skills">
                 <el-select v-model="form.skills" multiple placeholder="Select">
                   <el-option
                     v-for="skill in options.skills"
@@ -55,9 +55,9 @@
                   ></el-option>
                 </el-select>
               </el-form-item>
-              <el-form-item label="About Me">
+              <el-form-item label="About">
                 <el-input
-                  v-model="form.bio"
+                  v-model="user.bio"
                   type="textarea"
                   placeholer="Write a short bio..."
                 ></el-input>
@@ -74,9 +74,8 @@
 </template>
 
 <script>
-// import { mapState } from 'vuex';
 import pick from 'ramda/src/pick';
-import ExploreLayout from '../../components/ExploreLayout.vue';
+import ExploreLayout from '@/components/ExploreLayout.vue';
 
 export default {
   components: { ExploreLayout },
@@ -93,9 +92,11 @@ export default {
         .then(
           pick([
             'login',
+            'html_url',
             'avatar_url',
             'name',
             'location',
+            'bio',
             'email',
             'public_repos',
             'public_gists',
@@ -125,6 +126,9 @@ export default {
         )
       ),
     ]);
+
+    user.bio = user.bio.trim();
+
     return {
       user,
       projects,
@@ -159,7 +163,6 @@ export default {
       return `https://github.com/${this.user.login}`;
     },
   },
-  // computed: mapState(['user']),
   methods: {
     next() {
       this.step++;
@@ -176,11 +179,3 @@ export default {
   },
 };
 </script>
-
-<style scoped>
-.grid {
-  display: flex;
-  flex-flow: row wrap;
-  justify-content: center;
-}
-</style>
