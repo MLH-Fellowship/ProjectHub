@@ -4,8 +4,10 @@
       <el-col :offset="2" :xs="22" :sm="14" :md="10">
         <div class="tl z-1">
           <p class="f1">Welcome to</p>
-          <p class="b mv3" style="font-size: 5em">Project Hub</p>
-          <p class="mt5">Introducing a new way to find and share projects</p>
+          <p class="b mv3" style="font-size: 4.5em">Project Hub</p>
+          <p class="mt5">
+            Introducing a new way to find and share your projects
+          </p>
           <div class="mt4">
             <el-button round type="success">Explore Projects</el-button>
             <GithubLoginButton v-if="user.anonymous" class="ml3" />
