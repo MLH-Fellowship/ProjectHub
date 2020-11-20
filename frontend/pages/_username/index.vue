@@ -15,7 +15,7 @@
                 class="absolute ma4"
                 style="top: 0; left: 0"
                 icon="el-icon-user-solid"
-                :src="user.avatar_url"
+                :src="ghUser.avatar_url"
                 :size="200"
               ></el-avatar>
             </div>
@@ -23,12 +23,14 @@
         </el-col>
         <el-col class="z-999 relative" :span="14">
           <div class="grid-content">
-            <el-link type="primary" :href="user.html_url">
-              <h2>{{ user.name }}</h2>
+            <el-link type="primary" :href="ghUser.html_url">
+              <h2>{{ ghUser.name }}</h2>
             </el-link>
 
             <el-form class="mv4" :model="form" label-width="100px">
-              <el-form-item class="tl" label="Pods">1.0.1</el-form-item>
+              <el-form-item class="tl" label="Pods">
+                {{ user.pods | joinWithComma }}
+              </el-form-item>
 
               <el-form-item class="tl" label="Interests">
                 <el-select
@@ -48,13 +50,13 @@
 
               <el-form-item class="tl" label="Skills">
                 <el-select
-                  v-model="form.skills"
+                  v-model="user.skills"
                   multiple
                   placeholder="Select"
                   class="w-100"
                 >
                   <el-option
-                    v-for="skill in options.skills"
+                    v-for="skill in user.skills"
                     :key="skill.value"
                     :label="skill.label"
                     :value="skill.value"
@@ -85,14 +87,21 @@ import ExploreLayout from '@/components/ExploreLayout.vue';
 
 export default {
   components: { ExploreLayout },
-  async asyncData({ params, $axios, $github }) {
-    // API request to fill out page
-    const details = {
-      success: true,
-      pods: ['1.0.1', '1.2.2'],
-      projects: ['NoahCardoza/CaptchaHarvester'],
-    };
-    const [user, projects] = await Promise.all([
+  async asyncData({ params, $axios, $github, error }) {
+    let user;
+    try {
+      user = await $axios.$get(`/api/user/${params.username}`);
+    } catch (e) {
+      return error({ statusCode: 404, message: 'User not found' });
+    }
+
+    // const user = {
+    //   success: true,
+    //   pods: ['1.0.1', '1.2.2'],
+    //   projects: ['NoahCardoza/CaptchaHarvester'],
+    // };
+
+    const [ghUser, projects] = await Promise.all([
       $github
         .get('users', params.username)
         .then(
@@ -110,7 +119,7 @@ export default {
           ])
         ),
       Promise.all(
-        details.projects.map((repository) =>
+        user.projects.map((repository) =>
           $github
             .get('repos', repository)
             .then(
@@ -133,10 +142,9 @@ export default {
       ),
     ]);
 
-    user.bio = user.bio.trim();
-
     return {
       user,
+      ghUser,
       projects,
     };
   },
@@ -166,7 +174,7 @@ export default {
   },
   computed: {
     user_github_url() {
-      return `https://github.com/${this.user.login}`;
+      return `https://github.com/${this.ghUser.login}`;
     },
   },
   methods: {
