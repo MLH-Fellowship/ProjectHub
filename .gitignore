@@ -1,6 +1,8 @@
 /postgres/database
 *.pem
 *.pub
+*.cert
+*.key
 .DS_Store
 .idea
 
