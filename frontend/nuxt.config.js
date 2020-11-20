@@ -70,6 +70,7 @@ export default {
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
+    analyze: process.env.NUXT_ANALYZE === '1',
     transpile: [/^element-ui/],
   },
 };
