@@ -19,29 +19,23 @@ def project(json):
     columns = ["name", "description", "link", "demo_link", "image_url", "tags"]
     values = [name, description, link, demo_link, image_url, tags]
 
-    connection.execute_statement(column_names=columns,
-                                 values=values,
-                                 table_name=project_table
-                                 )
+    connection.insert(
+        column_names=columns,
+        values=values,
+        table_name=project_table
+    )
 
 
-def user(json: User):
+def user(user: User):
+    skills = ','.join(user.skills)
+    interests = ','.join(user.interests)
+    pods = ','.join(user.pods)
 
-    id = json.id
-    username = json.login
-    fullname = json.name
-    timezone = json.timezone_offset
-    bio = json.bio
-    skills = json.skills
-    interests = json.interests
+    columns = ["id", "login", "name", "pods", "timezone_offset", "bio", "skills", "interests"]
+    values = [user.id, user.login, user.name, pods, user.timezone_offset, user.bio, skills, interests]
 
-    pods_dict = GitHub().get_pods()
-    pods = ','.join(pods_dict["pods"])
-
-    columns = ["id", "username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
-    values = [id, username, fullname, pods, timezone, bio, skills, interests]
-
-    connection.execute_statement(column_names=columns,
-                                 values=values,
-                                 table_name=user_table
-                                 )
+    connection.insert(
+        column_names=columns,
+        values=values,
+        table_name=user_table
+    )
