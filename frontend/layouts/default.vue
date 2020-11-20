@@ -1,6 +1,8 @@
 <template>
   <div class="layout-default">
+    <!-- can't figure out how to make navbar stick to top -->
     <el-menu
+      class="fixed"
       :default-active="activeRoute"
       mode="horizontal"
       @select="handleSelect"
