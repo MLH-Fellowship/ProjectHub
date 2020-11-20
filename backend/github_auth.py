@@ -1,5 +1,5 @@
 import requests
-from github import Github
+from github import Github as _Github
 import re
 from datetime import datetime, timedelta, timezone
 from settings import GITHUB_CLIENT_ID, GITHUB_SECRET
@@ -25,16 +25,21 @@ def request_access_token(code):
     except IndexError:
         return "Invalid Request"
 
-class GH(object):
+class GitHub(object):
 
-    def __init__(self, code=None, at=None):
+    @classmethod
+    def from_code(cls, code: str):
+        return cls(at=request_access_token(code))
+    
+    @classmethod
+    def from_jwe(cls, jwe: str):
+        #TODO: decode and grab access token from jwe
+        pass
+
+    def __init__(self, at=None):
         self.dt = None
-        self.code = code
-
-        if at is None:
-            self.access_token = request_access_token(code)
-        else:
-            self.access_token = at
+        self.access_token = at
+            
 
     def expire_token(self):
         """
@@ -43,22 +48,19 @@ class GH(object):
         """
         if self.dt is None:
             self.dt = datetime.now(tz=timezone.utc)
-        else:
-            if self.dt + timedelta(hours=12) > datetime.now(tz=timezone.utc):
-                self.access_token = request_access_token(self.code)
-            else:
-                pass
+        elif self.dt + timedelta(hours=12) > datetime.now(tz=timezone.utc):
+            self.access_token = request_access_token(self.code)
 
     def get_orgs(self):
 
-        auth = Github(self.access_token)
+        auth = _Github(self.access_token)
         user = auth.get_user()
         return [i.name for i in user.get_orgs()]
 
     def get_teams(self):
 
         # Authenticates the user with Github
-        auth = Github(self.access_token)
+        auth = _Github(self.access_token)
 
         # Creates an authenticated user object
         org = auth.get_user()
@@ -74,7 +76,7 @@ class GH(object):
         return {"pods": pods}
 
     def meta(self):
-        auth = Github(self.access_token)
+        auth = _Github(self.access_token)
         user = auth.get_user()
         login = user.login
         name = user.name
@@ -82,6 +84,6 @@ class GH(object):
         return {"login": login, "name": name, "avatar": avatar}
 
     def id(self):
-        auth = Github(self.access_token)
+        auth = _Github(self.access_token)
         user = auth.get_user()
         return user.id

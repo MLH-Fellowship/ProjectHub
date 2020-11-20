@@ -1,49 +1,26 @@
-from fastapi import FastAPI
+from fastapi import FastAPI, Depends
 from starlette import status
-from pydantic import BaseModel
-from handle_tokens import decode_jwt, encode_jwt
-from github_auth import request_access_token, GH
-from settings import PRIV_KEY_PATH, PUB_KEY_PATH
-from db_connect import Insert, Update, Query
+from utils import jwe
+from github_auth import GitHub
+import utils.database as db
 from apiparse import parse_project_query, parse_user_query
+from models import Token, Project, User
+from utils.jwe import HTTPBearerJWEScheme
 
 app = FastAPI()
 
-
-class Token(BaseModel):
-    encoded_jwt: str
-
-
-class Project(BaseModel):
-    name: str
-    description: str
-    source_link: str
-    demo_link: str
-    images: str
-    tags: list[str]
-    authors: list[str]
-    id: str
-
-
-class User(BaseModel):
-    username: str
-    name: str
-    timezone: int
-    bio: str
-    skills: list[str]
-    interests: list[str]
+http_bearer_scheme = HTTPBearerJWEScheme()
 
 
 @app.get("/auth/{code}")
 def return_jwt(code):
-    at = request_access_token(code)
-    auth = GH(at=at)
+    auth = GitHub.from_code(code)
     meta = auth.meta()
 
-    if at == "Invalid Request":
+    if auth.access_token == "Invalid Request":
         return status.HTTP_403_FORBIDDEN
     else:
-        encoded = encode_jwt(at, PRIV_KEY_PATH)
+        encoded = jwe.encode(auth.access_token)
         return {"token": encoded, "meta": meta}
 
 
@@ -51,7 +28,7 @@ def return_jwt(code):
 def teams(jwt: Token):
     # Decode and verify the jwt
     try:
-        decoded = decode_jwt(jwt.encoded_jwt, PUB_KEY_PATH)
+        decoded = jwe.decode(jwt.encoded_jwt)
         return decoded
     except ValueError:
         return status.HTTP_403_FORBIDDEN
@@ -59,17 +36,16 @@ def teams(jwt: Token):
 
 @app.post("/projects")
 def insert_project(json: Project):
-    update = Update(json=json)
-    if update.project_exists():
-        update.update_project()
+    if db.exists.project(json):
+        db.update.project(json)
     else:
-        Insert().insert_project(json=json)
+        db.insert.project(json)
 
 
 @app.get("/projects/{project}")
 def query_project(project):
     # query specific project id
-    q = Query().query_projects(project=project)
+    q = db.query.projects(project)
     parsed = parse_project_query(q)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
@@ -77,18 +53,18 @@ def query_project(project):
         return parsed
 
 
-@app.post("/user/{user}")
-def insert_user(json: User):
-    update = Update(json=json)
-    if update.user_exists():
-        update.update_user()
+@app.post("/user")
+def insert_user(user: User, token: str = Depends(http_bearer_scheme)):
+    # TODO: look up user by github_id in token not info passed in json
+    if db.exists.user(user):
+        db.update.user(user)
     else:
-        Insert().insert_user(json)
+        db.insert.user(user)
 
 
 @app.get("/user/{username}")
 def query_user(username):
-    query = Query().query_users(username)
+    query = db.query.users(username)
     parsed = parse_user_query(query)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
