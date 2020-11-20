@@ -1,24 +1,15 @@
 from . import connection
 
 
-def project(json):
-    id = json.id
-    st = "SELECT id FROM projects WHERE id=%s"
+def project(rid):
     conn = connection.create()
     cur = conn.cursor()
-
-    cur.execute(st, (id, ))
+    cur.execute("SELECT id FROM projects WHERE id=%d", (rid, ))
     return cur.fetchone() is not None
 
 
-def user(json):
-    username = json.username
-
-    st = "SELECT id FROM users WHERE id=%s"
-
+def user(rid):
     conn = connection.create()
     cur = conn.cursor()
-
-    cur.execute(st, (username,))
-
+    cur.execute("SELECT id FROM users WHERE id=%d", (rid,))
     return cur.fetchone() is not None
