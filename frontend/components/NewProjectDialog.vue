@@ -30,7 +30,7 @@
       <div v-else>
         <el-row type="flex" align="center">
           <el-col :span="6">Project Name</el-col>
-          <el-col :span="18"><el-input v-model="form.title" /></el-col>
+          <el-col :span="18"><el-input v-model="form.name" /></el-col>
         </el-row>
         <el-row type="flex" align="center" class="mt3">
           <el-col :span="6">Description</el-col>
@@ -77,9 +77,10 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+
 const initForm = () => ({
-  imported: false,
-  title: '',
+  name: '',
   description: '',
   source: '',
   demo: '',
@@ -99,6 +100,7 @@ export default {
     return {
       step: 0,
       loading: false,
+      imported: false,
       form: initForm(),
       tags: {
         inputVisible: true,
@@ -107,13 +109,12 @@ export default {
     };
   },
   computed: {
+    ...mapState(['user']),
     title() {
       return [
         'How would you like to add the project?',
         'Enter a Github project URL!',
-        this.form.imported
-          ? 'How does this look?'
-          : 'Tell us about your project!',
+        this.imported ? 'How does this look?' : 'Tell us about your project!',
       ][this.step];
     },
     center() {
@@ -128,8 +129,6 @@ export default {
       }
     },
   },
-  mounted() {},
-  beforeDestroy() {},
   methods: {
     async importFromGithub() {
       // TODO: error checking to make sure the url/repo is valid
@@ -140,17 +139,18 @@ export default {
         this.$github.get('repos', login, repository),
         this.$github.get('repos', login, repository, 'topics'),
       ]);
-      this.form.imported = true;
-      this.form.title = repository;
+      this.imported = true;
+      this.form.name = repository;
       this.form.description = description;
       this.form.demo = homepage;
       this.form.tags = names;
       this.step = 2;
       this.loading = false;
     },
-    createNewProject() {
-      // TODO: post to api
-      // this.$axios.$post('/api/project/new', this.form)
+    async createNewProject() {
+      const project = await this.$axios.$post('/api/project', this.form);
+      this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
+      this.$emit('input', false);
     },
     removeTag(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
