@@ -1,4 +1,5 @@
 from . import connection
+from models import User
 
 project_columns = ["id serial PRIMARY KEY", "name text", "description text", "link text", "demo_link text", "image_url text", "tags text"]
 user_columns = ["username text PRIMARY KEY", "name text", "photo text", "timezone text"]
@@ -23,8 +24,9 @@ def project(json):
                                  )
 
 
-def user(json):
+def user(json: User):
 
+    id = json.id
     username = json.username
     fullname = json.fullname
     pods = json.pods
@@ -33,8 +35,8 @@ def user(json):
     skills = json.skills
     interests = json.interests
 
-    columns = ["username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
-    values = [username, fullname, pods, timezone, bio, skills, interests]
+    columns = ["id", "username", "fullname", "pods", "timezone", "bio", "skills", "interests"]
+    values = [id, username, fullname, pods, timezone, bio, skills, interests]
 
     connection.execute_statement(column_names=columns,
                                  values=values,

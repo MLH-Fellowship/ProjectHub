@@ -66,7 +66,7 @@ def get_project(project_id):
 
 
 @app.post("/user")
-def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+def insert_user(token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     print(db.exists.user(token.github_id))
     # if db.exists.user(token.github_id):
     #     db.update.user(user)
