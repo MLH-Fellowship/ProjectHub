@@ -89,10 +89,8 @@ protected_header = {
 }
 
 
-def encode(at):    
-    auth = GitHub(at=at)
-    gh_user_id = auth.id()
-    payload = json_encode({'at': at, 'id': gh_user_id})
+def encode(uid, at):    
+    payload = json_encode({'at': at, 'id': uid})
 
     token = jwe.JWE(payload.encode('utf-8'),
                        recipient=public_key,
