@@ -3,7 +3,7 @@
     <el-button ref="button" round @click="authenticate">
       Login With GitHub
     </el-button>
-    <OnboardingDialog v-if="onBoarding" @complete="finish" />
+    <OnboardingDialog v-model="onBoarding" on-boarding @complete="finish" />
   </div>
 </template>
 
