@@ -5,7 +5,7 @@ from github_auth import GitHub
 import utils.database as db
 from apiparse import parse_project_query, parse_user_query
 from models import Project, User
-from utils.jwe import HTTPBearerJWEScheme
+from utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
 
@@ -27,28 +27,36 @@ def login_via_gitub(code):
         }
 
 
-@app.post("/teams")
-def teams(jwt: Token):
-    # Decode and verify the jwt
-    try:
-        decoded = jwe.decode(jwt.encoded_jwt)
-        return decoded
-    except ValueError:
-        return status.HTTP_403_FORBIDDEN
-
-
-@app.post("/projects")
-def insert_project(json: Project):
+@app.post("/project")
+def new_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     if db.exists.project(json):
         db.update.project(json)
     else:
         db.insert.project(json)
 
+@app.put("/project")
+def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.project(json):
+        db.update.project(json)
+    else:
+       return status.HTTP_400_BAD_REQUEST
 
-@app.get("/projects/{project}")
-def query_project(project):
+
+@app.get("/project/{project_id}")
+def get_project(project_id):
     # query specific project id
-    q = db.query.projects(project)
+    q = db.query.projects(project_id)
+    parsed = parse_project_query(q)
+    if parsed is None:
+        return status.HTTP_404_NOT_FOUND
+    else:
+        return parsed
+
+@app.get("/projects")
+def get_project(project_id):
+    # TODO: list all projects
+    # query specific project id
+    q = db.query.projects(project_id)
     parsed = parse_project_query(q)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
@@ -56,18 +64,19 @@ def query_project(project):
         return parsed
 
 
+
 @app.post("/user")
-def insert_user(user: User, token: str = Depends(http_bearer_scheme)):
-    # TODO: look up user by github_id in token not info passed in json
-    if db.exists.user(user):
-        db.update.user(user)
-    else:
-        db.insert.user(user)
+def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    print(db.exists.user(token.github_id))
+    # if db.exists.user(token.github_id):
+    #     db.update.user(user)
+    # else:
+    #     db.insert.user(user)
 
 
-@app.get("/user/{username}")
-def query_user(username):
-    query = db.query.users(username)
+@app.get("/user/{login}")
+def query_user(login):
+    query = db.query.users(login)
     parsed = parse_user_query(query)
     if parsed is None:
         return status.HTTP_404_NOT_FOUND
