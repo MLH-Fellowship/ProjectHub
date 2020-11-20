@@ -74,6 +74,7 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
+        user.pods = gh.get_pods()
         
         db.insert.user(user)
     return status.HTTP_200_OK
