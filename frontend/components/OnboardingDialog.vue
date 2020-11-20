@@ -76,16 +76,28 @@
         <el-row>
           <el-col :span="8">
             <div class="grid-content">
+              <el-image
+                class="pa2 w-100"
+                :src="require('~/assets/images/explore.png')"
+              ></el-image>
               <h3>1. Explore</h3>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
-              <h3>2. Connect</h3>
+              <el-image
+                class="pa2 w-100"
+                :src="require('~/assets/images/create.png')"
+              ></el-image>
+              <h3>2. Create</h3>
             </div>
           </el-col>
           <el-col :span="8">
             <div class="grid-content">
+              <el-image
+                class="pa2 w-100"
+                :src="require('~/assets/images/collaborate.png')"
+              ></el-image>
               <h3>3. Collaborate</h3>
             </div>
           </el-col>
