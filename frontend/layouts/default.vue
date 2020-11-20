@@ -9,7 +9,7 @@
         <img src="/logo.png" alt="Logo" style="max-height: 61px" />
       </el-menu-item>
       <el-menu-item index="/explore">Explore</el-menu-item>
-      <el-menu-item index="/about">About</el-menu-item>
+      <el-menu-item index="/team">Team</el-menu-item>
       <el-menu-item index="#github">
         <a
           href="https://github.com/MLH-Fellowship/ProjectHub"
@@ -20,7 +20,6 @@
           Github
         </a>
       </el-menu-item>
-      <el-menu-item index="/team">Team</el-menu-item>
       <el-submenu v-if="!user.anonymous" index="#" style="float: right">
         <template slot="title">
           <el-avatar size="large" :src="user.meta.avatar" />
