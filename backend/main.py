@@ -4,7 +4,7 @@ from utils import jwe
 from github_auth import GitHub
 import utils.database as db
 from apiparse import parse_project_query, parse_user_query
-from models import Token, Project, User
+from models import Project, User
 from utils.jwe import HTTPBearerJWEScheme
 
 app = FastAPI()
@@ -19,9 +19,12 @@ def login_via_gitub(code):
     if auth.access_token == "Invalid Request":
         return status.HTTP_403_FORBIDDEN
     else:
-        meta = auth.meta()
-        encoded = jwe.encode(auth.access_token)
-        return {"token": encoded, "meta": meta}
+        encoded = jwe.encode(auth.user.id, auth.access_token)
+        return {
+            "token": encoded,
+            "meta": auth.get_meta_dict(),
+            "onBoarding": not db.exists.user(auth.user.id)
+        }
 
 
 @app.post("/teams")
