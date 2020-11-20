@@ -47,25 +47,13 @@
         <el-row type="flex" align="center" class="mv3">
           <el-col :span="6">Tags</el-col>
           <el-col :span="18">
-            <el-tag
-              v-for="tag in form.tags"
-              :key="tag"
-              closable
-              :disable-transitions="false"
-              @close="removeTag(tag)"
-            >
-              {{ tag }}
-            </el-tag>
-            <el-input
-              v-if="tags.inputVisible"
-              ref="saveTagInput"
-              v-model="tags.inputValue"
-              class="input-new-tag"
-              size="mini"
-              placeholder="add-tag"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            ></el-input>
+            <EditableTagsGroup :tags="form.tags" />
+          </el-col>
+        </el-row>
+        <el-row type="flex" align="center" class="mv3">
+          <el-col :span="6">Lanuages</el-col>
+          <el-col :span="18">
+            <EditableTagsGroup :tags="form.languages" placeholder="Lanuage" />
           </el-col>
         </el-row>
         <el-button class="w-100" type="primary" @click="createNewProject">
@@ -78,6 +66,7 @@
 
 <script>
 import { mapState } from 'vuex';
+import EditableTagsGroup from '@/components/EditableTagsGroup';
 
 const initForm = () => ({
   name: '',
@@ -85,11 +74,12 @@ const initForm = () => ({
   source: '',
   demo: '',
   tags: [],
+  languages: [],
 });
 
 export default {
   name: 'NewProjectDialog',
-  components: {},
+  components: { EditableTagsGroup },
   props: {
     value: {
       required: true,
@@ -102,10 +92,6 @@ export default {
       loading: false,
       imported: false,
       form: initForm(),
-      tags: {
-        inputVisible: true,
-        inputValue: '',
-      },
     };
   },
   computed: {
@@ -135,15 +121,22 @@ export default {
       this.loading = true;
       const url = new URL(this.form.source);
       const [login, repository] = url.pathname.slice(1).split('/', 2);
-      const [{ description, homepage }, { names }] = await Promise.all([
+      // https://github.com/NoahCardoza/CaptchaHarvester
+      const [
+        { description, homepage },
+        { names },
+        languages,
+      ] = await Promise.all([
         this.$github.get('repos', login, repository),
         this.$github.get('repos', login, repository, 'topics'),
+        this.$github.get('repos', login, repository, 'languages'),
       ]);
       this.imported = true;
       this.form.name = repository;
       this.form.description = description;
       this.form.demo = homepage;
       this.form.tags = names;
+      this.form.languages = Object.keys(languages);
       this.step = 2;
       this.loading = false;
     },
