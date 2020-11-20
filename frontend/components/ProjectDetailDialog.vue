@@ -21,59 +21,7 @@
           <el-row type="flex" align="center">
             <!-- left column -->
             <el-col :span="8">
-              <el-card>
-                <div class="pa3 tl">
-                  <p class="f4 b mb3">Project Overview</p>
-
-                  <div class="flex flex-row f5 mt3">
-                    <iconify-icon icon="code" class="mr2" />
-                    {{ details.languages.join(', ') }}
-                  </div>
-
-                  <div class="flex flex-row f5 mt3">
-                    <iconify-icon icon="group" class="mr2" />
-                    Jordan, Noah, Calvin
-                  </div>
-
-                  <div class="flex flex-row f5 mt3">
-                    <iconify-icon icon="github" class="mr2" />
-                    <a href="details.source">View Github repo</a>
-                  </div>
-
-                  <div class="flex flex-row f5 mt3">
-                    <iconify-icon icon="tags" class="mr2" />
-                    Tags
-                  </div>
-
-                  <!-- this shows up as blocks instead of inline and I'm not sure why  -->
-                  <!-- <div v-for="tag in details.tags" :key="tag" class="mt3 mb2">
-                    <el-tag color="#8991dc" class="project-tag mb1">
-                      {{ tag }}
-                    </el-tag>
-                  </div> -->
-
-                  <div class="mt3 mb2">
-                    <el-tag color="#8991dc" class="project-tag mb1">
-                      Javascript
-                    </el-tag>
-                    <el-tag color="#238aea" class="project-tag mb1">
-                      Discord
-                    </el-tag>
-                    <el-tag color="#6fd3de" class="project-tag mb1">
-                      Google
-                    </el-tag>
-                    <el-tag color="#238aea" class="project-tag mb1">
-                      Python
-                    </el-tag>
-                    <el-tag color="#6fd3de" class="project-tag mb1">
-                      Calendly
-                    </el-tag>
-                    <el-tag color="#8991dc" class="project-tag mb1">
-                      Pod 1.0.1
-                    </el-tag>
-                  </div>
-                </div>
-              </el-card>
+              <ProjectOverviewCard />
               <div class="tl mt4">
                 <p class="b f4 mb3">Contact the creator</p>
                 <div class="flex flex-row items-center tl">
@@ -148,6 +96,7 @@
 </template>
 
 <script>
+import ProjectOverviewCard from '@/components/ProjectOverview/Card';
 import IconifyIcon from '@iconify/vue';
 import BookmarkOutline from '@iconify/icons-mdi/bookmark-outline';
 import Bookmark from '@iconify/icons-mdi/bookmark';
@@ -194,6 +143,7 @@ export default {
   name: 'ProjectDetailDialog',
   components: {
     IconifyIcon,
+    ProjectOverviewCard,
   },
   props: {
     value: {
