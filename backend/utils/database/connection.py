@@ -38,7 +38,7 @@ def generate_insert_statement(table_name: str, column_names: list, values: list)
 
 
 # Executes a statement,
-def execute_statement(table_name: str, column_names: list, values: list):
+def insert(table_name: str, column_names: list, values: list):
     """
     :param table_name: str
     :param column_names: list
