@@ -34,7 +34,9 @@
         </el-row>
         <el-row type="flex" align="center" class="mt3">
           <el-col :span="6">Description</el-col>
-          <el-col :span="18"><el-input v-model="form.description" /></el-col>
+          <el-col :span="18">
+            <el-input v-model="form.description" type="textarea" />
+          </el-col>
         </el-row>
         <el-row type="flex" align="center" class="mt3">
           <el-col :span="6">Source Link</el-col>
