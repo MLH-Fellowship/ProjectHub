@@ -6,43 +6,44 @@
     @update:visible="$emit('input', $event)"
   >
     <div>
-      <div class="pa4 tc">
+      <div class="tc">
         <el-row type="flex" align="center" class="flex-wrap">
           <el-col :sm="24" :md="9">
             <ProjectOverviewCard :project="project" />
             <div class="tl mv4">
-              <p class="b f4 mb3">Contact the creator</p>
-              <div class="flex flex-row items-center tl">
-                <el-avatar
-                  size="small"
-                  src="https://avatars2.githubusercontent.com/u/38268331?s=460&u=121b7bd7d9dc5697e4728b21c34358cf416edf37&v=4"
-                />
-                <div class="ml3 f5">
-                  <el-button
-                    type="text"
-                    @click="$router.push('/JordanMerrick')"
-                  >
-                    @JordanMerrick
-                  </el-button>
+              <p class="b f4 mb3">Creator</p>
+              <div class="flex flex-col items-center tl">
+                <div class="flex flex-row flex-wrap items-center">
+                  <el-avatar size="small" :src="project.user.avatar_url" />
+                  <div class="ml3 f5">
+                    <el-button type="text" @click="viewUserProfile">
+                      @{{ project.user.login }}
+                    </el-button>
+                  </div>
+                  <div
+                    style="white-space: pre"
+                    class="mt2"
+                    v-text="project.user.bio"
+                  />
                 </div>
               </div>
             </div>
           </el-col>
           <el-col :sm="24" :md="15" class="ph4 tl">
-            <el-row>
-              <div class="flex flex-row f2 items-center b black">
+            <div class="flex justify-between f2">
+              <div class="flex flex-row items-center b black">
                 {{ project.name }}
-                <span class="float-right">
-                  <BookmarkButton class="ml4" />
-                  <iconify-icon
-                    v-if="editable"
-                    icon="lead-pencil"
-                    class="ml2"
-                    @click="editProject"
-                  />
-                </span>
               </div>
-            </el-row>
+              <div class="tr">
+                <BookmarkButton />
+                <iconify-icon
+                  v-if="editable"
+                  icon="lead-pencil"
+                  class="ml2"
+                  @click="editProject"
+                />
+              </div>
+            </div>
             <el-row>
               <el-carousel trigger="click" arrow="always">
                 <el-carousel-item>
@@ -111,9 +112,15 @@ export default {
     };
   },
   computed: {},
-  mounted() {},
+  mounted() {
+    console.log(this.project.user);
+  },
   beforeDestroy() {},
   methods: {
+    viewUserProfile() {
+      this.$emit('input', false);
+      this.$router.push(`/${this.project.user.login}`);
+    },
     editProject() {
       // send request to backend
     },
