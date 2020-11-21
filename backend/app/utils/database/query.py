@@ -2,6 +2,11 @@ from typing import List
 from . import connection
 from app.models import User, Project
 
+def list_from_commas(s):
+    if s:
+        return s.split(',')
+    return []
+
 def user_projects(owner: int) -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
@@ -20,8 +25,8 @@ def user_projects(owner: int) -> List[Project]:
             description=description,
             source=source,
             demo=demo,
-            tags=tags.split(','),
-            languages=languages.split(',')
+            tags=list_from_commas(tags),
+            languages=list_from_commas(languages),
         ))
 
     return projects
@@ -45,8 +50,8 @@ def projects() -> List[Project]:
             description=description,
             source=source,
             demo=demo,
-            tags=tags.split(','),
-            languages=languages.split(',')
+            tags=list_from_commas(tags),
+            languages=list_from_commas(languages),
         ))
 
     return projects
@@ -80,7 +85,7 @@ def user(login=None, id=None) -> User:
         name=name,
         timezone_offset=timezone_offset,
         bio=bio,
-        skills=skills.split(','),
-        interests=interests.split(','),
-        pods=pods.split(',')
+        skills=list_from_commas(skills),
+        interests=list_from_commas(interests),
+        pods=list_from_commas(pods)
     )
