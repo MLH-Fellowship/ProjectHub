@@ -1,7 +1,12 @@
 <template>
   <div class="project-card tl">
     <div class="help-wanted-tag">HELP WANTED</div>
-    <el-card :body-style="{ padding: '0px' }" @click.native="openProject">
+    <el-card
+      :body-style="{ padding: '0px' }"
+      style="min-height: 580px"
+      class="relative"
+      @click.native="openProject"
+    >
       <img
         height="250"
         :src="project.source | socialify"
@@ -23,21 +28,10 @@
         </div>
 
         <ProjectTags class="mt3 mb2" :tags="project.tags" />
-
-        <!-- <div class="flex flex-row items-center">
-          <el-avatar size="small" :src="ghUser.avatar_url" />
-          <div class="ml2">
-            Created 5 days ago by
-            <el-button type="text" @click="$router.push('/NoahCardoza')">
-              @NoahCardoza
-            </el-button>
-          </div>
-        </div> -->
-
-        <div>
-          <el-button type="text" @click="learnMore">Learn More</el-button>
-        </div>
       </div>
+      <el-button type="text" class="project-learn-more" @click="learnMore">
+        Learn More
+      </el-button>
     </el-card>
     <ProjectDetailDialog v-model="detailsVisible" :project="project" />
   </div>
@@ -94,5 +88,11 @@ export default {
   color: #fff;
   border: none;
   border-radius: 1rem;
+}
+
+.project-learn-more {
+  bottom: 5px;
+  position: absolute;
+  left: 15px;
 }
 </style>
