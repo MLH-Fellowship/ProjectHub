@@ -2,18 +2,18 @@
   <div>
     <div class="b f1 mt5 tc">Explore Projects</div>
     <div class="background-img" />
-    <ExploreLayout :projects="projects" />
+    <ExploreLayout
+      :projects="projects"
+      :pod-options="pods"
+      :language-options="languages"
+    />
   </div>
 </template>
 
 <script>
 export default {
   async asyncData({ $axios }) {
-    const projects = await $axios.$get('/api/projects');
-
-    console.log(projects);
-
-    return { projects };
+    return await $axios.$get('/api/projects');
   },
 };
 </script>

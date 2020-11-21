@@ -12,7 +12,7 @@
         class="mh3"
       >
         <el-option
-          v-for="item in options.pods"
+          v-for="item in podOptions"
           :key="item"
           :label="item"
           :value="item"
@@ -27,7 +27,7 @@
         placeholder="Lanuages"
       >
         <el-option
-          v-for="item in options.languages"
+          v-for="item in languageOptions"
           :key="item"
           :label="item"
           :value="item"
@@ -36,7 +36,7 @@
     </div>
     <div class="grid w-100 pa3">
       <ProjectCard
-        v-for="project in projects"
+        v-for="project in filterd"
         :key="project.id"
         class="ma3"
         :project="project"
@@ -48,6 +48,12 @@
 <script>
 import ProjectCard from '@/components/ProjectCard';
 
+const someIncludes = (a, b) => {
+  const s = new Set(b);
+  console.log(a, b, s);
+  return a.some((e) => s.has(e));
+};
+
 export default {
   name: 'Dashboard',
   componentd: { ProjectCard },
@@ -56,53 +62,38 @@ export default {
       type: Array,
       required: true,
     },
+    podOptions: {
+      type: Array,
+      required: true,
+    },
+    languageOptions: {
+      type: Array,
+      required: true,
+    },
   },
   data() {
     return {
-      options: {
-        pods: [
-          '1.0.0',
-          '1.0.1',
-          '1.0.2',
-          '1.0.3',
-          '1.0.5',
-          '1.0.6',
-          '1.1.0',
-          '1.1.1',
-          '1.1.2',
-          '1.1.3',
-          '1.1.5',
-          '1.1.6',
-          '1.2.0',
-          '1.2.1',
-          '1.2.2',
-        ],
-        languages: [
-          'Javascript',
-          'Python',
-          'Java',
-          'Scala',
-          'Golang',
-          'Swift',
-          'C',
-          'C++',
-          'C#',
-          'OCaml',
-          'PHP',
-          'Rust',
-          'Julia',
-          'Cobol',
-        ],
-      },
       pods: [],
       languages: [],
     };
   },
-  methods: {
-    filter() {
-      this.project_array.reduce((item) => {
-        return item.tags.every((i) => this.pods.include(i));
-      });
+  computed: {
+    filterd() {
+      let filtered = null;
+
+      if (this.pods.length) {
+        filtered = (filtered || this.projects).filter((project) =>
+          someIncludes(this.pods, project.user.pods)
+        );
+      }
+
+      if (this.languages.length) {
+        filtered = (filtered || this.projects).filter((project) =>
+          someIncludes(this.languages, project.languages)
+        );
+      }
+
+      return filtered || this.projects;
     },
   },
 };
