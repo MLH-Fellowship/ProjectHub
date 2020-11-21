@@ -2,6 +2,8 @@
   <img src="resources/projecthub.png">
   <br>
   A Halfway Hackathon project that allows fellows to share side projects with each other and increase collaboration!
+  <br>
+  <br>
   <a href="https://github.com/MLH-Fellowship/ProjectHub/pulls">
     <img src="https://img.shields.io/badge/PRs-welcome-green.svg" alt="PRs Welcome" />
   </a>
