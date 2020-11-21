@@ -1,3 +1,42 @@
-from .Project import Project
-from .User import User, MicroUser
-from .ExplorePage import ExplorePage
+from typing import List, Optional
+from pydantic import BaseModel
+
+
+class MicroUser(BaseModel):
+    login: str
+    name: str
+    bio: str
+    pods: List[str]
+    html_url: str = ''
+    avatar_url: str = ''
+
+
+class Project(BaseModel):
+    id: Optional[int]
+    owner: Optional[int]
+    slug: Optional[str]
+    name: str
+    description: str
+    source: str
+    demo: str
+    tags: List[str]
+    languages: List[str]
+    user: Optional[MicroUser]
+
+
+class ExplorePage(BaseModel):
+    projects: list[Project]
+    pods: Optional[List[str]]
+    languages: List[str]    
+
+
+class User(BaseModel):
+    id: Optional[int]
+    login: Optional[str]
+    name: Optional[str]
+    timezone_offset: int
+    bio: str
+    skills: List[str]
+    interests: List[str]
+    pods: List[str]
+    explorer: Optional[List[ExplorePage]]
