@@ -1,22 +1,18 @@
 import Vue from 'vue';
 
 const theamedHexColors = [
-  '#238AEA',
-  '#6FD3DE',
-  '#8991DC',
-  '#E87613',
-  '#81F7E5',
-  '#CE563B',
-  '#0A8754',
-  '#4B3F72',
-  '#A23B72',
-  '#001F54',
-  '#048A81',
-  '#EF709D',
-  '#439A86',
-  '#FF8533',
-  '#EF709D',
-  '#70C1B3',
+  'FDB4C1',
+  'FFDEDA',
+  'C5C2DF',
+  '9B94BE',
+  'F9C8A0',
+  'F28997',
+  'FF9AA2',
+  'FFB7B2',
+  'FFDAC1',
+  'E2F0CB',
+  'B5EAD7',
+  'C7CEEA',
 ];
 
 Vue.filter('hexHash', function (str) {
@@ -25,7 +21,7 @@ Vue.filter('hexHash', function (str) {
     0
   );
 
-  return theamedHexColors[hash % theamedHexColors.length];
+  return '#' + theamedHexColors[hash % theamedHexColors.length];
 });
 
 Vue.filter('joinWithComma', function (list) {
