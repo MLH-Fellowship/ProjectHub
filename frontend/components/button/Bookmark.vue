@@ -10,8 +10,6 @@ import Bookmark from '@iconify/icons-mdi/bookmark';
 IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
 IconifyIcon.addIcon('bookmark', Bookmark);
 
-// TODO: accept project id and if it's been bookmarked yet
-
 export default {
   name: 'BookmarkButton',
   components: {
@@ -23,11 +21,6 @@ export default {
       type: Object,
     },
   },
-  // data() {
-  //   return {
-  //     bookmarked: false,
-  //   };
-  // },
   computed: {
     bookmarkIcon() {
       return this.project.bookmarked ? 'bookmark' : 'bookmark-outline';
