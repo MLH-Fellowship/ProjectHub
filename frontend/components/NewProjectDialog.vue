@@ -135,8 +135,8 @@ export default {
       ]);
       this.imported = true;
       this.form.name = repository;
-      this.form.description = description;
-      this.form.demo = homepage;
+      this.form.description = description || '';
+      this.form.demo = homepage || '';
       this.form.tags = names;
       this.form.languages = Object.keys(languages);
       this.step = 2;
