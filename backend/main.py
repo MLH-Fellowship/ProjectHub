@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
 from slugify import slugify
@@ -10,7 +11,7 @@ from app.models import Project, User
 from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
-http_bearer_scheme = HTTPBearerJWEScheme()
+http_bearer_scheme = HTTPBearerJWEScheme(auth_optional=['/projects'])
 
 
 @app.get("/login/github/{code}")
@@ -57,7 +58,9 @@ def get_project(project_id):
 
 
 @app.get("/projects")
-def get_projects():
+def get_projects(token: Optional[HTTPAuthorizationJWT] = Depends(http_bearer_scheme)):
+    print(token)
+
     projects = db.query.projects()
     
     pods = set()

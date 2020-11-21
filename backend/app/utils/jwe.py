@@ -33,17 +33,22 @@ class HTTPBearerJWEScheme(HTTPBase):
         bearerFormat: Optional[str] = None,
         scheme_name: Optional[str] = None,
         auto_error: bool = True,
+        auth_optional=None,
     ):
         self.model = HTTPBearerModel(bearerFormat=bearerFormat)
         self.scheme_name = scheme_name or self.__class__.__name__
         self.auto_error = auto_error
+        self.auth_optional = auth_optional or []
 
     async def __call__(
         self, request: Request
     ) -> Optional[HTTPAuthorizationCredentials]:
+        
         authorization: str = request.headers.get('Authorization')
         scheme, credentials = get_authorization_scheme_param(authorization)
         if not (authorization and scheme and credentials):
+            if request['path'] in self.auth_optional:
+                return None
             if self.auto_error:
                 raise HTTPException(
                     status_code=HTTP_403_FORBIDDEN, detail='Not authenticated'
