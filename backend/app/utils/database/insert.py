@@ -30,3 +30,14 @@ def user(user: User):
         values=values,
         table_name="users"
     )
+
+
+def bookmark(user_id, project_id):
+    columns = ["user_id", "project_id"]
+    values = [user_id, project_id]
+
+    connection.insert(
+        column_names=columns,
+        values=values,
+        table_name="bookmarks"
+    )

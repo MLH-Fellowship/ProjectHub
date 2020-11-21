@@ -59,8 +59,6 @@ def get_project(project_id):
 
 @app.get("/projects")
 def get_projects(token: Optional[HTTPAuthorizationJWT] = Depends(http_bearer_scheme)):
-    print(token)
-
     projects = db.query.projects()
     
     pods = set()
@@ -77,6 +75,9 @@ def get_projects(token: Optional[HTTPAuthorizationJWT] = Depends(http_bearer_sch
             avatar=user.avatar,
             github=user.github,
         )
+
+        if token:
+           project.bookmarked = db.exists.bookmark(token.github_id, project.id)
 
         for pod in user.pods:
             pods.add(pod)
@@ -102,6 +103,14 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         db.insert.user(user)
 
 
+@app.post("/bookmark/{project_id}")
+def upsert_bookmark(project_id: int, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.bookmark(token.github_id, project_id):
+        db.delete.bookmark(token.github_id, project_id)
+    else:
+        db.insert.bookmark(token.github_id, project_id)
+
+
 @app.put("/user")
 def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     if db.exists.user(token.github_id):
@@ -120,7 +129,7 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 
 
 @app.get("/user/{login}")
-def query_user(login):
+def query_user(login, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     user = db.query.user(login=login)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)

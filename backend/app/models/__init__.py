@@ -25,6 +25,7 @@ class Project(BaseModel):
     languages: List[str]
     user: Optional[MicroUser]
     state: Optional[str]
+    bookmarked: Optional[bool]
 
 
 class ExplorePage(BaseModel):

@@ -23,3 +23,9 @@ CREATE TABLE IF NOT EXISTS users(
   skills text,
   interests text
 );
+
+CREATE TABLE IF NOT EXISTS bookmarks(
+  id serial primary key,
+  user_id integer,
+  project_id integer
+);
