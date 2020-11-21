@@ -1,6 +1,6 @@
 <template>
   <el-card>
-    <ProjectOverview />
+    <ProjectOverview :project="project" />
   </el-card>
 </template>
 
@@ -12,6 +12,8 @@ export default {
   components: {
     ProjectOverview,
   },
-  props: {},
+  props: {
+    project: { type: Object, required: true },
+  },
 };
 </script>

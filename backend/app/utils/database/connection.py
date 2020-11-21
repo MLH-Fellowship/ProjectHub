@@ -1,5 +1,5 @@
 import psycopg2
-from settings import POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD
+from app.settings import POSTGRES_HOST, POSTGRES_DATABASE, POSTGRES_PORT, POSTGRES_USER, POSTGRES_PASSWORD
 
 
 # Creates a connection with the PostgreSQL server
@@ -38,7 +38,7 @@ def generate_insert_statement(table_name: str, column_names: list, values: list)
 
 
 # Executes a statement,
-def execute_statement(table_name: str, column_names: list, values: list):
+def insert(table_name: str, column_names: list, values: list):
     """
     :param table_name: str
     :param column_names: list
@@ -49,21 +49,11 @@ def execute_statement(table_name: str, column_names: list, values: list):
     if len(column_names) == 0:
         raise ValueError("Must include column names")
 
-    items = ", ".join(values)
-    items = "({})".format(items)
-
-    columns = ", ".join(column_names)
-    columns = "({})".format(columns)
-
-    statement = "INSERT INTO %s%s VALUES %s"
+    statement = f"INSERT INTO {table_name}({', '.join(column_names)}) VALUES({', '.join('%s' for _ in range(len(values)))})"
 
     conn = create()
 
-    if values is None:
-        raise ValueError("Values must be provided to be inserted into database")
-
-
     # Accesses the server, executes a command, and commits it
     cur = conn.cursor()
-    cur.execute(statement, (table_name, columns, values, ))
+    cur.execute(statement, values)
     conn.commit()

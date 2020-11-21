@@ -10,3 +10,5 @@ class User(BaseModel):
     bio: str
     skills: List[str]
     interests: List[str]
+    pods: List[str]
+    projects: Optional[List[str]]

@@ -30,11 +30,13 @@
       <div v-else>
         <el-row type="flex" align="center">
           <el-col :span="6">Project Name</el-col>
-          <el-col :span="18"><el-input v-model="form.title" /></el-col>
+          <el-col :span="18"><el-input v-model="form.name" /></el-col>
         </el-row>
         <el-row type="flex" align="center" class="mt3">
           <el-col :span="6">Description</el-col>
-          <el-col :span="18"><el-input v-model="form.description" /></el-col>
+          <el-col :span="18">
+            <el-input v-model="form.description" type="textarea" />
+          </el-col>
         </el-row>
         <el-row type="flex" align="center" class="mt3">
           <el-col :span="6">Source Link</el-col>
@@ -47,25 +49,13 @@
         <el-row type="flex" align="center" class="mv3">
           <el-col :span="6">Tags</el-col>
           <el-col :span="18">
-            <el-tag
-              v-for="tag in form.tags"
-              :key="tag"
-              closable
-              :disable-transitions="false"
-              @close="removeTag(tag)"
-            >
-              {{ tag }}
-            </el-tag>
-            <el-input
-              v-if="tags.inputVisible"
-              ref="saveTagInput"
-              v-model="tags.inputValue"
-              class="input-new-tag"
-              size="mini"
-              placeholder="add-tag"
-              @keyup.enter.native="handleInputConfirm"
-              @blur="handleInputConfirm"
-            ></el-input>
+            <EditableTagsGroup :tags="form.tags" />
+          </el-col>
+        </el-row>
+        <el-row type="flex" align="center" class="mv3">
+          <el-col :span="6">Lanuages</el-col>
+          <el-col :span="18">
+            <EditableTagsGroup :tags="form.languages" placeholder="Lanuage" />
           </el-col>
         </el-row>
         <el-button class="w-100" type="primary" @click="createNewProject">
@@ -77,18 +67,21 @@
 </template>
 
 <script>
+import { mapState } from 'vuex';
+import EditableTagsGroup from '@/components/EditableTagsGroup';
+
 const initForm = () => ({
-  imported: false,
-  title: '',
+  name: '',
   description: '',
   source: '',
   demo: '',
   tags: [],
+  languages: [],
 });
 
 export default {
   name: 'NewProjectDialog',
-  components: {},
+  components: { EditableTagsGroup },
   props: {
     value: {
       required: true,
@@ -99,21 +92,17 @@ export default {
     return {
       step: 0,
       loading: false,
+      imported: false,
       form: initForm(),
-      tags: {
-        inputVisible: true,
-        inputValue: '',
-      },
     };
   },
   computed: {
+    ...mapState(['user']),
     title() {
       return [
         'How would you like to add the project?',
         'Enter a Github project URL!',
-        this.form.imported
-          ? 'How does this look?'
-          : 'Tell us about your project!',
+        this.imported ? 'How does this look?' : 'Tell us about your project!',
       ][this.step];
     },
     center() {
@@ -128,29 +117,35 @@ export default {
       }
     },
   },
-  mounted() {},
-  beforeDestroy() {},
   methods: {
     async importFromGithub() {
       // TODO: error checking to make sure the url/repo is valid
       this.loading = true;
       const url = new URL(this.form.source);
       const [login, repository] = url.pathname.slice(1).split('/', 2);
-      const [{ description, homepage }, { names }] = await Promise.all([
+      // https://github.com/NoahCardoza/CaptchaHarvester
+      const [
+        { description, homepage },
+        { names },
+        languages,
+      ] = await Promise.all([
         this.$github.get('repos', login, repository),
         this.$github.get('repos', login, repository, 'topics'),
+        this.$github.get('repos', login, repository, 'languages'),
       ]);
-      this.form.imported = true;
-      this.form.title = repository;
+      this.imported = true;
+      this.form.name = repository;
       this.form.description = description;
       this.form.demo = homepage;
       this.form.tags = names;
+      this.form.languages = Object.keys(languages);
       this.step = 2;
       this.loading = false;
     },
-    createNewProject() {
-      // TODO: post to api
-      // this.$axios.$post('/api/project/new', this.form)
+    async createNewProject() {
+      const project = await this.$axios.$post('/api/project', this.form);
+      this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
+      this.$emit('input', false);
     },
     removeTag(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);

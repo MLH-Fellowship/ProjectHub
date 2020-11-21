@@ -1,6 +1,5 @@
 <template>
   <div>
-    <br />
     <div style="margin-left: 200px">
       <el-row>
         <el-col :span="6">
@@ -15,7 +14,7 @@
                 class="absolute ma4"
                 style="top: 0; left: 0"
                 icon="el-icon-user-solid"
-                :src="user.avatar_url"
+                :src="ghUser.avatar_url"
                 :size="200"
               ></el-avatar>
             </div>
@@ -23,47 +22,52 @@
         </el-col>
         <el-col class="z-999 relative" :span="14">
           <div class="grid-content">
-            <el-link type="primary" :href="user.html_url">
-              <h2>{{ user.name }}</h2>
+            <el-link type="primary" :href="ghUser.html_url">
+              <h2>{{ ghUser.name }}</h2>
             </el-link>
 
             <el-form class="mv4" :model="form" label-width="100px">
-              <el-form-item class="tl" label="Pods">1.0.1</el-form-item>
+              <el-form-item class="tl" label="Pods">
+                {{ user.pods | joinWithComma }}
+              </el-form-item>
 
               <el-form-item class="tl" label="Interests">
                 <el-select
-                  v-model="form.interests"
+                  v-model="user.interests"
+                  :disabled="!isUsersOwnPage"
                   multiple
                   placeholder="Select"
                   class="w-100"
                 >
                   <el-option
                     v-for="interest in options.interests"
-                    :key="interest.value"
-                    :label="interest.label"
-                    :value="interest.value"
+                    :key="interest"
+                    :label="interest"
+                    :value="interest"
                   ></el-option>
                 </el-select>
               </el-form-item>
 
               <el-form-item class="tl" label="Skills">
                 <el-select
-                  v-model="form.skills"
+                  v-model="user.skills"
+                  :disabled="!isUsersOwnPage"
                   multiple
                   placeholder="Select"
                   class="w-100"
                 >
                   <el-option
                     v-for="skill in options.skills"
-                    :key="skill.value"
-                    :label="skill.label"
-                    :value="skill.value"
+                    :key="skill"
+                    :label="skill"
+                    :value="skill"
                   ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="About">
                 <el-input
                   v-model="user.bio"
+                  :disabled="!isUsersOwnPage"
                   type="textarea"
                   placeholer="Write a short bio..."
                 ></el-input>
@@ -73,9 +77,8 @@
         </el-col>
       </el-row>
     </div>
-
     <hr />
-    <ExploreLayout />
+    <ExploreLayout :projects="user.projects" />
   </div>
 </template>
 
@@ -85,59 +88,33 @@ import ExploreLayout from '@/components/ExploreLayout.vue';
 
 export default {
   components: { ExploreLayout },
-  async asyncData({ params, $axios, $github }) {
-    // API request to fill out page
-    const details = {
-      success: true,
-      pods: ['1.0.1', '1.2.2'],
-      projects: ['NoahCardoza/CaptchaHarvester'],
-    };
-    const [user, projects] = await Promise.all([
-      $github
-        .get('users', params.username)
-        .then(
-          pick([
-            'login',
-            'html_url',
-            'avatar_url',
-            'name',
-            'location',
-            'bio',
-            'email',
-            'public_repos',
-            'public_gists',
-            'followers',
-          ])
-        ),
-      Promise.all(
-        details.projects.map((repository) =>
-          $github
-            .get('repos', repository)
-            .then(
-              pick([
-                'name',
-                'full_name',
-                'private',
-                'description',
-                'fork',
-                'html_url',
-                'stargazers',
-                'watchers',
-                'language',
-                'open_issues',
-                'license',
-                'forks',
-              ])
-            )
-        )
-      ),
-    ]);
+  async asyncData({ params, $axios, $github, error }) {
+    let user;
+    try {
+      user = await $axios.$get(`/api/user/${params.username}`);
+    } catch (e) {
+      return error({ statusCode: 404, message: 'User not found' });
+    }
 
-    user.bio = user.bio.trim();
+    const ghUser = await $github
+      .get('users', params.username)
+      .then(pick(['html_url', 'avatar_url']));
+
+    const userMini = {
+      ...pick(['login', 'name', 'bio'], user),
+      ...ghUser,
+    };
+
+    user.projects = user.projects.map((project) => ({
+      ...project,
+      user: userMini,
+    }));
+
+    console.log(user);
 
     return {
       user,
-      projects,
+      ghUser,
     };
   },
   data() {
@@ -145,28 +122,14 @@ export default {
       step: 0,
       visible: true,
       options: {
-        interests: [
-          { label: 'Front-end', value: 1 },
-          { label: 'Back-end', value: 2 },
-          { label: 'Python', value: 3 },
-        ],
-        skills: [
-          { label: 'Android', value: 1 },
-          { label: 'ML/AI', value: 2 },
-          { label: 'Healthcare', value: 3 },
-        ],
-      },
-      form: {
-        skills: ['Android', 'Java', 'Javascript'],
-        interests: ['Back-end', 'Networking'],
-        bio:
-          "I'm a senior software engineering student at SJSU, and a current MLH at Pod 1.0.1",
+        interests: ['Front-end', 'Back-end', 'Python'],
+        skills: ['Android', 'ML/AI', 'Healthcare'],
       },
     };
   },
   computed: {
-    user_github_url() {
-      return `https://github.com/${this.user.login}`;
+    isUsersOwnPage() {
+      return this.$store.state.user.meta.login === this.$route.params.username;
     },
   },
   methods: {
@@ -177,11 +140,10 @@ export default {
       this.step--;
     },
 
-    submit() {
-      console.log(this.form);
-      this.visible = false;
-      this.$emit('complete');
-    },
+    // submit() {
+    //   this.visible = false;
+    //   this.$emit('complete');
+    // },
   },
 };
 </script>

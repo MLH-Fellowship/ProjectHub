@@ -1,11 +1,13 @@
-from fastapi import FastAPI, Depends
+from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
-from utils import jwe
-from github_auth import GitHub
-import utils.database as db
-from apiparse import parse_project_query, parse_user_query
-from models import Project, User
-from utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
+from slugify import slugify
+
+from app.utils import jwe
+from app.utils.github import GitHub
+import app.utils.database as db
+from app.apiparse import parse_project_query
+from app.models import Project, User
+from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
 http_bearer_scheme = HTTPBearerJWEScheme()
@@ -27,11 +29,12 @@ def login_via_gitub(code):
 
 
 @app.post("/project")
-def new_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    if db.exists.project(json):
-        db.update.project(json)
-    else:
-        db.insert.project(json)
+def new_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    project.owner = token.github_id
+    project.slug = slugify(project.name)
+    db.insert.project(project)
+    # TODO: set project.id / not needed for ui
+    return project
 
 
 @app.put("/project")
@@ -39,7 +42,7 @@ def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bea
     if db.exists.project(json):
         db.update.project(json)
     else:
-       return status.HTTP_400_BAD_REQUEST
+        raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
 
 
 @app.get("/project/{project_id}")
@@ -48,21 +51,21 @@ def get_project(project_id):
     q = db.query.projects(project_id)
     parsed = parse_project_query(q)
     if parsed is None:
-        return status.HTTP_404_NOT_FOUND
+        raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
     else:
         return parsed
 
 
-@app.get("/projects")
-def get_project(project_id):
-    # TODO: list all projects
-    # query specific project id
-    q = db.query.projects(project_id)
-    parsed = parse_project_query(q)
-    if parsed is None:
-        return status.HTTP_404_NOT_FOUND
-    else:
-        return parsed
+# @app.get("/projects")
+# def get_projects(project_id):
+#     # TODO: list all projects
+#     # query specific project id
+#     q = db.query.projects(project_id)
+#     parsed = parse_project_query(q)
+#     if parsed is None:
+#         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
+#     else:
+#         return parsed
 
 
 @app.post("/user")
@@ -76,7 +79,6 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.name = gh.user.name
         
         db.insert.user(user)
-    return status.HTTP_200_OK
 
 
 @app.put("/user")
@@ -90,16 +92,15 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.name = gh.user.name
         
         db.insert.update(user)
-        return status.HTTP_200_OK
-    else:
-        return status.HTTP_400_BAD_REQUEST
+        return
+    raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
 
 
 @app.get("/user/{login}")
 def query_user(login):
-    query = db.query.users(login)
-    parsed = parse_user_query(query)
-    if parsed is None:
-        return status.HTTP_404_NOT_FOUND
+    user = db.query.users(login)
+    if not user:
+        raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
-        return parsed
+        user.projects = db.query.user_projects(user.id)
+        return user

@@ -1,10 +1,14 @@
 CREATE TABLE IF NOT EXISTS projects(
   id serial primary key,
+  owner integer,
+  slug text,
   name text,
   description text,
   source text,
   demo text,
-  tags text
+  tags text,
+  languages text
+  -- imported smallint -- if the project came from github
 );
 
 CREATE TABLE IF NOT EXISTS users(
