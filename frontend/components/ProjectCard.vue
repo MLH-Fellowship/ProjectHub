@@ -59,14 +59,6 @@ export default {
   },
   data: () => ({
     detailsVisible: false,
-    project: {
-      user: '@calvinqc',
-      helpWanted: true,
-      title: 'Event-bot',
-      desc:
-        'Discord Bot to make announcements about upcoming sessions for the Fellows using Google Calendar.',
-      tags: ['Python', 'Pod 1.0.1', 'Discord'],
-    },
   }),
   computed: {},
   methods: {
