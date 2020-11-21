@@ -9,7 +9,9 @@
             Introducing a new way to find and share your projects
           </p>
           <div class="mt4">
-            <el-button round type="success">Explore Projects</el-button>
+            <el-button round type="success" @click="$router.push('/explore')">
+              Explore Projects
+            </el-button>
             <GithubLoginButton v-if="user.anonymous" class="ml3" />
           </div>
         </div>
