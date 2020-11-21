@@ -93,69 +93,21 @@ export default {
       return error({ statusCode: 404, message: 'User not found' });
     }
 
-    // const user = {
-    //   success: true,
-    //   pods: ['1.0.1', '1.2.2'],
-    //   projects: ['NoahCardoza/CaptchaHarvester'],
-    // };
-
-    // const [ghUser, projects] = await Promise.all([
-    //   $github
-    //     .get('users', params.username)
-    //     .then(
-    //       pick([
-    //         'login',
-    //         'html_url',
-    //         'avatar_url',
-    //         'name',
-    //         'location',
-    //         'bio',
-    //         'email',
-    //         'public_repos',
-    //         'public_gists',
-    //         'followers',
-    //       ])
-    //     ),
-    //   Promise.all(
-    //     user.projects.map((repository) =>
-    //       $github
-    //         .get('repos', repository)
-    //         .then(
-    //           pick([
-    //             'name',
-    //             'full_name',
-    //             'private',
-    //             'description',
-    //             'fork',
-    //             'html_url',
-    //             'stargazers',
-    //             'watchers',
-    //             'language',
-    //             'open_issues',
-    //             'license',
-    //             'forks',
-    //           ])
-    //         )
-    //     )
-    //   ),
-    // ]);
-
     const ghUser = await $github
       .get('users', params.username)
-      .then(
-        pick([
-          'login',
-          'html_url',
-          'avatar_url',
-          'name',
-          'location',
-          'bio',
-          'email',
-          'public_repos',
-          'public_gists',
-          'followers',
-        ])
-      );
+      .then(pick(['html_url', 'avatar_url']));
+
+    const userMini = {
+      ...pick(['login', 'name', 'bio'], user),
+      ...ghUser,
+    };
+
+    user.projects = user.projects.map((project) => ({
+      ...project,
+      user: userMini,
+    }));
+
+    console.log(user);
 
     return {
       user,
