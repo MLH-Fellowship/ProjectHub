@@ -2,9 +2,21 @@
   <div>
     <div class="b f1 mt5 tc">Explore Projects</div>
     <div class="background-img" />
-    <ExploreLayout />
+    <ExploreLayout :projects="projects" />
   </div>
 </template>
+
+<script>
+export default {
+  async asyncData({ $axios }) {
+    const projects = await $axios.$get('/api/projects');
+
+    console.log(projects);
+
+    return { projects };
+  },
+};
+</script>
 
 <style scoped>
 .background-img {
