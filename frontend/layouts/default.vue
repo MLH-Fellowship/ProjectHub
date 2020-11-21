@@ -29,6 +29,9 @@
         <el-menu-item :index="`/${user.meta.login}`">
           {{ user.meta.name }}
         </el-menu-item>
+        <el-menu-item :index="`/${user.meta.login}/bookmarks`">
+          Bookmarks
+        </el-menu-item>
         <el-menu-item index="logout" @click="logout">Logout</el-menu-item>
       </el-submenu>
       <el-menu-item
