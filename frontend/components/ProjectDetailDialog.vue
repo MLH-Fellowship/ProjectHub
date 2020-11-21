@@ -30,18 +30,18 @@
             </div>
           </el-col>
           <el-col :sm="24" :md="15" class="ph4 tl">
-            <div class="flex justify-between f2">
+            <div class="flex justify-between items-center f2 mb2">
               <div class="flex flex-row items-center b black">
                 {{ project.name }}
               </div>
-              <div class="tr">
-                <BookmarkButton />
+              <div class="tr f4">
                 <iconify-icon
-                  v-if="editable"
+                  v-if="isUsersProject"
                   icon="lead-pencil"
                   class="ml2"
                   @click="editProject"
                 />
+                <BookmarkButton />
               </div>
             </div>
             <el-row>
@@ -108,8 +108,12 @@ export default {
   data() {
     return {
       bookmarked: false,
-      editable: true,
     };
+  },
+  computed: {
+    isUsersProject() {
+      return this.$store.state.user.meta.login === this.project.user.login;
+    },
   },
   beforeDestroy() {},
   methods: {
