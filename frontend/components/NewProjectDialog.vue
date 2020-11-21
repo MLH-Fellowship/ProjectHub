@@ -146,6 +146,7 @@ export default {
       const project = await this.$axios.$post('/api/project', this.form);
       this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
       this.$emit('input', false);
+      this.$nuxt.refresh();
     },
     removeTag(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);
