@@ -3,10 +3,15 @@
     <div class="b f1 mt5 tc">Bookmarked Projects</div>
     <div class="background-img" />
     <ExploreLayout
+      v-if="bookmarked.length"
       :projects="bookmarked"
       :pod-options="pods"
       :language-options="languages"
     />
+    <div v-else class="f3 mt5 tc">
+      <p>You don't have any bookmarks...</p>
+      <p>Go bookmark a project and it will show up here!</p>
+    </div>
   </div>
 </template>
 
