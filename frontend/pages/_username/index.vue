@@ -26,7 +26,7 @@
               <h2>{{ ghUser.name }}</h2>
             </el-link>
 
-            <el-form class="mv4" :model="form" label-width="100px">
+            <el-form class="mv4" label-width="100px">
               <el-form-item class="tl" label="Pods">
                 {{ user.pods | joinWithComma }}
               </el-form-item>
@@ -78,7 +78,12 @@
       </el-row>
     </div>
     <hr />
-    <ExploreLayout :projects="user.projects" />
+    <ExploreLayout
+      :projects="user.explorer.projects"
+      :pod-options="user.explorer.pods"
+      :language-options="user.explorer.languages"
+      user-page
+    />
   </div>
 </template>
 
@@ -101,11 +106,11 @@ export default {
       .then(pick(['html_url', 'avatar_url']));
 
     const userMini = {
-      ...pick(['login', 'name', 'bio'], user),
+      ...pick(['login', 'name', 'bio', 'pods'], user),
       ...ghUser,
     };
 
-    user.projects = user.projects.map((project) => ({
+    user.explorer.projects = user.explorer.projects.map((project) => ({
       ...project,
       user: userMini,
     }));

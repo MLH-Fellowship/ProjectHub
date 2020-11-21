@@ -1,7 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
 from slugify import slugify
-
+from app.models import MicroUser, ExplorePage
 from app.utils import jwe
 from app.utils.github import GitHub
 import app.utils.database as db
@@ -56,16 +56,30 @@ def get_project(project_id):
         return parsed
 
 
-# @app.get("/projects")
-# def get_projects(project_id):
-#     # TODO: list all projects
-#     # query specific project id
-#     q = db.query.projects(project_id)
-#     parsed = parse_project_query(q)
-#     if parsed is None:
-#         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
-#     else:
-#         return parsed
+@app.get("/projects")
+def get_projects():
+    projects = db.query.projects()
+    
+    pods = set()
+    languages = set()
+
+    for project in projects:
+        user = db.query.user(id=project.owner)
+        
+        project.user = MicroUser(
+            login=user.login,
+            name=user.name,
+            bio=user.bio,
+            pods=user.pods,
+        )
+
+        for pod in user.pods:
+            pods.add(pod)
+
+        for language in project.languages:
+            languages.add(language)
+
+    return ExplorePage(projects=projects, pods=list(pods), languages=list(languages))
 
 
 @app.post("/user")
@@ -98,9 +112,18 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 
 @app.get("/user/{login}")
 def query_user(login):
-    user = db.query.users(login)
+    user = db.query.user(login=login)
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
-        user.projects = db.query.user_projects(user.id)
+        projects = db.query.user_projects(user.id)
+
+        languages = set()
+
+        for project in projects:
+            for language in project.languages:
+                languages.add(language)
+        
+        user.explorer = ExplorePage(projects=projects, languages=list(languages))
+
         return user

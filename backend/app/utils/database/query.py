@@ -27,13 +27,44 @@ def user_projects(owner: int) -> List[Project]:
     return projects
 
 
-def users(login) -> User:
-    st = "SELECT id, login, name, timezone_offset, bio, skills, interests, pods FROM users WHERE login=%s"
+def projects() -> List[Project]:
+    conn = connection.create()
+    cur = conn.cursor()
+
+    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages FROM projects")
+
+    projects = []
+
+    for ret in cur.fetchall():
+        (id, owner, slug, name, description, source, demo, tags, languages) = ret
+        projects.append(Project(
+            id=id,
+            owner=owner,
+            slug=slug,
+            name=name,
+            description=description,
+            source=source,
+            demo=demo,
+            tags=tags.split(','),
+            languages=languages.split(',')
+        ))
+
+    return projects
+
+
+def user(login=None, id=None) -> User:
+    st = "SELECT id, login, name, timezone_offset, bio, skills, interests, pods FROM users WHERE "
+    if login:
+        st += "login=%s"
+    elif id:
+        st += "id=%s"
+    else:
+        raise ValueError('must set login or id')
 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st, (login,))
+    cur.execute(st, (login or id,))
     res = cur.fetchone()
 
     if not res:
