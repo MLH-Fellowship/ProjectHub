@@ -1,9 +1,16 @@
 <template>
   <div class="project-card tl">
-    <div class="help-wanted-tag">HELP WANTED</div>
+    <div
+      class="project-state-tag"
+      :style="{
+        opacity: Number(Boolean(project.state)),
+      }"
+    >
+      {{ project.state | state }}
+    </div>
     <el-card
       :body-style="{ padding: '0px', paddingBottom: '20px' }"
-      style="min-height: 500px"
+      style="height: 100%"
       class="relative"
       @click.native="openProject"
     >
@@ -47,13 +54,18 @@ export default {
     // ProjectTags,
     BookmarkButton,
   },
+  filters: {
+    state(str) {
+      return (str && str.toUpperCase()) || 'PLACEHOLDER';
+    },
+  },
   props: {
     project: { type: Object, required: true },
   },
   data: () => ({
     detailsVisible: false,
   }),
-  computed: {},
+
   methods: {
     learnMore() {},
     openProject() {
@@ -69,7 +81,7 @@ export default {
   min-width: 300px;
 }
 
-.help-wanted-tag {
+.project-state-tag {
   padding: 0.5rem;
   border-radius: 10px 10px 0 0;
   background: #ffbe55;
