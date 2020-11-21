@@ -1,6 +1,6 @@
-const DOCKER_BACKEND_HOST = process.env.DOCKER_BACKEND_HOST || 'localhost';
+const DOCKER_BACKEND_HOST = process.env.DOCKER_BACKEND_HOST || 'localhost'
 const FRONTEND_BASE_URL =
-  process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
+  process.env.FRONTEND_BASE_URL || 'http://localhost:3000'
 
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
@@ -22,7 +22,7 @@ export default {
 
   env: {
     GITHUB_CLIENT_ID: process.env.GITHUB_CLIENT_ID,
-    APP_HOSTNAME: process.env.APP_HOSTNAME,
+    FRONTEND_BASE_URL: process.env.FRONTEND_BASE_URL,
   },
 
   // Global CSS (https://go.nuxtjs.dev/config-css)
@@ -80,4 +80,4 @@ export default {
     analyze: process.env.NUXT_ANALYZE === '1',
     transpile: [/^element-ui/],
   },
-};
+}
