@@ -1,6 +1,8 @@
 from typing import Optional, List
 from pydantic import BaseModel
 
+from app.models.User import MicroUser
+
 
 class Project(BaseModel):
     id: Optional[int]
@@ -12,3 +14,4 @@ class Project(BaseModel):
     demo: str
     tags: List[str]
     languages: List[str]
+    user: Optional[MicroUser]
