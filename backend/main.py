@@ -157,6 +157,8 @@ def query_user(login, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme))
         for project in projects:
             for language in project.languages:
                 languages.add(language)
+            
+            project.bookmarked = db.exists.bookmark(token.github_id, project.id)
         
         user.explorer = ExplorePage(projects=projects, languages=list(languages))
 
