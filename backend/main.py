@@ -71,6 +71,8 @@ def get_projects():
             name=user.name,
             bio=user.bio,
             pods=user.pods,
+            avatar=user.avatar,
+            github=user.github,
         )
 
         for pod in user.pods:
@@ -91,6 +93,8 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
+        user.avatar = gh.user.avatar_url
+        user.github = gh.user.html_url
         
         db.insert.user(user)
 
@@ -104,6 +108,8 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
+        user.avatar = gh.user.avatar_url
+        user.github = gh.user.html_url
         
         db.insert.update(user)
         return

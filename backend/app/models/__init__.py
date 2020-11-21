@@ -5,6 +5,8 @@ from pydantic import BaseModel
 class MicroUser(BaseModel):
     login: str
     name: str
+    avatar: str
+    github: str
     bio: str
     pods: List[str]
     html_url: str = ''
@@ -34,6 +36,8 @@ class User(BaseModel):
     id: Optional[int]
     login: Optional[str]
     name: Optional[str]
+    github: Optional[str]
+    avatar: Optional[str]
     timezone_offset: int
     bio: str
     skills: List[str]

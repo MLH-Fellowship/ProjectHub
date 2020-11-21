@@ -27,8 +27,8 @@ def user(user: User):
     interests = ','.join(user.interests)
     pods = ','.join(user.pods)
 
-    columns = ["id", "login", "name", "pods", "timezone_offset", "bio", "skills", "interests"]
-    values = [user.id, user.login, user.name, pods, user.timezone_offset, user.bio, skills, interests]
+    columns = ["id", "login", "github", "avatar", "name", "pods", "timezone_offset", "bio", "skills", "interests"]
+    values = [user.id, user.login, user.github, user.avatar, user.name, pods, user.timezone_offset, user.bio, skills, interests]
 
     connection.insert(
         column_names=columns,

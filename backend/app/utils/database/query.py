@@ -53,7 +53,7 @@ def projects() -> List[Project]:
 
 
 def user(login=None, id=None) -> User:
-    st = "SELECT id, login, name, timezone_offset, bio, skills, interests, pods FROM users WHERE "
+    st = "SELECT id, login, avatar, github, name, timezone_offset, bio, skills, interests, pods FROM users WHERE "
     if login:
         st += "login=%s"
     elif id:
@@ -70,11 +70,13 @@ def user(login=None, id=None) -> User:
     if not res:
         return None
 
-    (id, login, name, timezone_offset, bio, skills, interests, pods) = res
+    (id, login, avatar, github, name, timezone_offset, bio, skills, interests, pods) = res
 
     return User(
         id=id,
         login=login,
+        avatar=avatar,
+        github=github,
         name=name,
         timezone_offset=timezone_offset,
         bio=bio,
