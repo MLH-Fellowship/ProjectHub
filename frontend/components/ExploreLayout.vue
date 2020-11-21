@@ -40,7 +40,7 @@
         v-for="project in filterd"
         ref="cards"
         :key="project.id"
-        class="ma3"
+        class="mv4 mh3"
         :project="project"
       />
     </div>
