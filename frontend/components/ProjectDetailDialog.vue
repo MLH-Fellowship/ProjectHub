@@ -111,10 +111,6 @@ export default {
       editable: true,
     };
   },
-  computed: {},
-  mounted() {
-    console.log(this.project.user);
-  },
   beforeDestroy() {},
   methods: {
     viewUserProfile() {
@@ -122,7 +118,7 @@ export default {
       this.$router.push(`/${this.project.user.login}`);
     },
     editProject() {
-      // send request to backend
+      // TODO: alow project edits
     },
   },
 };
