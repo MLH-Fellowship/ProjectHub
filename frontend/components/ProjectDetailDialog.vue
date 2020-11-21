@@ -41,7 +41,7 @@
                   class="ml2"
                   @click="editProject"
                 />
-                <BookmarkButton />
+                <BookmarkButton v-if="!$store.state.user.anonymous" />
               </div>
             </div>
             <el-row>
