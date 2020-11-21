@@ -50,7 +50,6 @@ import ProjectCard from '@/components/ProjectCard';
 
 const someIncludes = (a, b) => {
   const s = new Set(b);
-  console.log(a, b, s);
   return a.some((e) => s.has(e));
 };
 
