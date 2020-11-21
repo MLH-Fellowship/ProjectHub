@@ -45,18 +45,6 @@ def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bea
     else:
         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
 
-
-@app.get("/project/{project_id}")
-def get_project(project_id):
-    # query specific project id
-    q = db.query.projects(project_id)
-    parsed = parse_project_query(q)
-    if parsed is None:
-        raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
-    else:
-        return parsed
-
-
 @app.get("/projects")
 def get_projects(token: Optional[HTTPAuthorizationJWT] = Depends(http_bearer_scheme)):
     projects = db.query.projects()
@@ -127,6 +115,34 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         return
     raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
 
+
+@app.get("/user/bookmarks")
+def query_user_bookmarks(token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    projects = db.query.projects_by_user_bookmarks(token.github_id)
+
+    pods = set()
+    languages = set()
+
+    for project in projects:
+        for language in project.languages:
+            languages.add(language)
+
+        user = db.query.user(id=project.owner)
+        project.user = MicroUser(
+            login=user.login,
+            name=user.name,
+            bio=user.bio,
+            pods=user.pods,
+            avatar=user.avatar,
+            github=user.github,
+        )
+
+        for pod in user.pods:
+            pods.add(pod)
+
+        project.bookmarked = db.exists.bookmark(token.github_id, project.id)
+
+    return ExplorePage(projects=projects, languages=list(languages), pods=list(pods))
 
 @app.get("/user/{login}")
 def query_user(login, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
