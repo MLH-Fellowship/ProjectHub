@@ -2,13 +2,13 @@
   <div class="project-card tl">
     <div class="help-wanted-tag">HELP WANTED</div>
     <el-card
-      :body-style="{ padding: '0px' }"
-      style="min-height: 580px"
+      :body-style="{ padding: '0px', paddingBottom: '20px' }"
+      style="min-height: 500px"
       class="relative"
       @click.native="openProject"
     >
       <img
-        height="250"
+        height="200"
         :src="project.source | socialify"
         alt="Project Banner"
       />
@@ -18,16 +18,7 @@
           <BookmarkButton />
         </div>
 
-        <div class="mv3 word-break">
-          {{ project.description }}
-        </div>
-
-        <div class="flex flex-row items-center f4 lh-copy">
-          <iconify-icon inline icon="tag-multiple" height="24" class="mr2" />
-          Tags
-        </div>
-
-        <ProjectTags class="mt3 mb2" :tags="project.tags" />
+        <ProjectOverview :project="project" :title="false" />
       </div>
       <el-button type="text" class="project-learn-more" @click="learnMore">
         Learn More
@@ -39,7 +30,8 @@
 
 <script>
 import ProjectDetailDialog from '@/components/ProjectDetailDialog';
-import ProjectTags from '@/components/ProjectTags';
+import ProjectOverview from '@/components/ProjectOverview';
+// import ProjectTags from '@/components/ProjectTags';
 import BookmarkButton from '@/components/button/Bookmark';
 import IconifyIcon from '@iconify/vue';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
@@ -47,11 +39,12 @@ import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
-  name: 'ProjectCard',
+  name: 'Project',
   components: {
-    IconifyIcon,
+    // IconifyIcon,
     ProjectDetailDialog,
-    ProjectTags,
+    ProjectOverview,
+    // ProjectTags,
     BookmarkButton,
   },
   props: {
