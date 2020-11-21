@@ -33,6 +33,35 @@ def user_projects(owner: int) -> List[Project]:
     return projects
 
 
+def projects_by_user_bookmarks(user_id: int) -> Project:
+    conn = connection.create()
+    cur = conn.cursor()
+
+    cur.execute("""
+        SELECT projects.id, owner, slug, name, description, source, demo, tags, languages, state FROM projects, bookmarks
+        WHERE projects.id=project_id AND bookmarks.user_id=%s""",
+    (user_id,))
+
+    projects = []
+
+    for ret in cur.fetchall():
+        (id, owner, slug, name, description, source, demo, tags, languages, state) = ret
+        projects.append(Project(
+            id=id,
+            owner=owner,
+            slug=slug,
+            name=name,
+            description=description,
+            source=source,
+            demo=demo,
+            tags=list_from_commas(tags),
+            languages=list_from_commas(languages),
+            state=state,
+        ))
+
+    return projects
+
+
 def projects() -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
@@ -91,3 +120,12 @@ def user(login=None, id=None) -> User:
         interests=list_from_commas(interests),
         pods=list_from_commas(pods)
     )
+
+def user_bookmarks(user_id) -> List[int]:
+    conn = connection.create()
+    cur = conn.cursor()
+
+    cur.execute("SELECT project_id FROM bookmarks WHERE user_id=%s", (user_id,))
+
+    return [i[0] for i in cur.fetchall()]
+

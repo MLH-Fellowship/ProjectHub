@@ -41,7 +41,7 @@
                   class="ml2"
                   @click="editProject"
                 />
-                <BookmarkButton />
+                <BookmarkButton :project="project" />
               </div>
             </div>
             <el-row>

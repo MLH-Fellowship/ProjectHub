@@ -1,5 +1,5 @@
 <template>
-  <iconify-icon :icon="bookmarkIcon" @click.stop="bookmark" />
+  <iconify-icon v-if="visible" :icon="bookmarkIcon" @click.stop="bookmark" />
 </template>
 
 <script>
@@ -10,37 +10,32 @@ import Bookmark from '@iconify/icons-mdi/bookmark';
 IconifyIcon.addIcon('bookmark-outline', BookmarkOutline);
 IconifyIcon.addIcon('bookmark', Bookmark);
 
-// TODO: accept project id and if it's been bookmarked yet
-
 export default {
   name: 'BookmarkButton',
   components: {
     IconifyIcon,
   },
   props: {
-    // projectId: {
-    //   required: true,
-    //   type: Number,
-    // },
-    // value: {
-    //   required: true,
-    //   type: Boolean,
-    // },
-  },
-  data() {
-    return {
-      bookmarked: false,
-    };
+    project: {
+      required: true,
+      type: Object,
+    },
   },
   computed: {
     bookmarkIcon() {
-      return this.bookmarked ? 'bookmark' : 'bookmark-outline';
+      return this.project.bookmarked ? 'bookmark' : 'bookmark-outline';
+    },
+    visible() {
+      return !(
+        this.$store.state.user.anonymous ||
+        this.$store.state.user.meta.login === this.project.user.login
+      );
     },
   },
   methods: {
-    bookmark() {
-      this.bookmarked = !this.bookmarked;
-      // send request to backend
+    async bookmark() {
+      await this.$axios.$post(`/api/bookmark/${this.project.id}`);
+      this.project.bookmarked = !this.project.bookmarked;
     },
   },
 };

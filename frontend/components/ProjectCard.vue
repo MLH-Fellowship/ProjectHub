@@ -22,7 +22,7 @@
       <div class="ph3 pb3">
         <div class="flex flex-row items-center justify-between f3 lh-copy">
           <div>{{ project.name }}</div>
-          <BookmarkButton />
+          <BookmarkButton :project="project" />
         </div>
 
         <ProjectOverview :project="project" :title="false" />
