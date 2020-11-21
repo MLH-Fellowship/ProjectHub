@@ -33,16 +33,17 @@
 
               <el-form-item class="tl" label="Interests">
                 <el-select
-                  v-model="form.interests"
+                  v-model="user.interests"
+                  :disabled="!isUsersOwnPage"
                   multiple
                   placeholder="Select"
                   class="w-100"
                 >
                   <el-option
                     v-for="interest in options.interests"
-                    :key="interest.value"
-                    :label="interest.label"
-                    :value="interest.value"
+                    :key="interest"
+                    :label="interest"
+                    :value="interest"
                   ></el-option>
                 </el-select>
               </el-form-item>
@@ -50,21 +51,23 @@
               <el-form-item class="tl" label="Skills">
                 <el-select
                   v-model="user.skills"
+                  :disabled="!isUsersOwnPage"
                   multiple
                   placeholder="Select"
                   class="w-100"
                 >
                   <el-option
-                    v-for="skill in user.skills"
-                    :key="skill.value"
-                    :label="skill.label"
-                    :value="skill.value"
+                    v-for="skill in options.skills"
+                    :key="skill"
+                    :label="skill"
+                    :value="skill"
                   ></el-option>
                 </el-select>
               </el-form-item>
               <el-form-item label="About">
                 <el-input
                   v-model="user.bio"
+                  :disabled="!isUsersOwnPage"
                   type="textarea"
                   placeholer="Write a short bio..."
                 ></el-input>
@@ -119,28 +122,14 @@ export default {
       step: 0,
       visible: true,
       options: {
-        interests: [
-          { label: 'Front-end', value: 1 },
-          { label: 'Back-end', value: 2 },
-          { label: 'Python', value: 3 },
-        ],
-        skills: [
-          { label: 'Android', value: 1 },
-          { label: 'ML/AI', value: 2 },
-          { label: 'Healthcare', value: 3 },
-        ],
-      },
-      form: {
-        skills: ['Android', 'Java', 'Javascript'],
-        interests: ['Back-end', 'Networking'],
-        bio:
-          "I'm a senior software engineering student at SJSU, and a current MLH at Pod 1.0.1",
+        interests: ['Front-end', 'Back-end', 'Python'],
+        skills: ['Android', 'ML/AI', 'Healthcare'],
       },
     };
   },
   computed: {
-    user_github_url() {
-      return `https://github.com/${this.ghUser.login}`;
+    isUsersOwnPage() {
+      return this.$store.state.user.meta.login === this.$route.params.username;
     },
   },
   methods: {
@@ -151,11 +140,10 @@ export default {
       this.step--;
     },
 
-    submit() {
-      console.log(this.form);
-      this.visible = false;
-      this.$emit('complete');
-    },
+    // submit() {
+    //   this.visible = false;
+    //   this.$emit('complete');
+    // },
   },
 };
 </script>
