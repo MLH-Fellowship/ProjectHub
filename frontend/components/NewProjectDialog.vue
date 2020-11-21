@@ -3,6 +3,7 @@
     :visible="value"
     :title="title"
     width="500px"
+    body-style="max-width: 1000px"
     :center="center"
     @update:visible="$emit('input', $event)"
   >
@@ -62,6 +63,16 @@
             <EditableTagsGroup :tags="form.languages" placeholder="Lanuage" />
           </el-col>
         </el-row>
+        <el-row type="flex" align="center" class="mv3">
+          <el-col :span="6">State</el-col>
+          <el-col :span="18">
+            <el-radio-group v-model="form.state" size="mini">
+              <el-radio-button label="None" value="" />
+              <el-radio-button label="Need Help" />
+              <el-radio-button label="Featured" />
+            </el-radio-group>
+          </el-col>
+        </el-row>
         <el-button class="w-100" type="primary" @click="createNewProject">
           Submit
         </el-button>
@@ -81,6 +92,7 @@ const initForm = () => ({
   demo: '',
   tags: [],
   languages: [],
+  state: '',
 });
 
 export default {
