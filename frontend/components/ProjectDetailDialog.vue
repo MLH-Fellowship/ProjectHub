@@ -1,8 +1,8 @@
 <template>
   <el-dialog
     width="80%"
+    custom-class="project-diolog"
     :visible="value"
-    :body-style="{ padding: '0px' }"
     @update:visible="$emit('input', $event)"
   >
     <div>
@@ -124,19 +124,9 @@ export default {
 };
 </script>
 
-<style lang="css" scoped>
-.el-tag {
-  margin-right: 10px;
-  margin-bottom: 10px;
-}
-
-.input-new-tag {
-  width: 90px;
-}
-
-.project-tag {
-  color: #fff;
-  border: none;
-  border-radius: 1rem;
+<style lang="css">
+.project-diolog {
+  padding: 0px;
+  max-width: 1200px;
 }
 </style>
