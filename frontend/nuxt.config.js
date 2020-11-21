@@ -1,3 +1,7 @@
+const DOCKER_BACKEND_HOST = process.env.DOCKER_BACKEND_HOST || 'localhost';
+const FRONTEND_BASE_URL =
+  process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
+
 export default {
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
@@ -59,7 +63,7 @@ export default {
 
   proxy: {
     '/api': {
-      target: `http://${process.env.BACKEND_HOST || 'localhost'}:8000`,
+      target: `http://${DOCKER_BACKEND_HOST}:8000`,
       pathRewrite: {
         '^/api': '',
       },
@@ -67,7 +71,9 @@ export default {
   },
 
   // Axios module configuration (https://go.nuxtjs.dev/config-axios)
-  axios: {},
+  axios: {
+    baseURL: FRONTEND_BASE_URL,
+  },
 
   // Build Configuration (https://go.nuxtjs.dev/config-build)
   build: {
