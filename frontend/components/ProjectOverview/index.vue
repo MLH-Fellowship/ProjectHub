@@ -4,7 +4,9 @@
 
     <div class="flex flex-row f5 mt3">
       <iconify-icon icon="code-tags" class="mr2" />
-      {{ project.languages | joinWithComma }}
+      <span style="word-break">
+        {{ project.languages | joinWithComma }}
+      </span>
     </div>
 
     <!-- <div class="flex flex-row f5 mt3">

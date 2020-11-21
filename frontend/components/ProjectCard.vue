@@ -18,7 +18,7 @@
           <BookmarkButton />
         </div>
 
-        <div class="mv3">
+        <div class="mv3 word-break">
           {{ project.description }}
         </div>
 

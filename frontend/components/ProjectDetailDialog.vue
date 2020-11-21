@@ -21,8 +21,8 @@
                     </el-button>
                   </div>
                   <div
-                    style="white-space: pre"
-                    class="mt2"
+                    style="white-space: pre-wrap"
+                    class="mt2 word-break"
                     v-text="project.user.bio"
                   />
                 </div>
@@ -55,7 +55,7 @@
 
             <el-row>
               <p class="f3 b">Project Description</p>
-              <p class="mt3">{{ project.description }}</p>
+              <p class="mt3 word-break">{{ project.description }}</p>
               <!-- <p class="mt4 flex flex-row items-center">
                 <iconify-icon
                   v-if="editable"
