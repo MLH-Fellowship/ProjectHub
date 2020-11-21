@@ -7,8 +7,8 @@ CREATE TABLE IF NOT EXISTS projects(
   source text,
   demo text,
   tags text,
-  languages text
-  -- imported smallint -- if the project came from github
+  languages text,
+  state text
 );
 
 CREATE TABLE IF NOT EXISTS users(

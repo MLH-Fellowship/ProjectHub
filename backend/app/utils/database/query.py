@@ -11,12 +11,12 @@ def user_projects(owner: int) -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages FROM projects WHERE owner=%s", (owner,))
+    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages, state FROM projects WHERE owner=%s", (owner,))
 
     projects = []
 
     for ret in cur.fetchall():
-        (id, owner, slug, name, description, source, demo, tags, languages) = ret
+        (id, owner, slug, name, description, source, demo, tags, languages, state) = ret
         projects.append(Project(
             id=id,
             owner=owner,
@@ -27,6 +27,7 @@ def user_projects(owner: int) -> List[Project]:
             demo=demo,
             tags=list_from_commas(tags),
             languages=list_from_commas(languages),
+            state=state,
         ))
 
     return projects
@@ -36,12 +37,12 @@ def projects() -> List[Project]:
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages FROM projects")
+    cur.execute("SELECT id, owner, slug, name, description, source, demo, tags, languages, state FROM projects")
 
     projects = []
 
     for ret in cur.fetchall():
-        (id, owner, slug, name, description, source, demo, tags, languages) = ret
+        (id, owner, slug, name, description, source, demo, tags, languages, state) = ret
         projects.append(Project(
             id=id,
             owner=owner,
@@ -52,6 +53,7 @@ def projects() -> List[Project]:
             demo=demo,
             tags=list_from_commas(tags),
             languages=list_from_commas(languages),
+            state=state,
         ))
 
     return projects
