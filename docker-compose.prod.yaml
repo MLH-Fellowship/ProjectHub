@@ -1,0 +1,37 @@
+version: '3.1'
+
+services:
+  frontend:
+    restart: always
+    build:
+      context: frontend
+      args:
+        GITHUB_CLIENT_ID: ${GITHUB_CLIENT_ID}
+        FRONTEND_BASE_URL: ${FRONTEND_BASE_URL}
+    environment:
+      DOCKER_BACKEND_HOST: backend
+  backend:
+    restart: always
+    build:
+      context: backend
+    environment:
+      POSTGRES_HOST: db
+    env_file: .env
+  db:
+    image: postgres
+    restart: always 
+    volumes:
+      - ./postgres/database:/var/lib/postgresql/data
+      - ./postgres/init:/docker-entrypoint-initdb.d
+    environment:
+      - POSTGRES_USER=${POSTGRES_USER}
+      - POSTGRES_PASSWORD=${POSTGRES_PASSWORD}
+  nginx:
+    image: nginx:latest
+    restart: always
+    ports:
+      - 80:80
+      - 443:443
+    volumes:
+      - ./nginx/nginx.prod.conf:/etc/nginx/nginx.conf
+      - ./nginx/ssl:/ssl

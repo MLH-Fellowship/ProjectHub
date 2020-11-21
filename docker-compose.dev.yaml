@@ -40,5 +40,5 @@ services:
       - 80:80
       - 443:443
     volumes:
-      - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/nginx.dev.conf:/etc/nginx/nginx.conf
       - ./nginx/ssl:/ssl
