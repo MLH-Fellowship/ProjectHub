@@ -116,5 +116,14 @@ def query_user(login):
     if not user:
         raise HTTPException(status.HTTP_404_NOT_FOUND)
     else:
-        user.projects = db.query.user_projects(user.id)
+        projects = db.query.user_projects(user.id)
+
+        languages = set()
+
+        for project in projects:
+            for language in project.languages:
+                languages.add(language)
+        
+        user.explorer = ExplorePage(projects=projects, languages=list(languages))
+
         return user
