@@ -9,7 +9,11 @@
     <div v-loading="loading" :class="{ tc: center }">
       <div v-if="step === 0">
         <div>
-          <el-button class="w-100" type="primary" @click="step = 1">
+          <el-button
+            class="w-100"
+            type="primary"
+            @click="startImportFromGithub"
+          >
             Import from Github
           </el-button>
         </div>
@@ -19,7 +23,7 @@
       </div>
       <div v-else-if="step === 1">
         <div>
-          <el-input v-model="form.source" />
+          <el-input ref="githubLinkInput" v-model="form.source" />
         </div>
         <div class="mt3">
           <el-button class="w-100" type="primary" @click="importFromGithub">
@@ -118,6 +122,13 @@ export default {
     },
   },
   methods: {
+    startImportFromGithub() {
+      this.step = 1;
+      this.$nextTick(() => {
+        console.log(this.$refs.githubLinkInput);
+        this.$refs.githubLinkInput.focus();
+      });
+    },
     async importFromGithub() {
       // TODO: error checking to make sure the url/repo is valid
       this.loading = true;
