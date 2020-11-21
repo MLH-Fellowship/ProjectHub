@@ -14,7 +14,7 @@
               <p class="b f4 mb3">Creator</p>
               <div class="flex flex-col items-center tl">
                 <div class="flex flex-row flex-wrap items-center">
-                  <el-avatar size="small" :src="project.user.avatar_url" />
+                  <el-avatar size="small" :src="project.user.avatar" />
                   <div class="ml3 f5">
                     <el-button type="text" @click="viewUserProfile">
                       @{{ project.user.login }}
