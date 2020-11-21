@@ -1,8 +1,7 @@
 from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
 from slugify import slugify
-from app.models.User import MicroUser
-
+from app.models import MicroUser, ExplorePage
 from app.utils import jwe
 from app.utils.github import GitHub
 import app.utils.database as db
@@ -60,6 +59,10 @@ def get_project(project_id):
 @app.get("/projects")
 def get_projects():
     projects = db.query.projects()
+    
+    pods = set()
+    languages = set()
+
     for project in projects:
         user = db.query.user(id=project.owner)
         
@@ -70,7 +73,13 @@ def get_projects():
             pods=user.pods,
         )
 
-    return projects
+        for pod in user.pods:
+            pods.add(pod)
+
+        for language in project.languages:
+            languages.add(language)
+
+    return ExplorePage(projects=projects, pods=list(pods), languages=list(languages))
 
 
 @app.post("/user")
