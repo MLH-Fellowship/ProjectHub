@@ -67,6 +67,7 @@ def get_projects():
             login=user.login,
             name=user.name,
             bio=user.bio,
+            pods=user.pods,
         )
 
     return projects

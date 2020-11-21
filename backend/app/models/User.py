@@ -6,8 +6,10 @@ class MicroUser(BaseModel):
     login: str
     name: str
     bio: str
+    pods: List[str]
     html_url: str = ''
     avatar_url: str = ''
+    
 
 
 class User(BaseModel):
