@@ -15,6 +15,8 @@ CREATE TABLE IF NOT EXISTS users(
   id integer primary key, -- equal to github's ids
   login text,
   name text,
+  github text,
+  avatar text,
   pods text,
   timezone_offset smallint,
   bio text,
