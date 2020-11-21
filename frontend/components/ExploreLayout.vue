@@ -38,8 +38,9 @@
     <div class="grid w-100 pa3">
       <ProjectCard
         v-for="project in filterd"
+        ref="cards"
         :key="project.id"
-        class="ma3"
+        class="mv4 mh3"
         :project="project"
       />
     </div>
@@ -99,6 +100,16 @@ export default {
 
       return filtered || this.projects;
     },
+  },
+  mounted() {
+    const { project } = this.$route.query;
+    if (project) {
+      const index = this.projects.findIndex(({ slug }) => slug === project);
+      console.log(this.$refs, index);
+      if (index !== -1) {
+        this.$refs.cards[index].openProject();
+      }
+    }
   },
 };
 </script>

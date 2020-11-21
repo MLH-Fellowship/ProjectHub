@@ -3,13 +3,18 @@
     :visible="value"
     :title="title"
     width="500px"
+    body-style="max-width: 1000px"
     :center="center"
     @update:visible="$emit('input', $event)"
   >
     <div v-loading="loading" :class="{ tc: center }">
       <div v-if="step === 0">
         <div>
-          <el-button class="w-100" type="primary" @click="step = 1">
+          <el-button
+            class="w-100"
+            type="primary"
+            @click="startImportFromGithub"
+          >
             Import from Github
           </el-button>
         </div>
@@ -19,7 +24,7 @@
       </div>
       <div v-else-if="step === 1">
         <div>
-          <el-input v-model="form.source" />
+          <el-input ref="githubLinkInput" v-model="form.source" />
         </div>
         <div class="mt3">
           <el-button class="w-100" type="primary" @click="importFromGithub">
@@ -58,6 +63,16 @@
             <EditableTagsGroup :tags="form.languages" placeholder="Lanuage" />
           </el-col>
         </el-row>
+        <el-row type="flex" align="center" class="mv3">
+          <el-col :span="6">State</el-col>
+          <el-col :span="18">
+            <el-radio-group v-model="form.state" size="mini">
+              <el-radio-button label="None" value="" />
+              <el-radio-button label="Need Help" />
+              <el-radio-button label="Featured" />
+            </el-radio-group>
+          </el-col>
+        </el-row>
         <el-button class="w-100" type="primary" @click="createNewProject">
           Submit
         </el-button>
@@ -77,6 +92,7 @@ const initForm = () => ({
   demo: '',
   tags: [],
   languages: [],
+  state: '',
 });
 
 export default {
@@ -118,6 +134,13 @@ export default {
     },
   },
   methods: {
+    startImportFromGithub() {
+      this.step = 1;
+      this.$nextTick(() => {
+        console.log(this.$refs.githubLinkInput);
+        this.$refs.githubLinkInput.focus();
+      });
+    },
     async importFromGithub() {
       // TODO: error checking to make sure the url/repo is valid
       this.loading = true;
@@ -135,8 +158,8 @@ export default {
       ]);
       this.imported = true;
       this.form.name = repository;
-      this.form.description = description;
-      this.form.demo = homepage;
+      this.form.description = description || '';
+      this.form.demo = homepage || '';
       this.form.tags = names;
       this.form.languages = Object.keys(languages);
       this.step = 2;
@@ -146,6 +169,7 @@ export default {
       const project = await this.$axios.$post('/api/project', this.form);
       this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
       this.$emit('input', false);
+      this.$nuxt.refresh();
     },
     removeTag(tag) {
       this.form.tags.splice(this.form.tags.indexOf(tag), 1);

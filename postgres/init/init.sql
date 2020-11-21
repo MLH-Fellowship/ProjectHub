@@ -7,14 +7,16 @@ CREATE TABLE IF NOT EXISTS projects(
   source text,
   demo text,
   tags text,
-  languages text
-  -- imported smallint -- if the project came from github
+  languages text,
+  state text
 );
 
 CREATE TABLE IF NOT EXISTS users(
   id integer primary key, -- equal to github's ids
   login text,
   name text,
+  github text,
+  avatar text,
   pods text,
   timezone_offset smallint,
   bio text,

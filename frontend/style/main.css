@@ -16,3 +16,8 @@ html {
   box-sizing: border-box;
   margin: 0;
 }
+
+.word-break {
+  display: inline-block;
+  word-break: break-word;
+}

@@ -14,15 +14,15 @@
               <p class="b f4 mb3">Creator</p>
               <div class="flex flex-col items-center tl">
                 <div class="flex flex-row flex-wrap items-center">
-                  <el-avatar size="small" :src="project.user.avatar_url" />
+                  <el-avatar size="small" :src="project.user.avatar" />
                   <div class="ml3 f5">
                     <el-button type="text" @click="viewUserProfile">
                       @{{ project.user.login }}
                     </el-button>
                   </div>
                   <div
-                    style="white-space: pre"
-                    class="mt2"
+                    style="white-space: pre-wrap"
+                    class="mt2 word-break"
                     v-text="project.user.bio"
                   />
                 </div>
@@ -30,18 +30,18 @@
             </div>
           </el-col>
           <el-col :sm="24" :md="15" class="ph4 tl">
-            <div class="flex justify-between f2">
+            <div class="flex justify-between items-center f2 mb2">
               <div class="flex flex-row items-center b black">
                 {{ project.name }}
               </div>
-              <div class="tr">
-                <BookmarkButton />
+              <div class="tr f4">
                 <iconify-icon
-                  v-if="editable"
+                  v-if="isUsersProject"
                   icon="lead-pencil"
                   class="ml2"
                   @click="editProject"
                 />
+                <BookmarkButton />
               </div>
             </div>
             <el-row>
@@ -55,7 +55,7 @@
 
             <el-row>
               <p class="f3 b">Project Description</p>
-              <p class="mt3">{{ project.description }}</p>
+              <p class="mt3 word-break">{{ project.description }}</p>
               <!-- <p class="mt4 flex flex-row items-center">
                 <iconify-icon
                   v-if="editable"
@@ -108,8 +108,12 @@ export default {
   data() {
     return {
       bookmarked: false,
-      editable: true,
     };
+  },
+  computed: {
+    isUsersProject() {
+      return this.$store.state.user.meta.login === this.project.user.login;
+    },
   },
   beforeDestroy() {},
   methods: {

@@ -1,3 +1,4 @@
+from typing import Optional
 from fastapi import FastAPI, Depends, HTTPException
 from starlette import status
 from slugify import slugify
@@ -10,7 +11,7 @@ from app.models import Project, User
 from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
-http_bearer_scheme = HTTPBearerJWEScheme()
+http_bearer_scheme = HTTPBearerJWEScheme(auth_optional=['/projects'])
 
 
 @app.get("/login/github/{code}")
@@ -57,7 +58,9 @@ def get_project(project_id):
 
 
 @app.get("/projects")
-def get_projects():
+def get_projects(token: Optional[HTTPAuthorizationJWT] = Depends(http_bearer_scheme)):
+    print(token)
+
     projects = db.query.projects()
     
     pods = set()
@@ -71,6 +74,8 @@ def get_projects():
             name=user.name,
             bio=user.bio,
             pods=user.pods,
+            avatar=user.avatar,
+            github=user.github,
         )
 
         for pod in user.pods:
@@ -91,6 +96,8 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
+        user.avatar = gh.user.avatar_url
+        user.github = gh.user.html_url
         
         db.insert.user(user)
 
@@ -104,6 +111,8 @@ def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         user.id = gh.user.id
         user.login = gh.user.login
         user.name = gh.user.name
+        user.avatar = gh.user.avatar_url
+        user.github = gh.user.html_url
         
         db.insert.update(user)
         return

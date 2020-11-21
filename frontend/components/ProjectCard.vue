@@ -1,14 +1,21 @@
 <template>
   <div class="project-card tl">
-    <div class="help-wanted-tag">HELP WANTED</div>
+    <div
+      class="project-state-tag"
+      :style="{
+        opacity: Number(Boolean(project.state)),
+      }"
+    >
+      {{ project.state | state }}
+    </div>
     <el-card
-      :body-style="{ padding: '0px' }"
-      style="min-height: 580px"
+      :body-style="{ padding: '0px', paddingBottom: '20px' }"
+      style="height: 100%"
       class="relative"
       @click.native="openProject"
     >
       <img
-        height="250"
+        height="200"
         :src="project.source | socialify"
         alt="Project Banner"
       />
@@ -18,16 +25,7 @@
           <BookmarkButton />
         </div>
 
-        <div class="mv3">
-          {{ project.description }}
-        </div>
-
-        <div class="flex flex-row items-center f4 lh-copy">
-          <iconify-icon inline icon="tag-multiple" height="24" class="mr2" />
-          Tags
-        </div>
-
-        <ProjectTags class="mt3 mb2" :tags="project.tags" />
+        <ProjectOverview :project="project" :title="false" />
       </div>
       <el-button type="text" class="project-learn-more" @click="learnMore">
         Learn More
@@ -39,7 +37,8 @@
 
 <script>
 import ProjectDetailDialog from '@/components/ProjectDetailDialog';
-import ProjectTags from '@/components/ProjectTags';
+import ProjectOverview from '@/components/ProjectOverview';
+// import ProjectTags from '@/components/ProjectTags';
 import BookmarkButton from '@/components/button/Bookmark';
 import IconifyIcon from '@iconify/vue';
 import TagMultiple from '@iconify/icons-mdi/tag-multiple';
@@ -47,12 +46,18 @@ import TagMultiple from '@iconify/icons-mdi/tag-multiple';
 IconifyIcon.addIcon('tag-multiple', TagMultiple);
 
 export default {
-  name: 'ProjectCard',
+  name: 'Project',
   components: {
-    IconifyIcon,
+    // IconifyIcon,
     ProjectDetailDialog,
-    ProjectTags,
+    ProjectOverview,
+    // ProjectTags,
     BookmarkButton,
+  },
+  filters: {
+    state(str) {
+      return (str && str.toUpperCase()) || 'PLACEHOLDER';
+    },
   },
   props: {
     project: { type: Object, required: true },
@@ -60,7 +65,7 @@ export default {
   data: () => ({
     detailsVisible: false,
   }),
-  computed: {},
+
   methods: {
     learnMore() {},
     openProject() {
@@ -76,7 +81,7 @@ export default {
   min-width: 300px;
 }
 
-.help-wanted-tag {
+.project-state-tag {
   padding: 0.5rem;
   border-radius: 10px 10px 0 0;
   background: #ffbe55;

@@ -14,7 +14,7 @@
                 class="absolute ma4"
                 style="top: 0; left: 0"
                 icon="el-icon-user-solid"
-                :src="ghUser.avatar_url"
+                :src="user.avatar"
                 :size="200"
               ></el-avatar>
             </div>
@@ -22,8 +22,8 @@
         </el-col>
         <el-col class="z-999 relative" :span="14">
           <div class="grid-content">
-            <el-link type="primary" :href="ghUser.html_url">
-              <h2>{{ ghUser.name }}</h2>
+            <el-link type="primary" :href="user.github">
+              <h2>{{ user.name }}</h2>
             </el-link>
 
             <el-form class="mv4" label-width="100px">
@@ -94,38 +94,27 @@ import ExploreLayout from '@/components/ExploreLayout.vue';
 export default {
   components: { ExploreLayout },
   async asyncData({ params, $axios, $github, error }) {
-    let user;
     try {
-      user = await $axios.$get(`/api/user/${params.username}`);
+      const user = await $axios.$get(`/api/user/${params.username}`);
+      const microUser = pick(
+        ['login', 'name', 'bio', 'pods', 'avatar', 'github'],
+        user
+      );
+
+      user.explorer.projects = user.explorer.projects.map((project) => ({
+        ...project,
+        user: microUser,
+      }));
+
+      return {
+        user,
+      };
     } catch (e) {
       return error({ statusCode: 404, message: 'User not found' });
     }
-
-    const ghUser = await $github
-      .get('users', params.username)
-      .then(pick(['html_url', 'avatar_url']));
-
-    const userMini = {
-      ...pick(['login', 'name', 'bio', 'pods'], user),
-      ...ghUser,
-    };
-
-    user.explorer.projects = user.explorer.projects.map((project) => ({
-      ...project,
-      user: userMini,
-    }));
-
-    console.log(user);
-
-    return {
-      user,
-      ghUser,
-    };
   },
   data() {
     return {
-      step: 0,
-      visible: true,
       options: {
         interests: ['Front-end', 'Back-end', 'Python'],
         skills: ['Android', 'ML/AI', 'Healthcare'],
@@ -136,19 +125,6 @@ export default {
     isUsersOwnPage() {
       return this.$store.state.user.meta.login === this.$route.params.username;
     },
-  },
-  methods: {
-    next() {
-      this.step++;
-    },
-    back() {
-      this.step--;
-    },
-
-    // submit() {
-    //   this.visible = false;
-    //   this.$emit('complete');
-    // },
   },
 };
 </script>
