@@ -36,7 +36,7 @@
     </div>
     <div class="grid w-100 pa3">
       <ProjectCard
-        v-for="project in project_array"
+        v-for="project in projects"
         :key="project.id"
         class="ma3"
         :project="project"
@@ -59,25 +59,6 @@ export default {
   },
   data() {
     return {
-      project_array: [
-        {
-          user: '@calvinqc',
-          helpWanted: true,
-          title: 'Event-bot',
-          desc:
-            'Discord Bot to make announcements about upcoming sessions for the Fellows using Google Calendar.',
-          tags: ['Python', 'Pod 1.0.1', 'Discord'],
-        },
-        {
-          user: '@calvinqc',
-          helpWanted: true,
-          title: 'Event-bot',
-          desc:
-            'Discord Bot to make announcements about upcoming sessions for the Fellows using Google Calendar.',
-          tags: ['Python', '1.0.1', 'Discord'],
-        },
-      ],
-
       options: {
         pods: [
           '1.0.0',
