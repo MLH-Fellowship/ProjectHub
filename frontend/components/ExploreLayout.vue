@@ -1,15 +1,16 @@
 <template>
   <div class="mt4">
     <div class="flex flex-row flex-wrap justify-center">
-      <div class="f3 lh-copy">Filters:</div>
+      <div class="f3 lh-copy mr3">Filters:</div>
       <el-select
+        v-if="!userPage"
         v-model="pods"
         multiple
         filterable
         allow-create
         default-first-option
         placeholder="Pods"
-        class="mh3"
+        class="mr3"
       >
         <el-option
           v-for="item in podOptions"
@@ -68,6 +69,10 @@ export default {
     languageOptions: {
       type: Array,
       required: true,
+    },
+    userPage: {
+      type: Boolean,
+      default: false,
     },
   },
   data() {
