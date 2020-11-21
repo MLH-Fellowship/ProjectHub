@@ -26,7 +26,7 @@ class Project(BaseModel):
 
 class ExplorePage(BaseModel):
     projects: list[Project]
-    pods: Optional[List[str]]
+    pods: List[str] = [] # shared memory but it should never be set, only replaced
     languages: List[str]    
 
 
