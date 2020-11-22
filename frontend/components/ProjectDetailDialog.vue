@@ -22,9 +22,12 @@
                   </div>
                   <div
                     style="white-space: pre-wrap"
-                    class="mt2 word-break"
+                    class="mt2 ph2 word-break"
                     v-text="project.user.bio"
                   />
+                  <!-- <p class="mt4 b ph2 flex flex-row items-center">
+                    Last updated {{ project.updated }}
+                  </p> -->
                 </div>
               </div>
             </div>
@@ -55,16 +58,11 @@
 
             <el-row>
               <p class="f3 b">Project Description</p>
-              <p class="mt3 word-break">{{ project.description }}</p>
-              <!-- <p class="mt4 flex flex-row items-center">
-                <iconify-icon
-                  v-if="editable"
-                  icon="clock"
-                  class="mr2"
-                  @click="editProject"
-                />
-                Last updated {{ details.time }}
-              </p> -->
+              <p
+                class="mt3"
+                style="white-space: pre-wrap"
+                v-text="project.description"
+              />
             </el-row>
           </el-col>
         </el-row>
