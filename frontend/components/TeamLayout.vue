@@ -59,9 +59,10 @@
                 <el-col :span="16">
                   <p class="f4 b">Jordan Merrick</p>
                   <p class="f5 mt3">
-                    Hi, I'm a senior at American University in Washington, DC. I love working with
-                    high-performance systems and work primarily in finance. I do most of my work in 
-                    a language called OCaml, an awesome functional language!
+                    Hi, I'm a senior at American University in Washington, DC. I
+                    love working with high-performance systems and work
+                    primarily in finance. I do most of my work in a language
+                    called OCaml, an awesome functional language!
                   </p>
                   <div class="flex flex-row items-center mt3 f5">
                     <iconify-icon icon="github" class="mr2 f4" />
