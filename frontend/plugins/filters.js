@@ -12,14 +12,40 @@ const theamedHexColors = [
   'FFDAC1',
   'B5EAD7',
   'C7CEEA',
+  '77DD77',
+  '89CFF0',
+  '99C5C4',
+  '9ADEDB',
+  'AA9499',
+  'AAF0D1',
+  'B2FBA5',
+  'B39EB5',
+  'BDB0D0',
+  'BEE7A5',
+  'BEFD73',
+  'C1C6FC',
+  'C6A4A4',
+  'CB99C9',
+  'CEF0CC',
+  'CFCFC4',
+  'D6FFFE',
+  'D8A1C4',
+  'DEA5A4',
+  'E9D1BF',
+  'F49AC2',
+  'F4BFFF',
+  'FF6961',
+  'FF964F',
+  'FF9899',
+  'FFB7CE',
+  'CA9BF7',
 ];
 
 Vue.filter('hexHash', function (str) {
   const hash = Array.from(str).reduce(
-    (hash, char) => hash + char.charCodeAt(0),
+    (hash, char) => hash ^ char.charCodeAt(0),
     0
   );
-
   return '#' + theamedHexColors[hash % theamedHexColors.length];
 });
 
