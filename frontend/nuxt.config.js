@@ -3,6 +3,9 @@ const FRONTEND_BASE_URL =
   process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
 
 export default {
+  loading: {
+    color: '#fbc6fd',
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'Project Hub',
