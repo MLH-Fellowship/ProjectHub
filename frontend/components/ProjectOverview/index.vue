@@ -1,5 +1,5 @@
 <template>
-  <div class="pa3 tl">
+  <div class="tl">
     <p v-if="title" class="f4 b mb3">Project Overview</p>
 
     <div v-if="project.languages.length" class="flex flex-row f5">

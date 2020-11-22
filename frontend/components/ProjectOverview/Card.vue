@@ -1,6 +1,6 @@
 <template>
   <el-card>
-    <ProjectOverview :project="project" />
+    <ProjectOverview class="pa3" :project="project" />
   </el-card>
 </template>
 

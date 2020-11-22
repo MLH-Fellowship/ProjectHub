@@ -1,6 +1,6 @@
 <template>
   <div>
-    <div style="margin-left: 200px">
+    <div class="mt4" style="margin-left: 200px">
       <el-row>
         <el-col :span="6">
           <div class="grid-content">

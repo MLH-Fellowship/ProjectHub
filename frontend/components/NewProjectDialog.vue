@@ -67,7 +67,7 @@
           <el-col :span="6">State</el-col>
           <el-col :span="18">
             <el-radio-group v-model="form.state" size="mini">
-              <el-radio-button label="None" value="" />
+              <el-radio-button label="None" />
               <el-radio-button label="Need Help" />
               <el-radio-button label="Featured" />
             </el-radio-group>
@@ -92,7 +92,7 @@ const initForm = () => ({
   demo: '',
   tags: [],
   languages: [],
-  state: '',
+  state: 'None',
 });
 
 export default {
@@ -166,7 +166,11 @@ export default {
       this.loading = false;
     },
     async createNewProject() {
-      const project = await this.$axios.$post('/api/project', this.form);
+      const form = {
+        ...this.form,
+        state: this.form.sate === 'None' ? null : this.form.sate,
+      };
+      const project = await this.$axios.$post('/api/project', form);
       this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
       this.$emit('input', false);
       this.$nuxt.refresh();
