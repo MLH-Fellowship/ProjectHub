@@ -20,7 +20,7 @@ export default {
       },
     ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
+      { rel: 'icon', type: 'image/png', href: '/icon.png' },
       {
         rel: 'stylesheet',
         href: 'https://unpkg.com/tachyons@4/css/tachyons.min.css',
@@ -68,6 +68,10 @@ export default {
     // https://github.com/nuxt-community/proxy-module
     '@nuxtjs/proxy',
   ],
+
+  pwa: {
+    source: '~/static/icon.png',
+  },
 
   proxy: {
     '/api': {
