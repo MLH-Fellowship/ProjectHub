@@ -28,6 +28,10 @@ export default {
 
 .project-tag {
   color: #fff;
+  text-shadow: black 0px 0px 50px;
+  overflow: hidden;
+  font-weight: 1000;
+  font-size: 11px;
   border: none;
   border-radius: 1rem;
 }

@@ -60,7 +60,7 @@ export default {
     },
     finish() {
       this.loginFlow.finish();
-      this.$router.push(this.$route.query.redirect || '/');
+      this.$router.push(this.$route.query.redirect || '/explore');
     },
   },
 };

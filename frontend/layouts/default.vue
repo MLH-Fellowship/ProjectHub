@@ -2,11 +2,12 @@
   <div class="layout-default">
     <!-- can't figure out how to make navbar stick to top -->
     <div class="flex flex-row items-center">
-      <div
-        style="border-bottom: solid 1px #e6e6e6; background-color: #fff"
-        @click="$router.push('/')"
-      >
-        <img class="di" src="/logo.png" alt="Logo" style="max-height: 57px" />
+      <div class="logo-wrapper" @click="$router.push('/')">
+        <img
+          :src="require('~/assets/images/logo.png')"
+          alt="Logo"
+          width="120px"
+        />
       </div>
       <div style="flex: 1" class="f5">
         <el-menu
@@ -86,14 +87,27 @@ export default {
 </script>
 
 <style scoped>
-.el-menu-item {
+.logo-wrapper {
+  border-bottom: solid 1px #e6e6e6;
+  background-color: #fff;
+  line-height: 75px;
+  text-align: center;
+  width: 150px;
+  height: 61px;
+}
+
+ul:not(.el-menu--popup) > li.el-menu-item {
   font-weight: 300;
   font-size: 1.5rem;
 }
 
+.layout-default >>> .el-menu-item.is-active,
+.layout-default >>> .el-submenu.is-active .el-submenu__title {
+  border-bottom-color: #fbc6fd !important;
+}
+
 .el-menu-item.is-active {
   font-weight: bolder;
-  border-bottom: 2px solid #fbc6fd;
 }
 
 .layout-default >>> .container {

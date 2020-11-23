@@ -1,18 +1,17 @@
-const DOCKER_BACKEND_HOST = process.env.DOCKER_BACKEND_HOST || 'localhost'
+const DOCKER_BACKEND_HOST = process.env.DOCKER_BACKEND_HOST || 'localhost';
 const FRONTEND_BASE_URL =
-  process.env.FRONTEND_BASE_URL || 'http://localhost:3000'
+  process.env.FRONTEND_BASE_URL || 'http://localhost:3000';
+
+const theme = '#FBC6FD';
 
 export default {
+  loading: {
+    color: theme,
+  },
   // Global page headers (https://go.nuxtjs.dev/config-head)
   head: {
     title: 'Project Hub',
-    meta: [
-      { charset: 'utf-8' },
-      { name: 'viewport', content: 'width=device-width, initial-scale=1' },
-      { hid: 'description', name: 'description', content: '' },
-    ],
     link: [
-      { rel: 'icon', type: 'image/x-icon', href: '/favicon.ico' },
       {
         rel: 'stylesheet',
         href: 'https://unpkg.com/tachyons@4/css/tachyons.min.css',
@@ -61,6 +60,22 @@ export default {
     '@nuxtjs/proxy',
   ],
 
+  pwa: {
+    meta: {
+      name: 'Project Hub',
+      theme_color: theme,
+      description:
+        'Introducing a new way for MLH students to find and share the projects they love!',
+      ogHost: FRONTEND_BASE_URL,
+    },
+    manifest: {
+      name: 'Project Hub',
+      short_name: 'PH',
+      description:
+        'Introducing a new way for MLH students to find and share the projects they love!',
+    },
+  },
+
   proxy: {
     '/api': {
       target: `http://${DOCKER_BACKEND_HOST}:8000`,
@@ -80,4 +95,4 @@ export default {
     analyze: process.env.NUXT_ANALYZE === '1',
     transpile: [/^element-ui/],
   },
-}
+};
