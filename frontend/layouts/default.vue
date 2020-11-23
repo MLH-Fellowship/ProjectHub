@@ -18,7 +18,9 @@
         >
           <el-menu-item index="/explore">Explore</el-menu-item>
           <el-menu-item index="/team">Team</el-menu-item>
-          <el-menu-item :index="null" @click="github">Github</el-menu-item>
+          <el-menu-item class="never-active" @click.native.stop="github"
+            >Github</el-menu-item
+          >
           <el-submenu v-if="!user.anonymous" index="#" style="float: right">
             <template slot="title">
               <el-avatar size="large" :src="user.meta.avatar" />
@@ -29,9 +31,18 @@
             <el-menu-item :index="`/${user.meta.login}/bookmarks`">
               Bookmarks
             </el-menu-item>
-            <el-menu-item @click="logout">Logout</el-menu-item>
+            <el-menu-item
+              index="logout"
+              :route="{ path: '/' }"
+              @click.native.stop="logout"
+              >Logout</el-menu-item
+            >
           </el-submenu>
-          <el-menu-item v-if="!user.anonymous" style="float: right">
+          <el-menu-item
+            v-if="!user.anonymous"
+            style="float: right"
+            class="never-active"
+          >
             <el-button
               type="primary"
               @click.native="showNewProjectDialog = true"
@@ -43,6 +54,7 @@
             v-if="user.anonymous"
             :index="login"
             style="float: right"
+            class="never-active"
           >
             Login
           </el-menu-item>
@@ -65,15 +77,21 @@ export default {
   data() {
     return {
       showNewProjectDialog: false,
-      route: this.$route.path,
+      route: this.$route.fullUrl,
     };
   },
   computed: {
     ...mapState(['user']),
     login() {
       if (this.$route.query.redirect) {
-        return '/';
+        return this.$route.fullUrl;
       }
+
+      if (this.$route.path === '/') {
+        console.log(this.$route.path);
+        return `/?login=1`;
+      }
+
       return `/?login=1&redirect=${this.$route.path}`;
     },
   },
@@ -101,9 +119,14 @@ ul:not(.el-menu--popup) > li.el-menu-item {
   font-size: 1.5rem;
 }
 
-.layout-default >>> .el-menu-item.is-active,
+.layout-default >>> .el-menu-item.is-active:not(.never-active),
 .layout-default >>> .el-submenu.is-active .el-submenu__title {
   border-bottom-color: #fbc6fd !important;
+}
+
+.layout-default >>> .never-active {
+  border-bottom: none !important;
+  color: #909399 !important;
 }
 
 .el-menu-item.is-active {
