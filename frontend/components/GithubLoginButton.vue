@@ -21,29 +21,19 @@ export default {
       interval: null,
     };
   },
-  computed: {
-    ...mapState(['user']),
-    bounce() {
-      return this.$route.query.login === '1';
+  computed: mapState(['user']),
+  watch: {
+    '$route.query'() {
+      this.routeWatcher();
     },
   },
   mounted() {
-    if (this.bounce) {
-      const { classList } = this.$refs.button.$el;
-      let flag = true;
-      classList.add('bounce');
-      this.interval = setInterval(() => {
-        if (flag) {
-          classList.remove('bounce');
-        } else {
-          classList.add('bounce');
-        }
-        flag = !flag;
-      }, 1500);
-    }
+    this.routeWatcher();
   },
   destroyed() {
-    clearInterval(this.interval);
+    if (this.interval) {
+      clearInterval(this.interval);
+    }
   },
   methods: {
     async authenticate() {
@@ -61,6 +51,27 @@ export default {
     finish() {
       this.loginFlow.finish();
       this.$router.push(this.$route.query.redirect || '/explore');
+    },
+    routeWatcher() {
+      if (this.interval) {
+        clearInterval(this.interval);
+        this.interval = null;
+      }
+
+      if (this.$route.query.login === '1') {
+        const { classList } = this.$refs.button.$el;
+        let flag = true;
+        classList.add('bounce');
+
+        this.interval = setInterval(() => {
+          if (flag) {
+            classList.remove('bounce');
+          } else {
+            classList.add('bounce');
+          }
+          flag = !flag;
+        }, 1500);
+      }
     },
   },
 };
