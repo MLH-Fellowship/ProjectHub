@@ -96,14 +96,18 @@ export default {
   height: 61px;
 }
 
-.el-menu-item {
+ul:not(.el-menu--popup) > li.el-menu-item {
   font-weight: 300;
   font-size: 1.5rem;
 }
 
+.layout-default >>> .el-menu-item.is-active,
+.layout-default >>> .el-submenu.is-active .el-submenu__title {
+  border-bottom-color: #fbc6fd !important;
+}
+
 .el-menu-item.is-active {
   font-weight: bolder;
-  border-bottom: 2px solid #fbc6fd;
 }
 
 .layout-default >>> .container {
