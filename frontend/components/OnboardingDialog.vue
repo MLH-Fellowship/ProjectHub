@@ -91,7 +91,7 @@
         <el-button round type="primary" @click="next">Next</el-button>
       </div>
     </div>
-    <div v-else>
+    <div v-show="step === 1">
       <h1 class="black" style="font-size: 2em; text-align: center">
         You're all set!
       </h1>
