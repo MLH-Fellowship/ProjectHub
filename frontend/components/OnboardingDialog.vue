@@ -54,34 +54,13 @@
                 </el-select>
               </el-form-item>
               <el-form-item class="tl" label="Interests">
-                <el-select
-                  v-model="form.interests"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="interest in options.interests"
-                    :key="interest"
-                    :label="interest"
-                    :value="interest"
-                  ></el-option>
-                </el-select>
+                <EditableTagsGroup
+                  :tags="form.interests"
+                  placeholder="Interest"
+                />
               </el-form-item>
               <el-form-item class="tl" label="Skills">
-                <el-select
-                  v-model="form.skills"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="skill in options.skills"
-                    :key="skill"
-                    :label="skill"
-                    :value="skill"
-                  ></el-option>
-                </el-select>
+                <EditableTagsGroup :tags="form.skills" placeholder="Skill" />
               </el-form-item>
             </el-form>
           </div>
@@ -178,8 +157,6 @@ export default {
           'Pod 1.2.1',
           'Pod 1.2.2',
         ],
-        interests: ['Android', 'ML/AI', 'Healthcare'],
-        skills: ['Front-end', 'Back-end', 'Python'],
       },
       form: {
         bio: '',
