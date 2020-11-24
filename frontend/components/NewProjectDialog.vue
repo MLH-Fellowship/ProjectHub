@@ -84,6 +84,7 @@
 <script>
 import { mapState } from 'vuex';
 import EditableTagsGroup from '@/components/EditableTagsGroup';
+import toSlug from '@/utils/toSlug';
 
 const initForm = () => ({
   name: '',
@@ -160,7 +161,7 @@ export default {
       this.form.name = repository;
       this.form.description = description || '';
       this.form.demo = homepage || '';
-      this.form.tags = names;
+      this.form.tags = names.map(toSlug);
       this.form.languages = Object.keys(languages);
       this.step = 2;
       this.loading = false;

@@ -23,6 +23,8 @@
 </template>
 
 <script>
+import toSlug from '@/utils/toSlug';
+
 export default {
   name: 'EditableTagsGroup',
   components: {},
@@ -59,8 +61,8 @@ export default {
     //   });
     // },
     handleInputConfirm() {
-      const value = this.input.value;
-      if (value) {
+      const value = toSlug(this.input.value);
+      if (value && !this.tags.includes(value)) {
         this.tags.push(value);
       }
       this.input.value = '';
