@@ -93,15 +93,7 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
 @app.put("/user")
 def update_user(user: UserUpdateModel, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
     if db.exists.user(token.github_id):
-        # gh = GitHub(token.github_at)
-
-        # set defaults needed to create a useer
-        # user.id = gh.user.id
-        # user.login = gh.user.login
-        # user.name = gh.user.name
-        # user.avatar = gh.user.avatar_url
-        # user.github = gh.user.html_url
-        
+        # figure out how/when to update gh specific attributes
         db.update.user(token.github_id, user)
         return
     raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
