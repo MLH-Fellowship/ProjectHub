@@ -1,4 +1,4 @@
-from app.models import Project
+from app.models import Project, UserUpdateModel
 from . import connection
 
 
@@ -12,20 +12,12 @@ def project(project: Project):
     conn.commit()
 
 
-def user(json):
-    id = json.id
-    login = json.login
-    name = json.name
-    pods = json.pods
-    timezone_offset = json.timezone_offset
-    bio = json.bio
-    skills = ','.join(json.skills)
-    interests = ','.join(json.interests)
-
-    st = "UPDATE users SET login=%s, name=%s, pods=%s, timezone_offset=%s, bio=%s, skills=%s, interests=%s WHERE id=%s"
-
+def user(uid: int, user: UserUpdateModel):
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st, (login, name, pods, timezone_offset, bio, skills, interests, id,))
+    cur.execute(
+        "UPDATE users SET bio=%s, pods=%s, skills=%s, interests=%s WHERE id=%s",
+        (user.bio, ','.join(user.pods), ','.join(user.skills), ','.join(user.interests), uid)
+    )
     conn.commit()

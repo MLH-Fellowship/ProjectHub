@@ -46,3 +46,9 @@ class User(BaseModel):
     interests: List[str]
     pods: List[str]
     explorer: Optional[List[ExplorePage]]
+
+class UserUpdateModel(BaseModel):
+    bio: str
+    skills: List[str]
+    interests: List[str]
+    pods: List[str]
