@@ -9,7 +9,7 @@
       {{ project.state | state }}
     </div>
     <el-card
-      :body-style="{ padding: '0px' }"
+      body-style="padding: 0px; padding-bottom: 14px"
       style="padding-bottom: 0"
       class="relative h-100"
       @click.native="openProject"
@@ -19,7 +19,7 @@
         :src="project.source | socialify"
         alt="Project Banner"
       />
-      <div class="ph3 pb1">
+      <div class="ph3">
         <div class="flex flex-row items-center justify-between f3 lh-copy">
           <div>{{ project.name }}</div>
           <BookmarkButton :project="project" />

@@ -41,7 +41,7 @@
         <iconify-icon icon="tags" class="mr2" />
         Tags
       </div>
-      <ProjectTags class="mt3 mb2" :tags="project.tags" />
+      <ProjectTags class="mt3" :tags="project.tags" />
     </div>
   </div>
 </template>
