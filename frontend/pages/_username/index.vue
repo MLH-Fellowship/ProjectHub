@@ -22,6 +22,22 @@ async function updateUser() {
   );
 }
 
+const debounce = (func, wait) => {
+  let timeout;
+
+  return function callback(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func.apply(this, args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+const debouncedUpdateUser = debounce(updateUser, 1000);
+
 export default {
   components: { ExploreLayout },
   async asyncData({ params, $axios, $github, error }) {
@@ -61,18 +77,10 @@ export default {
     user() {
       console.log('user');
     },
-    'user.bio'() {
-      console.log('user.bio');
-    },
-    'user.pods': updateUser,
-    'user.interests': updateUser,
-    'user.skills': updateUser,
+    'user.bio': debouncedUpdateUser,
+    'user.pods': debouncedUpdateUser,
+    'user.interests': debouncedUpdateUser,
+    'user.skills': debouncedUpdateUser,
   },
-  // methods: {
-  //   updateUser() {
-  //     console.log(omit(['projects'], this.user));
-  //     // this.$axios.$put('/api/user', omit)
-  //   },
-  // },
 };
 </script>
