@@ -14,7 +14,9 @@
               :src="avatar || user.avatar"
               :size="200"
             ></el-avatar>
-            <h2 class="mt2">{{ user.name }}</h2>
+            <el-link type="primary" :href="user.github" target="_blank">
+              <h2 class="mt2">{{ user.name }}</h2>
+            </el-link>
           </div>
         </div>
       </div>
@@ -26,6 +28,7 @@
           <el-form-item label="About Me">
             <el-input
               v-model="user.bio"
+              class="user-details-bio"
               type="textarea"
               placeholer="Write a short bio..."
               rows="4"
@@ -121,4 +124,8 @@ export default {
 };
 </script>
 
-<style></style>
+<style>
+.user-details-bio.is-disabled textarea[disabled].el-textarea__inner {
+  color: #909399 !important;
+}
+</style>
