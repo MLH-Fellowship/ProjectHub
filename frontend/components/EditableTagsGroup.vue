@@ -10,7 +10,7 @@
       {{ tag }}
     </el-tag>
     <el-input
-      v-if="input.visible"
+      v-if="input.visible && !disabled"
       ref="tags"
       v-model="input.value"
       class="input-new-tag"
@@ -40,6 +40,10 @@ export default {
     placeholder: {
       default: 'Tag',
       type: String,
+    },
+    disabled: {
+      default: false,
+      type: Boolean,
     },
   },
   data() {
