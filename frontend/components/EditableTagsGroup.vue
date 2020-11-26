@@ -3,7 +3,8 @@
     <el-tag
       v-for="tag in tags"
       :key="tag"
-      closable
+      :type="type"
+      :closable="!disabled"
       :disable-transitions="false"
       @close="removeTag(tag)"
     >
@@ -27,7 +28,6 @@ import toSlug from '@/utils/toSlug';
 
 export default {
   name: 'EditableTagsGroup',
-  components: {},
   props: {
     tags: {
       required: true,
@@ -57,6 +57,11 @@ export default {
         visible: true,
       },
     };
+  },
+  computed: {
+    type() {
+      return this.disabled ? 'info' : 'primary';
+    },
   },
   methods: {
     removeTag(tag) {
