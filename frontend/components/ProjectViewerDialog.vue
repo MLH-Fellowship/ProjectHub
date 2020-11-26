@@ -21,8 +21,7 @@
                     </el-button>
                   </div>
                   <div
-                    style="white-space: pre-wrap"
-                    class="mt2 ph2 word-break"
+                    class="mt2 ph2 word-break pre-wrap"
                     v-text="project.user.bio"
                   />
                   <!-- <p class="mt4 b ph2 flex flex-row items-center">
@@ -58,11 +57,7 @@
 
             <el-row>
               <p class="f3 b">Project Description</p>
-              <p
-                class="mt3"
-                style="white-space: pre-wrap"
-                v-text="project.description"
-              />
+              <p class="mt3 pre-wrap" v-text="project.description" />
             </el-row>
           </el-col>
         </el-row>
@@ -118,20 +113,21 @@ export default {
       return this.$store.state.user.meta.login === this.project.user.login;
     },
   },
-  beforeDestroy() {},
   methods: {
     viewUserProfile() {
       this.$emit('input', false);
       this.$router.push(`/${this.project.user.login}`);
-    },
-    editProject() {
-      // TODO: alow project edits
     },
   },
 };
 </script>
 
 <style lang="css">
+.pre-wrap {
+  word-break: break-word;
+  white-space: pre-line;
+}
+
 .project-diolog {
   padding: 0px;
   max-width: 1200px;
