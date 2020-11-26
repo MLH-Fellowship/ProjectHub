@@ -53,6 +53,7 @@
               :tags="user.interests"
               placeholder="Interest"
               :disabled="disabled"
+              slug
             />
           </el-form-item>
           <el-form-item class="tl" label="Skills">

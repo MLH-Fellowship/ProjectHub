@@ -45,6 +45,10 @@ export default {
       default: false,
       type: Boolean,
     },
+    slug: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -58,14 +62,8 @@ export default {
     removeTag(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
-    // showInput() {
-    //   this.input.visible = true;
-    //   this.$nextTick((_) => {
-    //     this.$refs.tags.$refs.input.focus();
-    //   });
-    // },
     handleInputConfirm() {
-      const value = toSlug(this.input.value);
+      const value = this.slug ? toSlug(this.input.value) : this.input.value;
       if (value && !this.tags.includes(value)) {
         this.tags.push(value);
       }
