@@ -30,7 +30,7 @@ export default {
   color: #fff;
   text-shadow: black 0px 0px 50px;
   overflow: hidden;
-  font-weight: 1000;
+  font-weight: 900;
   font-size: 11px;
   border: none;
   border-radius: 1rem;

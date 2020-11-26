@@ -3,14 +3,15 @@
     <el-tag
       v-for="tag in tags"
       :key="tag"
-      closable
+      :type="type"
+      :closable="!disabled"
       :disable-transitions="false"
       @close="removeTag(tag)"
     >
       {{ tag }}
     </el-tag>
     <el-input
-      v-if="input.visible"
+      v-if="input.visible && !disabled"
       ref="tags"
       v-model="input.value"
       class="input-new-tag"
@@ -23,9 +24,10 @@
 </template>
 
 <script>
+import toSlug from '@/utils/toSlug';
+
 export default {
   name: 'EditableTagsGroup',
-  components: {},
   props: {
     tags: {
       required: true,
@@ -39,6 +41,14 @@ export default {
       default: 'Tag',
       type: String,
     },
+    disabled: {
+      default: false,
+      type: Boolean,
+    },
+    slug: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
@@ -48,19 +58,18 @@ export default {
       },
     };
   },
+  computed: {
+    type() {
+      return this.disabled ? 'info' : 'primary';
+    },
+  },
   methods: {
     removeTag(tag) {
       this.tags.splice(this.tags.indexOf(tag), 1);
     },
-    // showInput() {
-    //   this.input.visible = true;
-    //   this.$nextTick((_) => {
-    //     this.$refs.tags.$refs.input.focus();
-    //   });
-    // },
     handleInputConfirm() {
-      const value = this.input.value;
-      if (value) {
+      const value = this.slug ? toSlug(this.input.value) : this.input.value;
+      if (value && !this.tags.includes(value)) {
         this.tags.push(value);
       }
       this.input.value = '';

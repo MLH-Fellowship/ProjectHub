@@ -6,8 +6,7 @@ from app.models import MicroUser, ExplorePage
 from app.utils import jwe
 from app.utils.github import GitHub
 import app.utils.database as db
-from app.apiparse import parse_project_query
-from app.models import Project, User
+from app.models import Project, User, UserUpdateModel
 from app.utils.jwe import HTTPBearerJWEScheme, HTTPAuthorizationJWT
 
 app = FastAPI()
@@ -39,9 +38,9 @@ def new_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bea
 
 
 @app.put("/project")
-def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    if db.exists.project(json):
-        db.update.project(json)
+def update_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.project(project.id, token.github_id):
+        db.update.project(project)
     else:
         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
 
@@ -90,6 +89,15 @@ def insert_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_sc
         
         db.insert.user(user)
 
+'bio', 'pods', 'interestes', 'skills'
+@app.put("/user")
+def update_user(user: UserUpdateModel, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.user(token.github_id):
+        # figure out how/when to update gh specific attributes
+        db.update.user(token.github_id, user)
+        return
+    raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
+
 
 @app.post("/bookmark/{project_id}")
 def upsert_bookmark(project_id: int, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
@@ -97,23 +105,6 @@ def upsert_bookmark(project_id: int, token: HTTPAuthorizationJWT = Depends(http_
         db.delete.bookmark(token.github_id, project_id)
     else:
         db.insert.bookmark(token.github_id, project_id)
-
-
-@app.put("/user")
-def update_user(user: User, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    if db.exists.user(token.github_id):
-        gh = GitHub(token.github_at)
-
-        # set defaults needed to create a useer
-        user.id = gh.user.id
-        user.login = gh.user.login
-        user.name = gh.user.name
-        user.avatar = gh.user.avatar_url
-        user.github = gh.user.html_url
-        
-        db.insert.update(user)
-        return
-    raise HTTPException(status.HTTP_400_BAD_REQUEST, 'User not found')
 
 
 @app.get("/user/bookmarks")

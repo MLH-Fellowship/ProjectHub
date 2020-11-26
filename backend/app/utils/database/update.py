@@ -1,37 +1,23 @@
+from app.models import Project, UserUpdateModel
 from . import connection
 
 
-def project(json):
-    name = json.name
-    description = json.description
-    source_link = json.source_link
-    demo_link = json.demo_link
-    tags = ','.join(json.tags)
-    id = json.id
-
-    st = "UPDATE projects SET name=%s, description=%s, source=%s, demo=%s, tags=%s WHERE id=%s" % (name, description, source_link, demo_link, tags, id,)
-
+def project(project: Project): 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st)
+    cur.execute(
+        "UPDATE projects SET name=%s, description=%s, source=%s, demo=%s, tags=%s, languages=%s, state=%s WHERE id=%s",
+        (project.name, project.description, project.source, project.demo, ','.join(project.tags), ','.join(project.languages), project.state, project.id ))
     conn.commit()
 
 
-def user(json):
-    id = json.id
-    login = json.login
-    name = json.name
-    pods = json.pods
-    timezone_offset = json.timezone_offset
-    bio = json.bio
-    skills = ','.join(json.skills)
-    interests = ','.join(json.interests)
-
-    st = "UPDATE users SET login=%s, name=%s, pods=%s, timezone_offset=%s, bio=%s, skills=%s, interests=%s WHERE id=%s"
-
+def user(uid: int, user: UserUpdateModel):
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st, (login, name, pods, timezone_offset, bio, skills, interests, id,))
+    cur.execute(
+        "UPDATE users SET bio=%s, pods=%s, skills=%s, interests=%s WHERE id=%s",
+        (user.bio, ','.join(user.pods), ','.join(user.skills), ','.join(user.interests), uid)
+    )
     conn.commit()

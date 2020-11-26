@@ -1,10 +1,18 @@
 from . import connection
 
 
-def project(rid):
+def project(rid, uid=None):
     conn = connection.create()
     cur = conn.cursor()
-    cur.execute("SELECT id FROM projects WHERE id=%s", (rid, ))
+    
+    query = "SELECT id FROM projects WHERE id=%s"
+    args = (rid,)
+
+    if uid:
+        query += " AND owner=%s"
+        args += (uid,)
+
+    cur.execute(query, args)
     return cur.fetchone() is not None
 
 

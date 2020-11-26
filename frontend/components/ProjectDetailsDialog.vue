@@ -2,9 +2,9 @@
   <el-dialog
     :visible="value"
     :title="title"
-    width="500px"
     body-style="max-width: 1000px"
     :center="center"
+    :append-to-body="nestedDialog"
     @update:visible="$emit('input', $event)"
   >
     <div v-loading="loading" :class="{ tc: center }">
@@ -54,7 +54,7 @@
         <el-row type="flex" align="center" class="mv3">
           <el-col :span="6">Tags</el-col>
           <el-col :span="18">
-            <EditableTagsGroup :tags="form.tags" />
+            <EditableTagsGroup :tags="form.tags" slug placeholder="Tag" />
           </el-col>
         </el-row>
         <el-row type="flex" align="center" class="mv3">
@@ -73,7 +73,7 @@
             </el-radio-group>
           </el-col>
         </el-row>
-        <el-button class="w-100" type="primary" @click="createNewProject">
+        <el-button class="w-100" type="primary" @click="submit">
           Submit
         </el-button>
       </div>
@@ -84,32 +84,44 @@
 <script>
 import { mapState } from 'vuex';
 import EditableTagsGroup from '@/components/EditableTagsGroup';
+import toSlug from '@/utils/toSlug';
 
-const initForm = () => ({
-  name: '',
-  description: '',
-  source: '',
-  demo: '',
-  tags: [],
-  languages: [],
-  state: 'None',
-});
+const initForm = (project) =>
+  project
+    ? { ...project, state: project.state || 'None' }
+    : {
+        name: '',
+        description: '',
+        source: '',
+        demo: '',
+        tags: [],
+        languages: [],
+        state: 'None',
+      };
 
 export default {
-  name: 'NewProjectDialog',
+  name: 'ProjectDetailsDialog',
   components: { EditableTagsGroup },
   props: {
     value: {
       required: true,
       type: Boolean,
     },
+    project: {
+      default: null,
+      type: Object,
+    },
+    nestedDialog: {
+      default: false,
+      type: Boolean,
+    },
   },
   data() {
     return {
-      step: 0,
+      step: this.project ? 2 : 0,
       loading: false,
       imported: false,
-      form: initForm(),
+      form: initForm(this.project),
     };
   },
   computed: {
@@ -118,7 +130,11 @@ export default {
       return [
         'How would you like to add the project?',
         'Enter a Github project URL!',
-        this.imported ? 'How does this look?' : 'Tell us about your project!',
+        this.project
+          ? 'What would you like to update?'
+          : this.imported
+          ? 'How does this look?'
+          : 'Tell us about your project!',
       ][this.step];
     },
     center() {
@@ -128,8 +144,8 @@ export default {
   watch: {
     value(val) {
       if (val) {
-        this.step = 0;
-        this.form = initForm();
+        this.step = this.project ? 2 : 0;
+        this.form = initForm(this.project);
       }
     },
   },
@@ -160,37 +176,28 @@ export default {
       this.form.name = repository;
       this.form.description = description || '';
       this.form.demo = homepage || '';
-      this.form.tags = names;
+      this.form.tags = names.map(toSlug);
       this.form.languages = Object.keys(languages);
       this.step = 2;
       this.loading = false;
     },
-    async createNewProject() {
+    async submit() {
+      this.loading = true;
       const form = {
         ...this.form,
         state: this.form.sate === 'None' ? null : this.form.sate,
       };
-      const project = await this.$axios.$post('/api/project', form);
-      this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
-      this.$emit('input', false);
-      this.$nuxt.refresh();
-    },
-    removeTag(tag) {
-      this.form.tags.splice(this.form.tags.indexOf(tag), 1);
-    },
-    showInput() {
-      this.inputVisible = true;
-      this.$nextTick((_) => {
-        this.$refs.saveTagInput.$refs.input.focus();
-      });
-    },
-    handleInputConfirm() {
-      const inputValue = this.tags.inputValue;
-      if (inputValue) {
-        this.form.tags.push(inputValue);
+
+      if (this.project) {
+        Object.assign(this.project, form);
+        await this.$axios.$put('/api/project', this.project);
+      } else {
+        const project = await this.$axios.$post('/api/project', form);
+        this.$router.push(`/${this.user.meta.login}?project=${project.slug}`);
+        this.$nuxt.refresh();
       }
-      this.inputVisible = false;
-      this.tags.inputValue = '';
+      this.$emit('input', false);
+      this.loading = false;
     },
   },
 };

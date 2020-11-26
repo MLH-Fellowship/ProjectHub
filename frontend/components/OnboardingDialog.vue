@@ -7,86 +7,9 @@
     @update:visible="$emit('input', $event)"
   >
     <div v-if="step === 0" v-loading="loading">
-      <el-row>
-        <el-col :span="10">
-          <div class="grid-content">
-            <div class="relative" style="height: 270px">
-              <el-image
-                class="absolute"
-                style="top: 0; left: 0; width: 400px"
-                :src="require('~/assets/images/blob1.png')"
-              ></el-image>
-              <el-avatar
-                class="absolute ma4"
-                style="top: 0; left: 0"
-                icon="el-icon-user-solid"
-                :src="user.meta.avatar"
-                :size="200"
-              ></el-avatar>
-            </div>
-          </div>
-        </el-col>
-        <el-col class="z-999 relative" :span="14">
-          <div class="grid-content">
-            <h2>Tell us a bit about yourself...</h2>
-
-            <el-form class="mv4" :model="form" label-width="100px">
-              <el-form-item label="About Me">
-                <el-input
-                  v-model="form.bio"
-                  type="textarea"
-                  placeholer="Write a short bio..."
-                ></el-input>
-              </el-form-item>
-              <el-form-item class="tl" label="Pod(s)">
-                <el-select
-                  v-model="form.pods"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="pod in options.pods"
-                    :key="pod"
-                    :label="pod"
-                    :value="pod"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item class="tl" label="Interests">
-                <el-select
-                  v-model="form.interests"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="interest in options.interests"
-                    :key="interest"
-                    :label="interest"
-                    :value="interest"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item class="tl" label="Skills">
-                <el-select
-                  v-model="form.skills"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="skill in options.skills"
-                    :key="skill"
-                    :label="skill"
-                    :value="skill"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
+      <UserDetails :user="form" :avatar="$store.state.user.meta.avatar">
+        <h2>Tell us a bit about yourself...</h2>
+      </UserDetails>
       <div style="text-align: end">
         <el-button round type="primary" @click="next">Next</el-button>
       </div>
@@ -178,8 +101,6 @@ export default {
           'Pod 1.2.1',
           'Pod 1.2.2',
         ],
-        interests: ['Android', 'ML/AI', 'Healthcare'],
-        skills: ['Front-end', 'Back-end', 'Python'],
       },
       form: {
         bio: '',

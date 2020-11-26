@@ -1,82 +1,6 @@
 <template>
   <div>
-    <div class="mt4" style="margin-left: 200px">
-      <el-row>
-        <el-col :span="6">
-          <div class="grid-content">
-            <div class="relative" style="height: 270px">
-              <el-image
-                class="absolute"
-                style="top: 0; left: 0; width: 400px"
-                :src="require('~/assets/images/blob1.png')"
-              ></el-image>
-              <el-avatar
-                class="absolute ma4"
-                style="top: 0; left: 0"
-                icon="el-icon-user-solid"
-                :src="user.avatar"
-                :size="200"
-              ></el-avatar>
-            </div>
-          </div>
-        </el-col>
-        <el-col class="z-999 relative" :span="14">
-          <div class="grid-content">
-            <el-link type="primary" :href="user.github">
-              <h2>{{ user.name }}</h2>
-            </el-link>
-
-            <el-form class="mv4" label-width="100px">
-              <el-form-item class="tl" label="Pods">
-                {{ user.pods | joinWithComma }}
-              </el-form-item>
-
-              <el-form-item class="tl" label="Interests">
-                <el-select
-                  v-model="user.interests"
-                  :disabled="!isUsersOwnPage"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="interest in options.interests"
-                    :key="interest"
-                    :label="interest"
-                    :value="interest"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-
-              <el-form-item class="tl" label="Skills">
-                <el-select
-                  v-model="user.skills"
-                  :disabled="!isUsersOwnPage"
-                  multiple
-                  placeholder="Select"
-                  class="w-100"
-                >
-                  <el-option
-                    v-for="skill in options.skills"
-                    :key="skill"
-                    :label="skill"
-                    :value="skill"
-                  ></el-option>
-                </el-select>
-              </el-form-item>
-              <el-form-item label="About">
-                <el-input
-                  v-model="user.bio"
-                  :disabled="!isUsersOwnPage"
-                  type="textarea"
-                  placeholer="Write a short bio..."
-                ></el-input>
-              </el-form-item>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
+    <UserDetails class="mt4 mh5" :disabled="!isUsersOwnPage" :user="user" />
     <hr />
     <ExploreLayout
       :projects="user.explorer.projects"
@@ -90,6 +14,29 @@
 <script>
 import pick from 'ramda/src/pick';
 import ExploreLayout from '@/components/ExploreLayout.vue';
+
+async function updateUser() {
+  await this.$axios.$put(
+    '/api/user',
+    pick(['bio', 'pods', 'interests', 'skills'], this.user)
+  );
+}
+
+const debounce = (func, wait) => {
+  let timeout;
+
+  return function callback(...args) {
+    const later = () => {
+      clearTimeout(timeout);
+      func.apply(this, args);
+    };
+
+    clearTimeout(timeout);
+    timeout = setTimeout(later, wait);
+  };
+};
+
+const debouncedUpdateUser = debounce(updateUser, 1000);
 
 export default {
   components: { ExploreLayout },
@@ -125,6 +72,15 @@ export default {
     isUsersOwnPage() {
       return this.$store.state.user.meta.login === this.$route.params.username;
     },
+  },
+  watch: {
+    user() {
+      console.log('user');
+    },
+    'user.bio': debouncedUpdateUser,
+    'user.pods': debouncedUpdateUser,
+    'user.interests': debouncedUpdateUser,
+    'user.skills': debouncedUpdateUser,
   },
 };
 </script>
