@@ -39,9 +39,9 @@ def new_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bea
 
 
 @app.put("/project")
-def update_project(json: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
-    if db.exists.project(json):
-        db.update.project(json)
+def update_project(project: Project, token: HTTPAuthorizationJWT = Depends(http_bearer_scheme)):
+    if db.exists.project(project.id, token.github_id):
+        db.update.project(project)
     else:
         raise HTTPException(status.HTTP_404_BAD_REQUEST, 'Project not found')
 
