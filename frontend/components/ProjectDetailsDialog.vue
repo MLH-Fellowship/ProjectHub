@@ -54,7 +54,7 @@
         <el-row type="flex" align="center" class="mv3">
           <el-col :span="6">Tags</el-col>
           <el-col :span="18">
-            <EditableTagsGroup :tags="form.tags" />
+            <EditableTagsGroup :tags="form.tags" slug placeholder="Tag" />
           </el-col>
         </el-row>
         <el-row type="flex" align="center" class="mv3">
