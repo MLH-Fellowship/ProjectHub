@@ -1,20 +1,14 @@
+from app.models import Project
 from . import connection
 
 
-def project(json):
-    name = json.name
-    description = json.description
-    source_link = json.source_link
-    demo_link = json.demo_link
-    tags = ','.join(json.tags)
-    id = json.id
-
-    st = "UPDATE projects SET name=%s, description=%s, source=%s, demo=%s, tags=%s WHERE id=%s" % (name, description, source_link, demo_link, tags, id,)
-
+def project(project: Project): 
     conn = connection.create()
     cur = conn.cursor()
 
-    cur.execute(st)
+    cur.execute(
+        "UPDATE projects SET name=%s, description=%s, source=%s, demo=%s, tags=%s, languages=%s, state=%s WHERE id=%s",
+        (project.name, project.description, project.source, project.demo, ','.join(project.tags), ','.join(project.languages), project.state, project.id ))
     conn.commit()
 
 
