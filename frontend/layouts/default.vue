@@ -62,18 +62,14 @@
       </div>
     </div>
     <Nuxt />
-    <NewProjectDialog v-model="showNewProjectDialog" />
+    <ProjectDetailsDialog v-model="showNewProjectDialog" />
   </div>
 </template>
 
 <script>
-import NewProjectDialog from '@/components/NewProjectDialog';
 import { mapState, mapActions } from 'vuex';
 
 export default {
-  components: {
-    NewProjectDialog,
-  },
   data() {
     return {
       showNewProjectDialog: false,

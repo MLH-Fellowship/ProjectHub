@@ -31,12 +31,11 @@
         Learn More
       </el-button>
     </el-card>
-    <ProjectDetailDialog v-model="detailsVisible" :project="project" />
+    <ProjectViewerDialog v-model="detailsVisible" :project="project" />
   </div>
 </template>
 
 <script>
-import ProjectDetailDialog from '@/components/ProjectDetailDialog';
 import ProjectOverview from '@/components/ProjectOverview';
 // import ProjectTags from '@/components/ProjectTags';
 import BookmarkButton from '@/components/button/Bookmark';
@@ -49,7 +48,6 @@ export default {
   name: 'Project',
   components: {
     // IconifyIcon,
-    ProjectDetailDialog,
     ProjectOverview,
     // ProjectTags,
     BookmarkButton,

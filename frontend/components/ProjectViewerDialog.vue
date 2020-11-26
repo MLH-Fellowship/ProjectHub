@@ -42,7 +42,7 @@
                   v-if="isUsersProject"
                   icon="lead-pencil"
                   class="ml2"
-                  @click="editProject"
+                  @click="editingProject = true"
                 />
                 <BookmarkButton :project="project" />
               </div>
@@ -68,6 +68,11 @@
         </el-row>
       </div>
     </div>
+    <ProjectDetailsDialog
+      v-model="editingProject"
+      :project="project"
+      nested-dialog
+    />
   </el-dialog>
 </template>
 
@@ -90,7 +95,7 @@ IconifyIcon.addIcon('group', Group);
 IconifyIcon.addIcon('github', Github);
 
 export default {
-  name: 'ProjectDetailDialog',
+  name: 'ProjectViewerDialog',
   components: {
     IconifyIcon,
     ProjectOverviewCard,
@@ -105,7 +110,7 @@ export default {
   },
   data() {
     return {
-      bookmarked: false,
+      editingProject: false,
     };
   },
   computed: {
