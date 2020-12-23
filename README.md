@@ -13,6 +13,8 @@
 
 Project Site: [https://projecthub.tech](https://projecthub.tech)
 
+DevPost: [Best Showcase / Portfolio](https://devpost.com/software/project-hub)
+
 ## ⚒️ Requirements:
 
 1. Brew
